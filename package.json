@@ -1,0 +1,99 @@
+{
+	"name": "vue-typescript-file",
+	"displayName": "vue-typescript-file",
+	"description": "快速生成vue-ts组件",
+	"version": "0.0.1",
+	"publisher": "ftrybe",
+	"author": {
+		"name": "ftrybe"
+	},
+	"engines": {
+		"vscode": "^1.27.0"
+	},
+	"categories": [
+		"Other",
+		"Programming Languages",
+		"Snippets"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Vue ts Files menu option configuration",
+			"properties": {
+				"vue-ts-files.menu.component": {
+					"type": "boolean",
+					"default": true,
+					"description": "shows or hides the menu item."
+				},
+				"vue-ts-files.menu.class": {
+					"type": "boolean",
+					"default": true,
+					"description": "shows or hides the menu item."
+				},
+				"vue-ts-files.menu.interface": {
+					"type": "boolean",
+					"default": true,
+					"description": "shows or hides the menu item."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.addComponent",
+				"title": "Generate Component"
+			},
+			{
+				"command": "extension.addClass",
+				"title": "Generate Class"
+			},
+			{
+				"command": "extension.addInterface",
+				"title": "Generate Interface"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "config.vue-ts-files.menu.component",
+					"command": "extension.addComponent",
+					"group": "vue"
+				},
+				{
+					"when": "config.vue-ts-files.menu.class",
+					"command": "extension.addClass",
+					"group": "ts basics"
+				},
+				{
+					"when": "config.vue-ts-files.menu.interface",
+					"command": "extension.addInterface",
+					"group": "ts basics"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.37.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"typescript": "^3.3.1",
+		"tslint": "^5.12.1",
+		"vscode-test": "^1.0.2"
+	},
+	"dependencies": {
+		"express-es6-template-engine": "^2.1.9"
+	}
+}
