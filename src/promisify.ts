@@ -1,7 +1,7 @@
-const newLocal = this;
+const ithis = this;
 export const promisify = (f: Function) => (...params: any[]) => {
   return new Promise<any>( function(resolve, reject){
-    f.apply(newLocal, [...params, (err: Error, data: any) => {
+    f.apply(ithis, [...params, (err: Error, data: any) => {
       if (err) {
         reject(err);
       }

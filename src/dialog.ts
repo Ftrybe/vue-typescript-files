@@ -3,10 +3,13 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {Generator} from './generator';
 
+const generator = new Generator();
 export const showDynamicDialog = async (uri: vscode.Uri, fileName: string, ResourceType: string) => {
+   
     const loc = await showFileNameDialog(uri, fileName, ResourceType);
-    const generator = new Generator();
-    await generator.generateResources(ResourceType, loc);    
+    
+    await generator.generateResources(ResourceType, loc);
+    vscode.window.setStatusBarMessage(`${loc.fileName}创建成功`, 2000);
 };
 
 export const showFileNameDialog = async (uri:vscode.Uri,defaultTypeName:string,ResourceType:string) => {

@@ -1,29 +1,23 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as es6Renderer from 'express-es6-template-engine';
-import { toCamelCase, toUpperCase } from './formatting';
+import { toUpperCase } from './formatting';
 import { promisify } from './promisify';
+import { Template } from './template';
+import * as vscode from 'vscode';
 const fsReaddir = promisify(fs.readdir);
 const fsReadFile = promisify(fs.readFile);
 const TEMPLATES_FOLDER = 'templates';
-const TEMPLATE_ARGUMENTS = 'inputName, upperName, interfacePrefix, cmpPrefix, dirPrefix, cmpSelector, dirSelector, componentViewEncapsulation, componentChangeDetection, componentInlineTemplate, componentInlineStyle, defaultsStyleExt, routingScope, importCommonModule, params';
 
 export class FileContents {
-  private templatesMap: Map<string, Function>;
+  private templatesMap: Map<string, string>;
 
   constructor() {
-    this.templatesMap = new Map<string, Function>();
+    this.templatesMap = new Map<string, string>();
+    this.loadTemplates();
   }
 
   async loadTemplates() {
-
-    const templatesMap = await this.getTemplates();
-    console.log(templatesMap);
-    for (const [key, value] of templatesMap.entries()) {
-      const compiled = es6Renderer(value, TEMPLATE_ARGUMENTS,(err:Error, content:string) => err || content);
-      
-      this.templatesMap.set(key, compiled);
-    }
+     this.templatesMap = await this.getTemplates();
   }
 
   private async getTemplates() {
@@ -31,15 +25,24 @@ export class FileContents {
     const templatesFiles: string[] = await fsReaddir(templatesPath, 'utf-8');
     const templatesFilesPromises = templatesFiles.map(t => fsReadFile(path.join(__dirname, TEMPLATES_FOLDER, t), 'utf8').then(data => [t, data]));
     const templates = await Promise.all(templatesFilesPromises);
-    return new Map(templates.map(x => x as [string, string]));
+    return new Map(templates.map(x => {
+      return x as [string, string]
+    }));
   }
 
-  public getTemplateContent(template: string, inputName: string) {
-    const templateName: string = template;
-    console.log(this.templatesMap + "content");
-    const args = [inputName,
-      toUpperCase(inputName)];
-    
-    return (this.templatesMap.has(templateName)) ? this.templatesMap.get(templateName)(...args) : '';
+  public getTemplateContent(templateName: string, upperName: string) {
+    let result = '';
+    if (this.templatesMap.has(templateName)) {
+      const template = this.templatesMap.get(templateName) || '';
+      result = Template.replace(template, {
+        upperName: toUpperCase(upperName),
+        inputname: 'test'
+      });
+    }
+    return result;
+  }
+
+  public focusFiles(fileName:string){
+    vscode.window.showTextDocument(vscode.Uri.file(fileName));
   }
 }
