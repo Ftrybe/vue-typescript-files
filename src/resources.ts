@@ -19,6 +19,8 @@ export const getTmplResouces = (name:string) =>{
         ]
       }
     );
+    console.log(value.toLowerCase() + " none");
+    console.log(value.toLocaleLowerCase() + " local");
   }
   return map.get(name);
 };

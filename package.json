@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue-typescript-file",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -15,6 +15,11 @@
 		"Other",
 		"Programming Languages",
 		"Snippets"
+	],
+	"keywords": [
+		"vue",
+		"typescript",
+		"vue files"
 	],
 	"activationEvents": [
 		"*"
@@ -104,7 +109,7 @@
 					"group": "ts basics"
 				},
 				{
-					"when": "config.vue-ts-files.menu.Enum",
+					"when": "config.vue-ts-files.menu.enum",
 					"command": "extension.addVueEnum",
 					"group": "ts basics"
 				}
@@ -130,5 +135,6 @@
 		"tslint": "^5.12.1",
 		"typescript": "^3.3.1",
 		"vscode-test": "^1.0.2"
-	}
+	},
+	"dependencies": {}
 }
