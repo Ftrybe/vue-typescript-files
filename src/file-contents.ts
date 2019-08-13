@@ -35,8 +35,7 @@ export class FileContents {
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
       result = Template.replace(template, {
-        upperName: toUpperCase(upperName),
-        inputname: 'test'
+        upperName: toUpperCase(upperName)
       });
     }
     return result;

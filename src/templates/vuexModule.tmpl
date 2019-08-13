@@ -1,0 +1,10 @@
+import { VuexModule, Module } from 'vuex-module-decorators';
+import store from '../index';
+@Module({
+    dynamic: true,
+    name: '{{upperName}}',
+    store
+})
+export default class {{upperName}} extends VuexModule {
+   
+}

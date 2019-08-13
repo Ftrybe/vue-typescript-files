@@ -6,10 +6,10 @@
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
-		"name": "ftrybe"
+		"name": "cb Fan"
 	},
 	"engines": {
-		"vscode": "^1.27.0"
+		"vscode": "^1.37.0"
 	},
 	"categories": [
 		"Other",
@@ -35,32 +35,50 @@
 				"vue-ts-files.menu.component": {
 					"type": "boolean",
 					"default": true,
-					"description": "shows or hides the menu item."
+					"description": "显示或隐藏该按钮"
 				},
 				"vue-ts-files.menu.class": {
 					"type": "boolean",
 					"default": true,
-					"description": "shows or hides the menu item."
+					"description": "显示或隐藏该按钮"
 				},
 				"vue-ts-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
-					"description": "shows or hides the menu item."
+					"description": "显示或隐藏该按钮"
+				},
+				"vue-ts-files.menu.enum": {
+					"type": "boolean",
+					"default": true,
+					"description": "显示或隐藏该按钮"
+				},
+				"vue-ts-files.menu.vuexModule": {
+					"type": "boolean",
+					"default": true,
+					"description": "显示或隐藏该按钮"
 				}
 			}
 		},
 		"commands": [
 			{
 				"command": "extension.addVueComponent",
-				"title": "Generate Component"
+				"title": "生成Component"
+			},
+			{
+				"command": "extension.addVueVuexModule",
+				"title": "生成Vuex模块"
 			},
 			{
 				"command": "extension.addVueClass",
-				"title": "Generate Class"
+				"title": "生成Class"
 			},
 			{
 				"command": "extension.addVueInterface",
-				"title": "Generate Interface"
+				"title": "生成Interface"
+			},
+			{
+				"command": "extension.addVueEnum",
+				"title": "生成Enum"
 			}
 		],
 		"menus": {
@@ -71,6 +89,11 @@
 					"group": "vue"
 				},
 				{
+					"when": "config.vue-ts-files.menu.vuexModule",
+					"command": "extension.addVueVuexModule",
+					"group": "vue"
+				},
+				{
 					"when": "config.vue-ts-files.menu.class",
 					"command": "extension.addVueClass",
 					"group": "ts basics"
@@ -78,6 +101,11 @@
 				{
 					"when": "config.vue-ts-files.menu.interface",
 					"command": "extension.addVueInterface",
+					"group": "ts basics"
+				},
+				{
+					"when": "config.vue-ts-files.menu.Enum",
+					"command": "extension.addVueEnum",
 					"group": "ts basics"
 				}
 			]
