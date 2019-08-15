@@ -4,7 +4,8 @@ export const CommandList = [
     "Class",
     "Interface",
     "Enum",
-    "VuexModule"
+    "VuexModule",
+    "Declare"
 ];
 // 生成一个集合
 export function CommandsMap(){

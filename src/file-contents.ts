@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { toUpperCase } from './formatting';
+import { toUpperCase, toHyphensCase } from './formatting';
 import { promisify } from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
@@ -30,12 +30,13 @@ export class FileContents {
     }));
   }
 
-  public getTemplateContent(templateName: string, upperName: string) {
+  public getTemplateContent(templateName: string, inputName: string) {
     let result = '';
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
       result = Template.replace(template, {
-        upperName: toUpperCase(upperName)
+        upperName: toUpperCase(inputName),
+        hyphensName: toHyphensCase(inputName)
       });
     }
     return result;

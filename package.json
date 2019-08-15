@@ -1,8 +1,8 @@
 {
 	"name": "vue-typescript-file",
-	"displayName": "vue-typescript-file",
+	"displayName": "vue typescript files",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -42,6 +42,16 @@
 					"default": true,
 					"description": "显示或隐藏该按钮"
 				},
+				"vue-ts-files.menu.vuexModule": {
+					"type": "boolean",
+					"default": true,
+					"description": "显示或隐藏该按钮"
+				},
+				"vue-ts-files.menu.Declare": {
+					"type": "boolean",
+					"default": true,
+					"description": "显示或隐藏该按钮"
+				},
 				"vue-ts-files.menu.class": {
 					"type": "boolean",
 					"default": true,
@@ -56,11 +66,6 @@
 					"type": "boolean",
 					"default": true,
 					"description": "显示或隐藏该按钮"
-				},
-				"vue-ts-files.menu.vuexModule": {
-					"type": "boolean",
-					"default": true,
-					"description": "显示或隐藏该按钮"
 				}
 			}
 		},
@@ -72,6 +77,10 @@
 			{
 				"command": "extension.addVueVuexModule",
 				"title": "生成Vuex模块"
+			},
+			{
+				"command": "extension.addVueDeclare",
+				"title": "生成Declare文件"
 			},
 			{
 				"command": "extension.addVueClass",
@@ -91,27 +100,32 @@
 				{
 					"when": "config.vue-ts-files.menu.component",
 					"command": "extension.addVueComponent",
-					"group": "vue"
+					"group": "vue ts"
 				},
 				{
 					"when": "config.vue-ts-files.menu.vuexModule",
 					"command": "extension.addVueVuexModule",
-					"group": "vue"
+					"group": "vue ts"
+				},
+				{
+					"when": "config.vue-ts-files.menu.Declare",
+					"command": "extension.addVueDeclare",
+					"group": "vue ts"
 				},
 				{
 					"when": "config.vue-ts-files.menu.class",
 					"command": "extension.addVueClass",
-					"group": "ts basics"
+					"group": "vue ts basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.interface",
 					"command": "extension.addVueInterface",
-					"group": "ts basics"
+					"group": "vue ts basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.enum",
 					"command": "extension.addVueEnum",
-					"group": "ts basics"
+					"group": "vue ts basics"
 				}
 			]
 		}

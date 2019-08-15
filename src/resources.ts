@@ -8,6 +8,9 @@ export const getTmplResouces = (name:string) =>{
     if(value == "Component"){
       suffix = "vue";
     }
+    if(value == "Declare"){
+      suffix = "d.ts"
+    }
     map.set(
       value,
       {
@@ -19,8 +22,6 @@ export const getTmplResouces = (name:string) =>{
         ]
       }
     );
-    console.log(value.toLowerCase() + " none");
-    console.log(value.toLocaleLowerCase() + " local");
   }
   return map.get(name);
 };
