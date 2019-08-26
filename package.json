@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -19,7 +19,9 @@
 	"keywords": [
 		"vue",
 		"typescript",
-		"vue files"
+		"vue files",
+		"vue typescript",
+		"vue-typescript"
 	],
 	"activationEvents": [
 		"*"
@@ -35,19 +37,19 @@
 	"contributes": {
 		"configuration": {
 			"type": "object",
-			"title": "Vue ts Files menu option configuration",
+			"title": "Vue-ts-files",
 			"properties": {
 				"vue-ts-files.menu.component": {
 					"type": "boolean",
 					"default": true,
 					"description": "显示或隐藏该按钮"
 				},
-				"vue-ts-files.menu.vuexModule": {
+				"vue-ts-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
 					"description": "显示或隐藏该按钮"
 				},
-				"vue-ts-files.menu.Declare": {
+				"vue-ts-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
 					"description": "显示或隐藏该按钮"
@@ -70,19 +72,19 @@
 				"vue-ts-files.component.prefix": {
 					"type": "string",
 					"default": null,
-					"description": "创建的组件前缀"
+					"description": "创建的组件类前缀"
 				},
 				"vue-ts-files.component.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "创建的组件后缀"
+					"description": "创建的组件类后缀"
 				},
 				"vue-ts-files.component.templates": {
 					"type":"array",
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
 				},
-				"vue-ts-files.component.vuexSuffix":{
+				"vue-ts-files.vuex.suffix":{
 					"type":"string",
 					"default": null,
 					"description": "vuex模块后缀"
@@ -94,7 +96,7 @@
 				"title": "生成Component"
 			},
 			{
-				"command": "extension.addVueVuexModule",
+				"command": "extension.addVueVuex",
 				"title": "生成Vuex模块"
 			},
 			{
@@ -121,12 +123,12 @@
 					"group": "vue ts"
 				},
 				{
-					"when": "config.vue-ts-files.menu.vuexModule",
-					"command": "extension.addVueVuexModule",
+					"when": "config.vue-ts-files.menu.vuex",
+					"command": "extension.addVueVuex",
 					"group": "vue ts"
 				},
 				{
-					"when": "config.vue-ts-files.menu.Declare",
+					"when": "config.vue-ts-files.menu.declare",
 					"command": "extension.addVueDeclare",
 					"group": "vue ts"
 				},

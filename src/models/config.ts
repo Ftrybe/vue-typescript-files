@@ -3,3 +3,6 @@ export class ComponentConfig {
     suffix: string = "";
     templates: Array<string> = [];
 }
+export class vuexConfig{
+    suffix: string = "";
+}

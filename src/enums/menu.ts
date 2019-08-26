@@ -3,6 +3,6 @@ export enum Menu {
     class = "Class",
     interface = "Interface",
     enum = "Enum",
-    vuexModule = "VuexModule",
+    vuexModule = "Vuex",
     declare = "Declare"
 }

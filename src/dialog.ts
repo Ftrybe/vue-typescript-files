@@ -4,14 +4,12 @@ import * as fs from 'fs';
 import { Generator } from './generator';
 import { Menu } from './enums/Menu';
 import { searchFiles } from './ioutil';
-import { FileSuffix } from './enums/file-suffix';
 
 const generator = new Generator();
 export const showDynamicDialog = async (uri: vscode.Uri, fileName: string, ResourceType: Menu) => {
 
     const loc = await showFileNameDialog(uri, fileName, ResourceType);
     if(loc){
-        console.log(loc);
         await generator.generateResources(ResourceType, loc);
         vscode.window.setStatusBarMessage(`${loc.fileName}创建成功`, 2000);
     }else{
