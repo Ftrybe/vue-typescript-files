@@ -4,11 +4,12 @@ import { IFiles } from "./models/file";
 import * as path from 'path';
 import { getTmplResouces } from "./resources";
 import { createFiles } from "./ioutil";
+import { Menu } from "./enums/Menu";
 
 export class Generator {
   constructor(private readonly fc = new FileContents()) {
   }
- async generateResources(name: string, loc: IPath) {
+ async generateResources(name: Menu, loc: IPath) {
     const resource = getTmplResouces(name);
     const files: IFiles[] = resource.files.map((file: any) => {
       const fileName: string = file.name();

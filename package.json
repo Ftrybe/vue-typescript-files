@@ -66,11 +66,30 @@
 					"type": "boolean",
 					"default": true,
 					"description": "显示或隐藏该按钮"
+				},
+				"vue-ts-files.component.prefix": {
+					"type": "string",
+					"default": null,
+					"description": "创建的组件前缀"
+				},
+				"vue-ts-files.component.suffix": {
+					"type": "string",
+					"default": null,
+					"description": "创建的组件后缀"
+				},
+				"vue-ts-files.component.templates": {
+					"type":"array",
+					"default": null,
+					"description": "向组件模板中添加自定义标签"
+				},
+				"vue-ts-files.component.vuexSuffix":{
+					"type":"string",
+					"default": null,
+					"description": "vuex模块后缀"
 				}
 			}
 		},
-		"commands": [
-			{
+		"commands": [{
 				"command": "extension.addVueComponent",
 				"title": "生成Component"
 			},
@@ -96,8 +115,7 @@
 			}
 		],
 		"menus": {
-			"explorer/context": [
-				{
+			"explorer/context": [{
 					"when": "config.vue-ts-files.menu.component",
 					"command": "extension.addVueComponent",
 					"group": "vue ts"
