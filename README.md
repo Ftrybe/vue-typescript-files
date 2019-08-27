@@ -18,7 +18,7 @@ export default new Vuex.Store({
 
 ## 预览
 
-![image](https://github.com/Ftrybe/vue-typescript-files/blob/master/images/create-component.gif)
+![image](/images/create-component.gif)
 
 右击文件夹添加组件  
 

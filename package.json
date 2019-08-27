@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
