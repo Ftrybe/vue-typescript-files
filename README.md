@@ -5,6 +5,17 @@
 
 `npm install vuex-module-decorators`
 
+```Vuex index.ts
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    modules: { },
+});
+```
+
 ## 预览
 
 ![image](https://github.com/Ftrybe/vue-typescript-files/blob/master/images/create-component.gif)
@@ -15,12 +26,12 @@
 2.添加vuexmodule  
 3.添加Class  
 4.添加Enum  
-5.添加Interface  pin
+5.添加Interface
 6.添加Declare  
 
 需要添加前后缀请选择  
 
-```
+```extends
 文件 => 首选项 => 设置 => 扩展 => vue-ts-files
 ```
 
@@ -28,12 +39,16 @@
 
 添加组件自定义标签模板，请在settings.json编辑类似如下代码
 
-```
+```templates
 "vue-ts-files.component.templates": [
         "<v-ons-page>",
         "</v-ons-page>"
     ]
 ```
+
+### 1.0.5
+
+添加设置组件的css预编译
 
 ### 1.0.4
 

@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -83,6 +83,11 @@
 					"type":"array",
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
+				},
+				"vue-ts-files.component.style":{
+					"type":"string",
+					"default": "scss",
+					"description": "设置组件中默认使用的css预处理器"
 				},
 				"vue-ts-files.vuex.suffix":{
 					"type":"string",

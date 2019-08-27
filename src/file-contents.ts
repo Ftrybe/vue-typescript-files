@@ -38,65 +38,70 @@ export class FileContents {
     let result = '';
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
-      result = Template.replace(template, this.textCase(templateName,inputName));
+      result = Template.replace(template, this.textCase(templateName, inputName));
     }
     return result;
   }
 
- 
-  private textCase(templateName:Menu,inputName: string): {} {
+
+  private textCase(templateName: Menu, inputName: string): {} {
     let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("vue-ts-files");
-   // const isHumpcase = (config.get("global") as any)["isHumpcase"];
-    const resouceName = toTileCase(StringUtils.removeSuffix(templateName));
+    // const isHumpcase = (config.get("global") as any)["isHumpcase"];
+    const resourcesName = toTileCase(StringUtils.removeSuffix(templateName));
     let template: string = "";
-    switch(resouceName){
+    let style: string = "";
+    switch (resourcesName) {
       case Menu.component:
-          const componentConfig: ComponentConfig = config.get("component") as ComponentConfig;
-          // 转为json格式，方便遍历
-          const jsonComponentConfig = JSON.parse(JSON.stringify(componentConfig));
-          for (let key in jsonComponentConfig) {
-            if (jsonComponentConfig[key]) {
-              switch (key) {
-                case "prefix":
-                  inputName = jsonComponentConfig[key] + "-" + inputName;
-                  break;
-                case "suffix":
-                  inputName = inputName + "-" + jsonComponentConfig[key];
-                  break;
-                case "templates":
-                  const t = jsonComponentConfig[key] as Array<string>
-                  t.map((value: string, index: number, array: string[]) => {
-                    template += value;
-                    if (index < array.length - 1) {
-                      template += "\n\t";
-                    }
-                  });
-                  break;
-              }
+        const componentConfig: ComponentConfig = config.get("component") as ComponentConfig;
+        // 转为json格式，方便遍历
+        const jsonComponentConfig = JSON.parse(JSON.stringify(componentConfig));
+        for (let key in jsonComponentConfig) {
+          if (jsonComponentConfig[key]) {
+            switch (key) {
+              case "prefix":
+                inputName = jsonComponentConfig[key] + "-" + inputName;
+                break;
+              case "suffix":
+                inputName = inputName + "-" + jsonComponentConfig[key];
+                break;
+              case "templates":
+                const t = jsonComponentConfig[key] as Array<string>
+                t.map((value: string, index: number, array: string[]) => {
+                  template += value;
+                  if (index < array.length - 1) {
+                    template += "\n\t";
+                  }
+                });
+                break;
+              case "style":
+                style = "lang='" + jsonComponentConfig[key] + "'";
+                break;
             }
           }
-          break;
+        }
+        break;
       case Menu.vuexModule:
-          const vuexConfig: vuexConfig = config.get("vuex") as vuexConfig;
-          const jsonVuexConfig = JSON.parse(JSON.stringify(vuexConfig));
-          for (let key in jsonVuexConfig) {
-            if (jsonVuexConfig[key]) {
-              switch (key) {
-                case "suffix":
-                  inputName = inputName + "-" + jsonVuexConfig[key];
-                  break;
-              }
+        const vuexConfig: vuexConfig = config.get("vuex") as vuexConfig;
+        const jsonVuexConfig = JSON.parse(JSON.stringify(vuexConfig));
+        for (let key in jsonVuexConfig) {
+          if (jsonVuexConfig[key]) {
+            switch (key) {
+              case "suffix":
+                inputName = inputName + "-" + jsonVuexConfig[key];
+                break;
             }
           }
-          break;
+        }
+        break;
     }
     // 获取配置信息
- 
+
     return {
       upperName: toUpperCase(inputName),
       hyphensName: toHyphensCase(inputName),
       dynamicName: toUpperCase(inputName),
-      template: template
+      template: template,
+      style: style
     }
   }
   // 焦点打新建的文件
