@@ -7,7 +7,7 @@
 
 ## 预览
 
-![image](images/create-component.gif)
+![image](https://github.com/Ftrybe/vue-typescript-files/blob/master/images/create-component.gif)
 
 右击文件夹添加组件  
 
