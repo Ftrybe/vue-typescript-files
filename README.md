@@ -12,12 +12,17 @@ More efficient file creation
 
 右击文件夹添加组件(right-click folder)  
 
+### 基本功能
+
 1.添加vue ts组件  
 2.添加vuexmodule  
 3.添加Class  
 4.添加Enum  
-5.添加Interface
+5.添加Interface  
 6.添加Declare  
+7.snippets  
+
+### snippets说明
 
 ```snippets
 v-init    Vue component init snippet  
@@ -25,13 +30,13 @@ vx-init   Vuex store init snippet
 vx-module Vuex module snippet  
 ```
 
+### 配置说明
+
 需要添加前后缀请选择  
 
 ```extends
 文件 => 首选项 => 设置 => 扩展 => vue-ts-files
 ```
-
-进行设置
 
 添加组件自定义标签模板，请在settings.json编辑类似如下代码
 
@@ -41,34 +46,6 @@ vx-module Vuex module snippet
         "</v-ons-page>"
     ]
 ```
-
-### 1.0.7
-
-添加三个代码段，用于生成组件  
-添加设置模板引擎
-
-### 1.0.5
-
-添加设置组件的css预编译
-
-### 1.0.4
-
-允许组件类名中添加前后缀，防止与基本类重名  
-允许vuex模块在类名中添加后缀  
-允许在添加组件时自定义添加标签
-解决创建相同文件覆盖问题
-
-### 1.0.3
-
-添加声明文件创建
-
-### 1.0.1
-
-enum拼错的Bug
-
-### 1.0.0
-
-没啥技术含量的添加组件。
 
 -----------------------------------------------------------------------------------------------------------
 

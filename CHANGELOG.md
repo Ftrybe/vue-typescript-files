@@ -1,9 +1,31 @@
-# Change Log
+#
 
-All notable changes to the "vue-typescript-file" extension will be documented in this file.
+## 1.0.x
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### 1.0.7
 
-## [Unreleased]
+添加三个代码段，用于生成组件  
+添加设置模板引擎
 
-- Initial release
+### 1.0.5
+
+添加设置组件的css预编译
+
+### 1.0.4
+
+允许组件类名中添加前后缀，防止与基本类重名  
+允许vuex模块在类名中添加后缀  
+允许在添加组件时自定义添加标签
+解决创建相同文件覆盖问题
+
+### 1.0.3
+
+添加声明文件创建
+
+### 1.0.1
+
+enum拼错的Bug
+
+### 1.0.0
+
+没啥技术含量的添加组件
