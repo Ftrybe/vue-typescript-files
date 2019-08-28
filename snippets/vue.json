@@ -1,0 +1,25 @@
+{
+    "Vue Component": {
+        "prefix": "v-init",
+        "description": "Vue component snippet",
+        "body": [
+            "<template>",
+            "\t<div>\n\n\t</div>",
+            "</template>",
+            "",
+            "<script lang='ts'>",
+            "import { Component, Prop, Vue } from 'vue-property-decorator';",
+            "",
+            "@Component",
+            "export default class ${1:ComponentName} extends Vue {",
+            "",
+            "}",
+            "</script>",
+            "",
+            "<style scoped>",
+            "",
+            "</style>",
+            ""
+        ]
+    }
+}

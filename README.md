@@ -3,6 +3,7 @@
 用于简单的创建ts组件，看的上的可以自己下载扩展。  
 和vuex-module-decorators搭配使用更加。  
 
+More efficient file creation  
 `npm install vuex-module-decorators`
 
 ```Vuex index.ts
@@ -20,7 +21,7 @@ export default new Vuex.Store({
 
 ![image](/images/create-component.gif)
 
-右击文件夹添加组件  
+右击文件夹添加组件(right-click folder)  
 
 1.添加vue ts组件  
 2.添加vuexmodule  
@@ -28,6 +29,12 @@ export default new Vuex.Store({
 4.添加Enum  
 5.添加Interface
 6.添加Declare  
+
+```snippets
+v-init    Vue component init snippet  
+vx-init   Vuex store init snippet  
+vx-module Vuex module snippet  
+```
 
 需要添加前后缀请选择  
 
@@ -45,6 +52,11 @@ export default new Vuex.Store({
         "</v-ons-page>"
     ]
 ```
+
+### 1.0.7
+
+添加三个代码段，用于生成组件  
+添加设置模板引擎
 
 ### 1.0.5
 

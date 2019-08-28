@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "快速生成vue-ts组件",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -84,10 +84,15 @@
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
 				},
-				"vue-ts-files.component.style":{
+				"vue-ts-files.component.styleLang":{
 					"type":"string",
-					"default": "scss",
+					"default": null,
 					"description": "设置组件中默认使用的css预处理器"
+				},
+				"vue-ts-files.component.templateLang":{
+					"type":"string",
+					"default": null,
+					"description": "设置组件的模板引擎"
 				},
 				"vue-ts-files.vuex.suffix":{
 					"type":"string",
@@ -98,27 +103,27 @@
 		},
 		"commands": [{
 				"command": "extension.addVueComponent",
-				"title": "生成Component"
+				"title": "generate component"
 			},
 			{
 				"command": "extension.addVueVuex",
-				"title": "生成Vuex模块"
+				"title": "generate vuex module"
 			},
 			{
 				"command": "extension.addVueDeclare",
-				"title": "生成Declare文件"
+				"title": "generate declare file"
 			},
 			{
 				"command": "extension.addVueClass",
-				"title": "生成Class"
+				"title": "generate class"
 			},
 			{
 				"command": "extension.addVueInterface",
-				"title": "生成Interface"
+				"title": "generate interface"
 			},
 			{
 				"command": "extension.addVueEnum",
-				"title": "生成Enum"
+				"title": "generate enum"
 			}
 		],
 		"menus": {
@@ -153,7 +158,17 @@
 					"group": "vue ts basics"
 				}
 			]
-		}
+		},
+		"snippets": [
+			{
+				"language": "vue",
+				"path": "./snippets/vue.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/vuex.json"
+			}
+		]
 	},
 	"scripts": {
 		"templates": "copyfiles templates/**/*.tmpl templates/**/*.tmpl ./out/",

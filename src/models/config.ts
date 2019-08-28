@@ -1,7 +1,9 @@
 export class ComponentConfig {
-    prefix:string = "";
-    suffix: string = "";
-    templates: Array<string> = [];
+    prefix?:string ;
+    suffix?: string;
+    templates?:string;
+    styleLang?: string;
+    templateLang?: string;
 }
 export class vuexConfig{
     suffix: string = "";

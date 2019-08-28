@@ -49,7 +49,8 @@ export class FileContents {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = toTileCase(StringUtils.removeSuffix(templateName));
     let template: string = "";
-    let style: string = "";
+    let styleLang: string = "";
+    let templateLang: string = "";
     switch (resourcesName) {
       case Menu.component:
         const componentConfig: ComponentConfig = config.get("component") as ComponentConfig;
@@ -73,8 +74,12 @@ export class FileContents {
                   }
                 });
                 break;
-              case "style":
-                style = "lang='" + jsonComponentConfig[key] + "'";
+              case "styleLang":
+                console.log(styleLang);
+                styleLang = " lang='" + jsonComponentConfig[key] + "'";
+                break;
+              case "templateLang":
+                templateLang = " lang='" + jsonComponentConfig[key] + "'";
                 break;
             }
           }
@@ -101,7 +106,8 @@ export class FileContents {
       hyphensName: toHyphensCase(inputName),
       dynamicName: toUpperCase(inputName),
       template: template,
-      style: style
+      templateLang: templateLang,
+      styleLang: styleLang
     }
   }
   // 焦点打新建的文件
