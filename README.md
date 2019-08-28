@@ -6,17 +6,6 @@
 More efficient file creation  
 `npm install vuex-module-decorators`
 
-```Vuex index.ts
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
-    modules: { },
-});
-```
-
 ## 预览
 
 ![image](/images/create-component.gif)
