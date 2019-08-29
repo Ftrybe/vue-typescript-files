@@ -30,9 +30,23 @@ vx-init   Vuex store init snippet
 vx-module Vuex module snippet  
 ```
 
+### 创建组件命令行参数说明
+
+添加组件创建参数
+
+```options
+-c 不使用设置文件中设置的前后缀
+-p|-prefix [prefix] 给组件类名添加前缀
+-s|-suffix [suffix] 给组件类名添加后缀
+```
+
+使用带有参数的选项时，将不使用全局前后缀设置。  
+如：  
+    使用 -p 命令，将保留全局设置的suffix属性，若不想使用全局suffix设置请继续使用不带有参数的-s命令  
+
 ### 配置说明
 
-需要添加前后缀请选择  
+需要添加全局组件前后缀请选择  
 
 ```extends
 文件 => 首选项 => 设置 => 扩展 => vue-ts-files

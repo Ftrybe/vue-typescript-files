@@ -15,7 +15,7 @@ export class Generator {
       const fileName: string = file.name();
       return {
         name: path.join(loc.dirPath, fileName.startsWith('-') ? `${loc.fileName}${fileName}` : `${loc.fileName}.${fileName}`),
-        content:  this.fc.getTemplateContent(file.type, loc.fileName),
+        content:  this.fc.getTemplateContent(file.type, loc.fileName,loc.args),
       };
     });
     await createFiles(loc, files);

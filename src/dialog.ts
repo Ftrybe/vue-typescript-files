@@ -35,7 +35,7 @@ export const showFileNameDialog = async (uri: vscode.Uri, defaultTypeName: strin
         throw new Error('请先打开一个项目');
     } else {
         let fileName = await vscode.window.showInputBox({ prompt: `输入新的${resourceType}名称 `, value: `${defaultTypeName}` });
-
+        let args:string[] = [];
         if (!fileName) {
             throw new Error('请验证输入的文件名');
         } else {
@@ -43,8 +43,7 @@ export const showFileNameDialog = async (uri: vscode.Uri, defaultTypeName: strin
            
             const fileNameTokens = fileName.split(' ');
              // 判断文件是否存在
-            [fileName] = fileNameTokens;
-        
+            [fileName,...args] = fileNameTokens;
             if(await searchFiles(rootPath,fileName,resourceType)){
                 return null;
             };
@@ -58,7 +57,8 @@ export const showFileNameDialog = async (uri: vscode.Uri, defaultTypeName: strin
                 fileName,
                 dirName,
                 dirPath,
-                rootPath
+                rootPath,
+                args
             };
 
         }

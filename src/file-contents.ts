@@ -8,6 +8,7 @@ import { ComponentConfig, vuexConfig } from './models/config';
 import { StringUtils } from './string-utils';
 import { Menu } from './enums/menu';
 import { freemem } from 'os';
+import { Validator } from './validator';
 const fsReaddir = promisify(fs.readdir);
 const fsReadFile = promisify(fs.readFile);
 const TEMPLATES_FOLDER = 'templates';
@@ -34,23 +35,25 @@ export class FileContents {
     }));
   }
   // 获得修改后的模板内容
-  public getTemplateContent(templateName: Menu, inputName: string) {
+  public getTemplateContent(templateName: Menu, inputName: string, args: string[]) {
     let result = '';
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
-      result = Template.replace(template, this.textCase(templateName, inputName));
+      result = Template.replace(template, this.textCase(templateName, inputName, args));
     }
     return result;
   }
 
 
-  private textCase(templateName: Menu, inputName: string): {} {
+  private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("vue-ts-files");
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = toTileCase(StringUtils.removeSuffix(templateName));
     let template: string = "";
     let styleLang: string = "";
     let templateLang: string = "";
+    let prefix: string = "";
+    let suffix: string = "";
     switch (resourcesName) {
       case Menu.component:
         const componentConfig: ComponentConfig = config.get("component") as ComponentConfig;
@@ -60,10 +63,10 @@ export class FileContents {
           if (jsonComponentConfig[key]) {
             switch (key) {
               case "prefix":
-                inputName = jsonComponentConfig[key] + "-" + inputName;
+                prefix = jsonComponentConfig[key];
                 break;
               case "suffix":
-                inputName = inputName + "-" + jsonComponentConfig[key];
+                suffix = jsonComponentConfig[key];
                 break;
               case "templates":
                 const t = jsonComponentConfig[key] as Array<string>
@@ -75,7 +78,6 @@ export class FileContents {
                 });
                 break;
               case "styleLang":
-                console.log(styleLang);
                 styleLang = " lang='" + jsonComponentConfig[key] + "'";
                 break;
               case "templateLang":
@@ -83,6 +85,36 @@ export class FileContents {
                 break;
             }
           }
+        }
+        if (args) {
+          args.forEach((value: string, index: number, array: string[]) => {
+            const nextValue = array[index+1];
+            if (value.indexOf("-") == 0) {
+              switch (value) {
+                case "-c" || "-component":
+                  if (!Validator.hasArgs(nextValue)) {
+                    prefix = "";
+                    suffix = "";
+                  }
+                  break;
+                case "-s"||"-suffix":
+                  if (Validator.hasArgs(nextValue)) {
+                    suffix = toUpperCase(nextValue);
+                  } else {
+                    suffix = "";
+                  }
+                  break;
+                case "-p"||"-prefix":
+                  if (Validator.hasArgs(nextValue)) {
+                    prefix = toUpperCase(nextValue);
+                    inputName = toUpperCase(inputName);
+                  } else {
+                    prefix = "";
+                  }
+                  break;
+              }
+            }
+          })
         }
         break;
       case Menu.vuexModule:
@@ -92,7 +124,7 @@ export class FileContents {
           if (jsonVuexConfig[key]) {
             switch (key) {
               case "suffix":
-                inputName = inputName + "-" + jsonVuexConfig[key];
+                suffix = jsonVuexConfig[key];
                 break;
             }
           }
@@ -100,7 +132,7 @@ export class FileContents {
         break;
     }
     // 获取配置信息
-
+    inputName = prefix + (prefix ? "-" : "") + inputName + (suffix ? "-" : "") + suffix;
     return {
       upperName: toUpperCase(inputName),
       hyphensName: toHyphensCase(inputName),
