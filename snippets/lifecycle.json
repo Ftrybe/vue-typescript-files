@@ -1,56 +1,56 @@
 {
     "vue lifecycle:beforeCreate": {
         "prefix": "v-beforeCreate",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "beforeCreate(){$0}\n"
         ]
     },
     "vue lifecycle:created": {
         "prefix": "v-created",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "created(){$0}\n"
         ]
     },
     "vue lifecycle:beforeMount": {
         "prefix": "v-beforeMount",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "beforeMount(){$0}\n"
         ]
     },
     "vue lifecycle:mounted": {
         "prefix": "v-mounted",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "mounted(){$0}\n"
         ]
     },
     "vue lifecycle:beforeUpdate": {
         "prefix": "v-beforeUpdate",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "beforeUpdate(){$0}\n"
         ]
     },
     "vue lifecycle:updated": {
         "prefix": "v-updated",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "updated(){$0}\n"
         ]
     },
     "vue lifecycle:beforeDestroy": {
         "prefix": "v-beforeDestroy",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "beforeDestroy(){$0}\n"
         ]
     },
     "vue lifecycle:destroyed": {
         "prefix": "v-destroyed",
-        "description": "vue lifectcle tips",
+        "description": "vue lifecycle tips",
         "body": [
             "destroyed(){$0}\n"
         ]
