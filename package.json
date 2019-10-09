@@ -1,8 +1,8 @@
 {
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
-	"description": "快速生成vue-ts组件",
-	"version": "1.0.10",
+	"description": "right-click generate vue typescript files",
+	"version": "1.0.11",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -21,7 +21,9 @@
 		"typescript",
 		"vue files",
 		"vue typescript",
-		"vue-typescript"
+		"vue-typescript",
+		"right click",
+		"generate files"
 	],
 	"activationEvents": [
 		"*"
@@ -42,32 +44,32 @@
 				"vue-ts-files.menu.component": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.menu.class": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.menu.enum": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示或隐藏该按钮"
+					"description": "show/hide menu"
 				},
 				"vue-ts-files.component.prefix": {
 					"type": "string",
@@ -167,6 +169,10 @@
 			{
 				"language": "typescript",
 				"path": "./snippets/vuex.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./snippets/lifecycle.json"
 			}
 		]
 	},
