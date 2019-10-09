@@ -14,18 +14,19 @@ More efficient file creation
 
 ### 基本功能
 
-1.添加vue ts组件  
-2.添加vuexmodule  
-3.添加Class  
-4.添加Enum  
-5.添加Interface  
-6.添加Declare  
+1.vue typescript files
+2.vuexmodule  
+3.class  
+4.enum  
+5.interface  
+6.declare  
 7.snippets  
 
 ### snippets说明
 
 ```snippets
-v-init    Vue component init snippet  
+v-init    Vue component init snippet
+v-[lifecycle] vue lifecycle method tips  
 vx-init   Vuex store init snippet  
 vx-module Vuex module snippet  
 ```
