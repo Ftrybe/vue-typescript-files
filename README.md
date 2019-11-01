@@ -1,5 +1,6 @@
 # vue-typescript-file 说明
-
+[csdn连接](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
+  
 用于简单的创建ts组件，看的上的可以自己下载扩展。  
 和vuex-module-decorators搭配使用更加。  
 
@@ -14,7 +15,7 @@ More efficient file creation
 
 ### 基本功能
 
-1.vue typescript files
+1.vue typescript files  
 2.vuexmodule  
 3.class  
 4.enum  
@@ -32,7 +33,6 @@ vx-module Vuex module snippet
 ```
 
 ### 创建组件命令行参数说明
-
 添加组件创建参数
 
 ```options
