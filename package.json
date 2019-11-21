@@ -82,28 +82,29 @@
 					"description": "创建的组件类后缀"
 				},
 				"vue-ts-files.component.templates": {
-					"type":"array",
+					"type": "array",
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
 				},
-				"vue-ts-files.component.styleLang":{
-					"type":"string",
+				"vue-ts-files.component.styleLang": {
+					"type": "string",
 					"default": null,
 					"description": "设置组件中默认使用的css预处理器"
 				},
-				"vue-ts-files.component.templateLang":{
-					"type":"string",
+				"vue-ts-files.component.templateLang": {
+					"type": "string",
 					"default": null,
 					"description": "设置组件的模板引擎"
 				},
-				"vue-ts-files.vuex.suffix":{
-					"type":"string",
+				"vue-ts-files.vuex.suffix": {
+					"type": "string",
 					"default": null,
 					"description": "vuex模块后缀"
 				}
 			}
 		},
-		"commands": [{
+		"commands": [
+			{
 				"command": "extension.addVueComponent",
 				"title": "generate component"
 			},
@@ -129,7 +130,8 @@
 			}
 		],
 		"menus": {
-			"explorer/context": [{
+			"explorer/context": [
+				{
 					"when": "config.vue-ts-files.menu.component",
 					"command": "extension.addVueComponent",
 					"group": "vue ts"
