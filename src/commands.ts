@@ -1,22 +1,24 @@
 import { Menu } from "./enums/menu";
+import Formatting from "./formatting";
 
-// 需要插入的添加的命令列表
-export const CommandList = ():Array<string> =>{
-    let array:Array<string> = new Array();
-    for(const value in Menu){
-        array.push(Menu[value])
-    }
-    return array;
-}
-// 生成一个集合
-export function CommandsMap(){
-    let map:Map<string,any> = new Map<string,any>();
-    for(const value of CommandList()){
-        map.set("extension.addVue"+ value ,
-        {
-            filename: value.toLocaleLowerCase(),
-            resource: value
+export default class Commands{
+    public list(): Array<string>{
+        let array:Array<string> = new Array();
+        Object.values(Menu).forEach(value=>{
+            array.push(value);
         });
+        return array;
     }
-   return map;
+
+    public map(): Map<string,any>{
+        let map:Map<string,any> = new Map<string,any>();
+        for(const value of this.list()){
+            map.set("extension.add"+ Formatting.toUpperCase(value) ,
+            {
+                filename: value.toLocaleLowerCase(),
+                resource: value
+            });
+        }
+       return map;
+    }
 }

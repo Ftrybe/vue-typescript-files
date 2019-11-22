@@ -1,18 +1,19 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import { CommandsMap } from './commands';
-import { showDynamicDialog } from './dialog';
+import * as vscode from "vscode";
+import Commands  from './commands';
+import Dialog  from './dialog';
+export default class Extension{
+	private command:Commands;
+	private dialog: Dialog;
+	constructor(){
+		this.command = new Commands();
+		this.dialog = new Dialog();
+	}
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-	
-	// 注册命令
-	 for(const [key, value] of CommandsMap()) {
-	 	const command = vscode.commands.registerCommand(key, url => showDynamicDialog(url, value.filename, value.resource));
-	 	context.subscriptions.push(command);
-	 }	 
+	public registerCommands(context: vscode.ExtensionContext): void{
+		const commandMap:Map<string,any> = this.command.map();
+		for(const [key, value] of commandMap) {
+			const command = vscode.commands.registerCommand(key, url => this.dialog.showDynamicDialog(url, value.filename, value.resource));
+			context.subscriptions.push(command);
+		}	 
+	}
 }
-// this method is called when your extension is deactivated
-export function deactivate() {}

@@ -1,8 +1,8 @@
 export enum Menu {
-    component = "Component",
-    class = "Class",
-    interface = "Interface",
-    enum = "Enum",
-    vuexModule = "Vuex",
-    declare = "Declare"
+    component = "component",
+    class = "class",
+    interface = "interface",
+    enum = "enum",
+    vuexModule = "vuex",
+    declare = "declare"
 }

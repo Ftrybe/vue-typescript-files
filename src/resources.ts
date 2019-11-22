@@ -1,10 +1,11 @@
-import { CommandList } from './commands';
+import Commands  from './commands';
 import { Menu } from './enums/menu';
 import { FileSuffix } from './enums/file-suffix';
 
 export const getTmplResouces = (name: Menu) => {
   let map: Map<string, any> = new Map<string, any>();
-  for (const value of CommandList()) {
+  const commandMap = new Commands().list();
+  for (const value of commandMap) {
     let suffix = "";
     switch (value) {
       case Menu.component:

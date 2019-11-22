@@ -9,13 +9,14 @@ import { Menu } from "./enums/Menu";
 export class Generator {
   constructor(private readonly fc = new FileContents()) {
   }
- async generateResources(name: Menu, loc: IPath) {
+  
+  async generateResources(name: Menu, loc: IPath) {
     const resource = getTmplResouces(name);
     const files: IFiles[] = resource.files.map((file: any) => {
       const fileName: string = file.name();
       return {
         name: path.join(loc.dirPath, fileName.startsWith('-') ? `${loc.fileName}${fileName}` : `${loc.fileName}.${fileName}`),
-        content:  this.fc.getTemplateContent(file.type, loc.fileName,loc.args),
+        content: this.fc.getTemplateContent(file.type, loc.fileName, loc.args),
       };
     });
     await createFiles(loc, files);

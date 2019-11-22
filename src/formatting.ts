@@ -1,7 +1,19 @@
-export const toCamelCase = (input: string) => input.replace(/-([a-z])/ig, (all, letter) => letter.toUpperCase());
+export default class Formatting {
+    private constructor(){}
 
-export const toTileCase = (input: string) => input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    public static toCamelCase(input: string) {
+        return input.replace(/-([a-z])/ig, (all, letter) => letter.toUpperCase());
+    }
 
-export const toUpperCase = (input: string) => toCamelCase(input.charAt(0).toUpperCase() + input.slice(1));
+    public static toTileCase(input: string) {
+        return input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    }
 
-export const toHyphensCase = (input: string) =>  input.charAt(0).toLowerCase() + input.substr(1).replace(/[A-Z]+/g, txt => "-" + txt).toLowerCase();
+    public static toUpperCase(input: string) {
+        return this.toCamelCase(input.charAt(0).toUpperCase() + input.slice(1));
+    }
+    
+    public static toHyphensCase(input: string) {
+        return input.charAt(0).toLowerCase() + input.substr(1).replace(/[A-Z]+/g, txt => "-" + txt).toLowerCase();
+    }
+}

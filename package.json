@@ -35,7 +35,7 @@
 	"bugs": {
 		"url": "https://github.com/Ftrybe/vue-typescript-files/issues"
 	},
-	"main": "./out/extension.js",
+	"main": "./out/bin/index.js",
 	"contributes": {
 		"configuration": {
 			"type": "object",
@@ -82,81 +82,83 @@
 					"description": "创建的组件类后缀"
 				},
 				"vue-ts-files.component.templates": {
-					"type":"array",
+					"type": "array",
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
 				},
-				"vue-ts-files.component.styleLang":{
-					"type":"string",
+				"vue-ts-files.component.styleLang": {
+					"type": "string",
 					"default": null,
 					"description": "设置组件中默认使用的css预处理器"
 				},
-				"vue-ts-files.component.templateLang":{
-					"type":"string",
+				"vue-ts-files.component.templateLang": {
+					"type": "string",
 					"default": null,
 					"description": "设置组件的模板引擎"
 				},
-				"vue-ts-files.vuex.suffix":{
-					"type":"string",
+				"vue-ts-files.vuex.suffix": {
+					"type": "string",
 					"default": null,
 					"description": "vuex模块后缀"
 				}
 			}
 		},
-		"commands": [{
-				"command": "extension.addVueComponent",
+		"commands": [
+			{
+				"command": "extension.addComponent",
 				"title": "generate component"
 			},
 			{
-				"command": "extension.addVueVuex",
+				"command": "extension.addVuex",
 				"title": "generate vuex module"
 			},
 			{
-				"command": "extension.addVueDeclare",
+				"command": "extension.addDeclare",
 				"title": "generate declare file"
 			},
 			{
-				"command": "extension.addVueClass",
+				"command": "extension.addClass",
 				"title": "generate class"
 			},
 			{
-				"command": "extension.addVueInterface",
+				"command": "extension.addInterface",
 				"title": "generate interface"
 			},
 			{
-				"command": "extension.addVueEnum",
+				"command": "extension.addEnum",
 				"title": "generate enum"
 			}
 		],
 		"menus": {
-			"explorer/context": [{
+			"explorer/context": [
+				{
 					"when": "config.vue-ts-files.menu.component",
-					"command": "extension.addVueComponent",
+					"command": "extension.addComponent",
 					"group": "vue ts"
 				},
 				{
 					"when": "config.vue-ts-files.menu.vuex",
-					"command": "extension.addVueVuex",
+					"command": "extension.addVuex",
 					"group": "vue ts"
 				},
 				{
 					"when": "config.vue-ts-files.menu.declare",
-					"command": "extension.addVueDeclare",
+					"command": "extension.addDeclare",
 					"group": "vue ts"
 				},
 				{
 					"when": "config.vue-ts-files.menu.class",
-					"command": "extension.addVueClass",
+					"command": "extension.addClass",
 					"group": "vue ts basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.interface",
-					"command": "extension.addVueInterface",
+					"command": "extension.addInterface",
 					"group": "vue ts basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.enum",
-					"command": "extension.addVueEnum",
+					"command": "extension.addEnum",
 					"group": "vue ts basics"
 				}
 			]
@@ -177,7 +179,7 @@
 		]
 	},
 	"scripts": {
-		"templates": "copyfiles templates/**/*.tmpl templates/**/*.tmpl ./out/",
+		"templates": "copyfiles templates/**/*.tmpl ./out/",
 		"vscode:prepublish": "npm run templates && tsc -p ./",
 		"compile": "npm run templates watch",
 		"watch": "tsc -watch -p ./",
@@ -193,8 +195,10 @@
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
 		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
+		"typescript": "^3.7.2",
 		"vscode-test": "^1.0.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"handlebars": "^4.5.3"
+	}
 }

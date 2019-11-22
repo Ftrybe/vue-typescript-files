@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { toUpperCase, toHyphensCase, toTileCase } from './formatting';
+import Formatting  from './formatting';
 import { promisify } from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
@@ -48,7 +48,7 @@ export class FileContents {
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("vue-ts-files");
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
-    const resourcesName = toTileCase(StringUtils.removeSuffix(templateName));
+    const resourcesName = Formatting.toTileCase(StringUtils.removeSuffix(templateName));
     let template: string = "";
     let styleLang: string = "";
     let templateLang: string = "";
@@ -88,7 +88,7 @@ export class FileContents {
         }
         if (args) {
           args.forEach((value: string, index: number, array: string[]) => {
-            const nextValue = array[index+1];
+            const nextValue = array[index + 1];
             if (value.indexOf("-") == 0) {
               switch (value) {
                 case "-c" || "-component":
@@ -97,17 +97,17 @@ export class FileContents {
                     suffix = "";
                   }
                   break;
-                case "-s"||"-suffix":
+                case "-s" || "-suffix":
                   if (Validator.hasArgs(nextValue)) {
-                    suffix = toUpperCase(nextValue);
+                    suffix = Formatting.toUpperCase(nextValue);
                   } else {
                     suffix = "";
                   }
                   break;
-                case "-p"||"-prefix":
+                case "-p" || "-prefix":
                   if (Validator.hasArgs(nextValue)) {
-                    prefix = toUpperCase(nextValue);
-                    inputName = toUpperCase(inputName);
+                    prefix = Formatting.toUpperCase(nextValue);
+                    inputName = Formatting.toUpperCase(inputName);
                   } else {
                     prefix = "";
                   }
@@ -134,9 +134,9 @@ export class FileContents {
     // 获取配置信息
     inputName = prefix + (prefix ? "-" : "") + inputName + (suffix ? "-" : "") + suffix;
     return {
-      upperName: toUpperCase(inputName),
-      hyphensName: toHyphensCase(inputName),
-      dynamicName: toUpperCase(inputName),
+      upperName: Formatting.toUpperCase(inputName),
+      hyphensName: Formatting.toHyphensCase(inputName),
+      dynamicName: Formatting.toUpperCase(inputName),
       template: template,
       templateLang: templateLang,
       styleLang: styleLang
