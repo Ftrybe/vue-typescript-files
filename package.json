@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "right-click generate vue typescript files",
-	"version": "1.0.11",
+	"version": "2.0.0",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -26,7 +26,7 @@
 		"generate files"
 	],
 	"activationEvents": [
-		"workspaceContains:${*.vue}"
+		"*"
 	],
 	"repository": {
 		"type": "git",
@@ -104,6 +104,10 @@
 			}
 		},
 		"commands": [
+			{
+				"command": "extension.activeVueFiles",
+				"title": "open vue typescript files"
+			},
 			{
 				"command": "extension.addComponent",
 				"title": "generate component"

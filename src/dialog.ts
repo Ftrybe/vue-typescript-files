@@ -3,11 +3,13 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Generator } from './generator';
 import { Menu } from './enums/Menu';
-import  IOUtil from './ioutil';
+import IOUtil from './ioutil';
+import { IPath } from './models/path';
 
 export default class Dialog {
-    private generator:Generator;
-    constructor(){
+    private generator: Generator;
+
+    constructor() {
         this.generator = new Generator();
     }
 
@@ -48,14 +50,14 @@ export default class Dialog {
                 // 判断文件是否存在
                 [fileName, ...args] = fileNameTokens;
                 if (await IOUtil.searchFiles(rootPath, fileName, resourceType)) {
-                    return null;
+                    return;
                 };
                 const fullPath = path.join(rootPath, fileName);
                 if (fileName.indexOf('\\') !== -1) {
                     [dirName, fileName] = fileName.split('\\');
                 }
                 const dirPath = path.join(rootPath, dirName);
-                return {
+                const result: IPath = {
                     fullPath,
                     fileName,
                     dirName,
@@ -63,6 +65,7 @@ export default class Dialog {
                     rootPath,
                     args
                 };
+                return result;
 
             }
         }

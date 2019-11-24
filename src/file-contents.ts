@@ -4,7 +4,7 @@ import Formatting  from './formatting';
 import  Promisify from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
-import { ComponentConfig, vuexConfig } from './models/config';
+import { ComponentConfig, VuexConfig } from './models/config';
 import { StringUtils } from './string-utils';
 import { Menu } from './enums/menu';
 import { Validator } from './validator';
@@ -14,6 +14,7 @@ export class FileContents {
   private readonly TEMPLATES_FOLDER = 'templates';
   private fsReaddir:any;
   private fsReadFile:any;
+  
   constructor() {
     this.fsReaddir = Promisify.apply(fs.readdir);
     this.fsReadFile = Promisify.apply(fs.readFile);
@@ -25,7 +26,7 @@ export class FileContents {
     this.templatesMap = await this.getTemplates();
   }
   // 获取模板信息
-  private async getTemplates() {
+  private async getTemplates():Promise<Map<string,string>> {
     const templatesPath = path.join(__dirname, this.TEMPLATES_FOLDER);
     const templatesFiles: string[] = await this.fsReaddir(templatesPath, 'utf-8');
     const templatesFilesPromises = templatesFiles.map(t => this.fsReadFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
@@ -43,7 +44,6 @@ export class FileContents {
     }
     return result;
   }
-
 
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("vue-ts-files");
@@ -118,7 +118,7 @@ export class FileContents {
         }
         break;
       case Menu.vuexModule:
-        const vuexConfig: vuexConfig = config.get("vuex") as vuexConfig;
+        const vuexConfig: VuexConfig = config.get("vuex") as VuexConfig;
         const jsonVuexConfig = JSON.parse(JSON.stringify(vuexConfig));
         for (let key in jsonVuexConfig) {
           if (jsonVuexConfig[key]) {

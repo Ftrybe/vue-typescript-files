@@ -8,7 +8,7 @@ import { FileSuffix } from './enums/file-suffix';
 
 export default class IOUtil {
   private constructor(){}
-  public static async createFiles(loc: IPath, files: IFiles[]) {
+  public static async createFiles(loc: IPath, files: IFiles[]):Promise<string> {
     try {
       await this.writeFiles(files);
     } catch (ex) {
@@ -37,6 +37,7 @@ export default class IOUtil {
         break;
       default:
         suffix = FileSuffix.ts;
+        break;
     }
     const longFilename = fileName + "." + suffix;
     fs.readdirSync(folderDir).forEach(file => {
