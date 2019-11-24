@@ -39,47 +39,47 @@
 	"contributes": {
 		"configuration": {
 			"type": "object",
-			"title": "Vue-ts-files",
+			"title": "Vue-typescript-files",
 			"properties": {
 				"vue-ts-files.menu.component": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate component file button."
 				},
 				"vue-ts-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate vuex sub module file button."
 				},
 				"vue-ts-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate common declare file button."
 				},
 				"vue-ts-files.menu.class": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate class file button."
 				},
 				"vue-ts-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate interface file button."
 				},
 				"vue-ts-files.menu.enum": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide menu"
+					"description": "show/hide generate enum file button."
 				},
 				"vue-ts-files.component.prefix": {
 					"type": "string",
 					"default": null,
-					"description": "创建的组件类前缀"
+					"description": "set prefix in file"
 				},
 				"vue-ts-files.component.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "创建的组件类后缀"
+					"description": "set suffix in file"
 				},
 				"vue-ts-files.component.templates": {
 					"type": "array",
@@ -99,15 +99,11 @@
 				"vue-ts-files.vuex.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "vuex模块后缀"
+					"description": "set suffix in vuex module file"
 				}
 			}
 		},
 		"commands": [
-			{
-				"command": "extension.activeVueFiles",
-				"title": "open vue typescript files"
-			},
 			{
 				"command": "extension.addComponent",
 				"title": "generate component"
@@ -138,32 +134,32 @@
 				{
 					"when": "config.vue-ts-files.menu.component",
 					"command": "extension.addComponent",
-					"group": "vue ts"
+					"group": "typescript support"
 				},
 				{
 					"when": "config.vue-ts-files.menu.vuex",
 					"command": "extension.addVuex",
-					"group": "vue ts"
+					"group": "typescript support"
 				},
 				{
 					"when": "config.vue-ts-files.menu.declare",
 					"command": "extension.addDeclare",
-					"group": "vue ts"
+					"group": "typescript support"
 				},
 				{
 					"when": "config.vue-ts-files.menu.class",
 					"command": "extension.addClass",
-					"group": "vue ts basics"
+					"group": "typescript support basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.interface",
 					"command": "extension.addInterface",
-					"group": "vue ts basics"
+					"group": "typescript support basics"
 				},
 				{
 					"when": "config.vue-ts-files.menu.enum",
 					"command": "extension.addEnum",
-					"group": "vue ts basics"
+					"group": "typescript support basics"
 				}
 			]
 		},

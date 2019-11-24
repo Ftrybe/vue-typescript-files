@@ -1,9 +1,7 @@
 # vue-typescript-file 说明
+
 [csdn连接](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
   
-用于简单的创建ts组件，看的上的可以自己下载扩展。  
-和vuex-module-decorators搭配使用更加。  
-
 More efficient file creation  
 `npm install vuex-module-decorators`
 
@@ -33,6 +31,7 @@ vx-module Vuex module snippet
 ```
 
 ### 创建组件命令行参数说明
+
 添加组件创建参数
 
 ```options
@@ -61,11 +60,3 @@ vx-module Vuex module snippet
         "</v-ons-page>"
     ]
 ```
-
------------------------------------------------------------------------------------------------------------
-
-## 自定义
-
-需要自己添加组件的请修改枚举类`menu`，以首字母大写的命名方式添加需要的组件，并在`templates`文件夹下添加相应的模板文件  
-需要扩展变量的请修改`file-contents.ts`文件下的`textCase()`方法，修改或添加需要的信息  
-对于添加的组件有特殊后缀要求的~请修改`resources.ts`文件  
