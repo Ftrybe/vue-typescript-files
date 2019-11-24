@@ -3,7 +3,7 @@ import { FileContents } from "./file-contents";
 import { IFiles } from "./models/file";
 import * as path from 'path';
 import { getTmplResouces } from "./resources";
-import { createFiles } from "./ioutil";
+import IOUtil  from "./ioutil";
 import { Menu } from "./enums/Menu";
 
 export class Generator {
@@ -19,7 +19,7 @@ export class Generator {
         content: this.fc.getTemplateContent(file.type, loc.fileName, loc.args),
       };
     });
-    await createFiles(loc, files);
+    await IOUtil.createFiles(loc, files);
     this.fc.focusFiles(files[0].name);
   }
 }

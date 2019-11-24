@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { Generator } from './generator';
 import { Menu } from './enums/Menu';
-import { searchFiles } from './ioutil';
+import  IOUtil from './ioutil';
 
 export default class Dialog {
     private generator:Generator;
@@ -12,7 +12,6 @@ export default class Dialog {
     }
 
     public async showDynamicDialog(uri: vscode.Uri, fileName: string, ResourceType: Menu) {
-        console.log(this.generator);
         const loc = await this.showFileNameDialog(uri, fileName, ResourceType);
         if (loc) {
             await this.generator.generateResources(ResourceType, loc);
@@ -48,7 +47,7 @@ export default class Dialog {
                 const fileNameTokens = fileName.split(' ');
                 // 判断文件是否存在
                 [fileName, ...args] = fileNameTokens;
-                if (await searchFiles(rootPath, fileName, resourceType)) {
+                if (await IOUtil.searchFiles(rootPath, fileName, resourceType)) {
                     return null;
                 };
                 const fullPath = path.join(rootPath, fileName);

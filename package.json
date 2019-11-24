@@ -26,7 +26,7 @@
 		"generate files"
 	],
 	"activationEvents": [
-		"*"
+		"workspaceContains:${*.vue}"
 	],
 	"repository": {
 		"type": "git",

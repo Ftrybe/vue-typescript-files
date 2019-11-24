@@ -10,6 +10,7 @@ export default class Extension{
 	}
 
 	public registerCommands(context: vscode.ExtensionContext): void{
+		console.log(vscode.ConfigurationTarget);
 		const commandMap:Map<string,any> = this.command.map();
 		for(const [key, value] of commandMap) {
 			const command = vscode.commands.registerCommand(key, url => this.dialog.showDynamicDialog(url, value.filename, value.resource));

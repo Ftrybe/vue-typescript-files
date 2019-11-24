@@ -1,22 +1,22 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import Formatting  from './formatting';
-import { promisify } from './promisify';
+import  Promisify from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
 import { ComponentConfig, vuexConfig } from './models/config';
 import { StringUtils } from './string-utils';
 import { Menu } from './enums/menu';
-import { freemem } from 'os';
 import { Validator } from './validator';
-const fsReaddir = promisify(fs.readdir);
-const fsReadFile = promisify(fs.readFile);
-const TEMPLATES_FOLDER = 'templates';
 
 export class FileContents {
   private templatesMap: Map<string, string>;
-
+  private readonly TEMPLATES_FOLDER = 'templates';
+  private fsReaddir:any;
+  private fsReadFile:any;
   constructor() {
+    this.fsReaddir = Promisify.apply(fs.readdir);
+    this.fsReadFile = Promisify.apply(fs.readFile);
     this.templatesMap = new Map<string, string>();
     this.loadTemplates();
   }
@@ -26,9 +26,9 @@ export class FileContents {
   }
   // 获取模板信息
   private async getTemplates() {
-    const templatesPath = path.join(__dirname, TEMPLATES_FOLDER);
-    const templatesFiles: string[] = await fsReaddir(templatesPath, 'utf-8');
-    const templatesFilesPromises = templatesFiles.map(t => fsReadFile(path.join(__dirname, TEMPLATES_FOLDER, t), 'utf8').then(data => [t, data]));
+    const templatesPath = path.join(__dirname, this.TEMPLATES_FOLDER);
+    const templatesFiles: string[] = await this.fsReaddir(templatesPath, 'utf-8');
+    const templatesFilesPromises = templatesFiles.map(t => this.fsReadFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
     const templates = await Promise.all(templatesFilesPromises);
     return new Map(templates.map(x => {
       return x as [string, string]
