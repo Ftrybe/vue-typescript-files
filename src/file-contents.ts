@@ -4,8 +4,6 @@ import Formatting from './formatting';
 import Promisify from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
-import { ComponentConfig } from './models/component-config';
-import { VuexConfig } from './models/vuex-config';
 import { StringUtils } from './string-utils';
 import { Menu } from './enums/menu';
 import { Validator } from './validator';
@@ -22,7 +20,7 @@ export class FileContents {
     this.fsReaddir = Promisify.apply(fs.readdir);
     this.fsReadFile = Promisify.apply(fs.readFile);
     this.templatesMap = new Map<string, string>();
-    this.config = vscode.workspace.getConfiguration("vue-ts-files");
+    this.config = vscode.workspace.getConfiguration("vue-typescript-files");
     this.loadTemplates();
   }
 
@@ -44,19 +42,21 @@ export class FileContents {
     let result = '';
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
-      result = Template.replace(template, this.textCase(templateName, inputName, args));
+      const text = this.textCase(templateName, inputName, args);
+      result = Template.noEscape(template, text);
     }
     return result;
   }
 
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
-    let config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("vue-ts-files");
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
-    const resourcesName = Formatting.toTileCase(StringUtils.removeSuffix(templateName));
+    const resourcesName = StringUtils.removeSuffix(templateName).toLocaleLowerCase();
+
     let fileConfig: FileConfig = new FileConfig();
+
     switch (resourcesName) {
       case Menu.component:
-        fileConfig = this.parseConfig("component", (key: string, jsonKey: any) => {
+        this.parseConfig("component", async (key: string, jsonKey: any) => {
           switch (key) {
             case "prefix":
               fileConfig.suffix = jsonKey;
@@ -66,6 +66,7 @@ export class FileContents {
               break;
             case "templates":
               const array = jsonKey as Array<string>
+              fileConfig.templates = "\t";
               array.map((value: string, index: number, array: string[]) => {
                 fileConfig.templates += value;
                 if (index < array.length - 1) {
@@ -114,7 +115,7 @@ export class FileContents {
         break;
       case Menu.vuexModule:
 
-        fileConfig = this.parseConfig("vuex", (key: string, jsonKey: any) => {
+        this.parseConfig("vuex", (key: string, jsonKey: any) => {
           switch (key) {
             case "suffix":
               fileConfig.suffix = jsonKey;
@@ -139,10 +140,9 @@ export class FileContents {
     vscode.window.showTextDocument(vscode.Uri.file(fileName));
   }
 
-  private parseConfig(configName: string, switchExtend?: any): FileConfig {
+  private parseConfig(configName: string, switchExtend?: any) {
     const workspaceConfig = this.config.get(configName);
     const jsonConfig = JSON.parse(JSON.stringify(workspaceConfig));
-    const fileConfig: FileConfig = new FileConfig();
 
     for (let key in jsonConfig) {
       if (jsonConfig[key]) {
@@ -152,6 +152,5 @@ export class FileContents {
         }
       }
     }
-    return fileConfig;
   }
 }

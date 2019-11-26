@@ -41,62 +41,62 @@
 			"type": "object",
 			"title": "Vue-typescript-files",
 			"properties": {
-				"vue-ts-files.menu.component": {
+				"vue-typescript-files.menu.component": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate component file button."
 				},
-				"vue-ts-files.menu.vuex": {
+				"vue-typescript-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate vuex sub module file button."
 				},
-				"vue-ts-files.menu.declare": {
+				"vue-typescript-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate common declare file button."
 				},
-				"vue-ts-files.menu.class": {
+				"vue-typescript-files.menu.class": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate class file button."
 				},
-				"vue-ts-files.menu.interface": {
+				"vue-typescript-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate interface file button."
 				},
-				"vue-ts-files.menu.enum": {
+				"vue-typescript-files.menu.enum": {
 					"type": "boolean",
 					"default": true,
 					"description": "show/hide generate enum file button."
 				},
-				"vue-ts-files.component.prefix": {
+				"vue-typescript-files.component.prefix": {
 					"type": "string",
 					"default": null,
-					"description": "set prefix in file"
+					"description": "set prefix in component file"
 				},
-				"vue-ts-files.component.suffix": {
+				"vue-typescript-files.component.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "set suffix in file"
+					"description": "set suffix in component file"
 				},
-				"vue-ts-files.component.templates": {
+				"vue-typescript-files.component.templates": {
 					"type": "array",
 					"default": null,
 					"description": "向组件模板中添加自定义标签"
 				},
-				"vue-ts-files.component.styleLang": {
+				"vue-typescript-files.component.styleLang": {
 					"type": "string",
 					"default": null,
 					"description": "设置组件中默认使用的css预处理器"
 				},
-				"vue-ts-files.component.templateLang": {
+				"vue-typescript-files.component.templateLang": {
 					"type": "string",
 					"default": null,
 					"description": "设置组件的模板引擎"
 				},
-				"vue-ts-files.vuex.suffix": {
+				"vue-typescript-files.vuex.suffix": {
 					"type": "string",
 					"default": null,
 					"description": "set suffix in vuex module file"
@@ -132,32 +132,32 @@
 		"menus": {
 			"explorer/context": [
 				{
-					"when": "config.vue-ts-files.menu.component",
+					"when": "config.vue-typescript-files.menu.component",
 					"command": "extension.addComponent",
 					"group": "typescript support"
 				},
 				{
-					"when": "config.vue-ts-files.menu.vuex",
+					"when": "config.vue-typescript-files.menu.vuex",
 					"command": "extension.addVuex",
 					"group": "typescript support"
 				},
 				{
-					"when": "config.vue-ts-files.menu.declare",
+					"when": "config.vue-typescript-files.menu.declare",
 					"command": "extension.addDeclare",
 					"group": "typescript support"
 				},
 				{
-					"when": "config.vue-ts-files.menu.class",
+					"when": "config.vue-typescript-files.menu.class",
 					"command": "extension.addClass",
 					"group": "typescript support basics"
 				},
 				{
-					"when": "config.vue-ts-files.menu.interface",
+					"when": "config.vue-typescript-files.menu.interface",
 					"command": "extension.addInterface",
 					"group": "typescript support basics"
 				},
 				{
-					"when": "config.vue-ts-files.menu.enum",
+					"when": "config.vue-typescript-files.menu.enum",
 					"command": "extension.addEnum",
 					"group": "typescript support basics"
 				}
