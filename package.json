@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "right-click generate vue typescript files",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -202,10 +202,10 @@
 		"mocha": "^6.1.4",
 		"tslint": "^5.12.1",
 		"typescript": "^3.7.2",
-		"fs-extra": "^8.1.0",
 		"vscode-test": "^1.0.2"
 	},
 	"dependencies": {
-		"handlebars": "^4.5.3"
+		"handlebars": "^4.5.3",
+		"fs-extra": "^8.1.0"
 	}
 }
