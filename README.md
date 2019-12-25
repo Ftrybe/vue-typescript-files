@@ -1,11 +1,13 @@
 # vue-typescript-file 说明
 
-[csdn连接](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
+## Detailed instructions  
+
+[csdn](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
   
 More efficient file creation  
-`npm install vuex-module-decorators`
+`npm install vuex-module-decorators`  
 
-## 预览
+## 预览  
 
 ![image](/images/create-component.gif)
 
@@ -49,7 +51,7 @@ vx-module Vuex module snippet
 需要添加全局组件前后缀请选择  
 
 ```extends
-文件 => 首选项 => 设置 => 扩展 => vue-ts-files
+文件 => 首选项 => 设置 => 扩展 => vue-typescript-files
 ```
 
 添加组件自定义标签模板，请在settings.json编辑类似如下代码

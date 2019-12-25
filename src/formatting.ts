@@ -1,5 +1,5 @@
 export default class Formatting {
-    private constructor(){}
+    private constructor() { }
 
     public static toCamelCase(input: string) {
         return input.replace(/-([a-z])/ig, (all, letter) => letter.toUpperCase());
@@ -12,8 +12,12 @@ export default class Formatting {
     public static toUpperCase(input: string) {
         return this.toCamelCase(input.charAt(0).toUpperCase() + input.slice(1));
     }
-    
+
     public static toHyphensCase(input: string) {
         return input.charAt(0).toLowerCase() + input.substr(1).replace(/[A-Z]+/g, txt => "-" + txt).toLowerCase();
+    }
+
+    public static toCamelCaseWithSpot(input:string){
+        return input.replace(".","-");
     }
 }

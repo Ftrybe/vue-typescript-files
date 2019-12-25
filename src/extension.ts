@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import Commands  from './commands';
-import Dialog  from './dialog';
+import Commands from './commands';
+import Dialog from './dialog';
 export default class Extension{
 	private command:Commands;
 	private dialog: Dialog;

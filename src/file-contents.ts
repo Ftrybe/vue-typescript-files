@@ -1,10 +1,9 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import Formatting from './formatting';
-import Promisify from './promisify';
 import { Template } from './template';
 import * as vscode from 'vscode';
-import { StringUtils } from './string-utils';
+import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
 import { Validator } from './validator';
 import { FileConfig } from './models/file-config';
@@ -12,15 +11,14 @@ import { FileConfig } from './models/file-config';
 export class FileContents {
   private templatesMap: Map<string, string>;
   private readonly TEMPLATES_FOLDER = 'templates';
+  private readonly OLD_CONFIG_NAME = 'vue-ts-files';
+  private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
   private config: vscode.WorkspaceConfiguration;
-  private fsReaddir: any;
-  private fsReadFile: any;
 
   constructor() {
-    this.fsReaddir = Promisify.apply(fs.readdir);
-    this.fsReadFile = Promisify.apply(fs.readFile);
     this.templatesMap = new Map<string, string>();
-    this.config = vscode.workspace.getConfiguration("vue-typescript-files");
+    const workspaceConfig = vscode.workspace.getConfiguration(this.NEW_CONFIG_NAME);
+    this.config = vscode.workspace.getConfiguration().has(this.OLD_CONFIG_NAME)?vscode.workspace.getConfiguration(this.OLD_CONFIG_NAME):workspaceConfig;
     this.loadTemplates();
   }
 
@@ -30,8 +28,8 @@ export class FileContents {
   // 获取模板信息
   private async getTemplates(): Promise<Map<string, string>> {
     const templatesPath = path.join(__dirname, this.TEMPLATES_FOLDER);
-    const templatesFiles: string[] = await this.fsReaddir(templatesPath, 'utf-8');
-    const templatesFilesPromises = templatesFiles.map(t => this.fsReadFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
+    const templatesFiles: string[] = await fs.readdir(templatesPath);
+    const templatesFilesPromises = templatesFiles.map(t => fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
     const templates = await Promise.all(templatesFilesPromises);
     return new Map(templates.map(x => {
       return x as [string, string]
@@ -50,7 +48,7 @@ export class FileContents {
 
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
-    const resourcesName = StringUtils.removeSuffix(templateName).toLocaleLowerCase();
+    const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
 
     let fileConfig: FileConfig = new FileConfig();
 
@@ -59,7 +57,7 @@ export class FileContents {
         this.parseConfig("component", async (key: string, jsonKey: any) => {
           switch (key) {
             case "prefix":
-              fileConfig.suffix = jsonKey;
+              fileConfig.prefix = jsonKey;
               break;
             case "suffix":
               fileConfig.suffix = jsonKey;
@@ -124,6 +122,9 @@ export class FileContents {
         })
         break;
     }
+    if(this.parseConfig("file").spotStyleName){
+      inputName = Formatting.toCamelCaseWithSpot(inputName);
+    }
     // 获取配置信息
     inputName = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + inputName + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
     return {
@@ -135,22 +136,20 @@ export class FileContents {
       styleLang: fileConfig.styleLang
     }
   }
-  // 焦点打新建的文件
-  public focusFiles(fileName: string) {
-    vscode.window.showTextDocument(vscode.Uri.file(fileName));
-  }
-
+  // 焦点打新建的文
   private parseConfig(configName: string, switchExtend?: any) {
-    const workspaceConfig = this.config.get(configName);
-    const jsonConfig = JSON.parse(JSON.stringify(workspaceConfig));
 
+    const plusConfig = this.config.get(configName);
+    
+    const jsonConfig = JSON.parse(JSON.stringify(plusConfig));
+    if (switchExtend) {
     for (let key in jsonConfig) {
       if (jsonConfig[key]) {
         const jsonKey = jsonConfig[key];
-        if (switchExtend) {
           switchExtend(key, jsonKey);
         }
       }
     }
+    return jsonConfig;
   }
 }

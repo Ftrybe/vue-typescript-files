@@ -1,17 +1,18 @@
-import { IPath } from "./models/path";
-import { FileContents } from "./file-contents";
-import { IFiles } from "./models/file";
 import * as path from 'path';
-import { getTmplResouces } from "./resources";
-import IOUtil from "./ioutil";
 import { Menu } from "./enums/Menu";
+import { FileContents } from "./file-contents";
+import IOUtil from "./ioutil";
+import { IFiles } from "./models/file";
+import { IPath } from "./models/path";
+import  {Resources} from "./resources";
+import * as vscode from "vscode";
 
 export class Generator {
   constructor(private readonly fc = new FileContents()) {
   }
 
   public async generateResources(name: Menu, loc: IPath) {
-    const resource = getTmplResouces(name);
+    const resource =  Resources.getTmplResources(name);
     const files: IFiles[] = resource.files.map((file: any) => {
       const fileName: string = file.name();
       return {
@@ -20,6 +21,9 @@ export class Generator {
       };
     });
     await IOUtil.createFiles(loc, files);
-    this.fc.focusFiles(files[0].name);
+    this.focusFiles(files[0].name);
+  }
+  private focusFiles(fileName: string) {
+    vscode.window.showTextDocument(vscode.Uri.file(fileName));
   }
 }

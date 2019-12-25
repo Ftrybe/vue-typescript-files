@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "right-click generate vue typescript files",
-	"version": "2.0.0",
+	"version": "1.1.0",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -100,6 +100,11 @@
 					"type": "string",
 					"default": null,
 					"description": "set suffix in vuex module file"
+				},
+				"vue-typescript-files.file.spotStyleName": {
+					"type": "boolean",
+					"default": true,
+					"description": "create test.service.ts => class name of TestService"
 				}
 			}
 		},
@@ -187,6 +192,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
+		"@types/fs-extra": "^8.0.1",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
@@ -196,6 +202,7 @@
 		"mocha": "^6.1.4",
 		"tslint": "^5.12.1",
 		"typescript": "^3.7.2",
+		"fs-extra": "^8.1.0",
 		"vscode-test": "^1.0.2"
 	},
 	"dependencies": {

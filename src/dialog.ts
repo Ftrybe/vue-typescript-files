@@ -1,8 +1,8 @@
-import * as vscode from 'vscode';
+import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as fs from 'fs';
-import { Generator } from './generator';
+import * as vscode from 'vscode';
 import { Menu } from './enums/Menu';
+import { Generator } from './generator';
 import IOUtil from './ioutil';
 import { IPath } from './models/path';
 
@@ -49,14 +49,15 @@ export default class Dialog {
                 const fileNameTokens = fileName.split(' ');
                 // 判断文件是否存在
                 [fileName, ...args] = fileNameTokens;
-                if (await IOUtil.searchFiles(rootPath, fileName, resourceType)) {
+
+                const fullPath = path.join(rootPath, fileName);
+                const realPath = path.parse(fileName);
+                dirName = realPath.dir;
+                fileName = realPath.base;
+                const dirPath = path.join(rootPath, dirName);
+                if (await IOUtil.searchFiles(dirPath, fileName, resourceType)) {
                     return;
                 };
-                const fullPath = path.join(rootPath, fileName);
-                if (fileName.indexOf('\\') !== -1) {
-                    [dirName, fileName] = fileName.split('\\');
-                }
-                const dirPath = path.join(rootPath, dirName);
                 const result: IPath = {
                     fullPath,
                     fileName,
@@ -66,7 +67,6 @@ export default class Dialog {
                     args
                 };
                 return result;
-
             }
         }
     }
