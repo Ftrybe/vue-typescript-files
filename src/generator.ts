@@ -4,15 +4,16 @@ import { FileContents } from "./file-contents";
 import IOUtil from "./ioutil";
 import { IFiles } from "./models/file";
 import { IPath } from "./models/path";
-import  {Resources} from "./resources";
 import * as vscode from "vscode";
+import { FileNameUtils } from './file-name.utils';
+import Commands from './commands';
 
 export class Generator {
   constructor(private readonly fc = new FileContents()) {
   }
 
   public async generateResources(name: Menu, loc: IPath) {
-    const resource =  Resources.getTmplResources(name);
+    const resource =  this.getTmplResources(name);
     const files: IFiles[] = resource.files.map((file: any) => {
       const fileName: string = file.name();
       return {
@@ -25,5 +26,25 @@ export class Generator {
   }
   private focusFiles(fileName: string) {
     vscode.window.showTextDocument(vscode.Uri.file(fileName));
+  }
+
+  private  getTmplResources(name:Menu){
+    let map: Map<string, any> = new Map<string, any>();
+    const commandMap = new Commands().list();
+    for (const value of commandMap) {
+      let suffix = FileNameUtils.getSuffix(value);
+      map.set(
+        value,
+        {
+          files: [
+            {
+              name: () => suffix,
+              type: value.toLocaleLowerCase() + ".tmpl"
+            }
+          ]
+        }
+      );
+    }
+    return map.get(name);
   }
 }
