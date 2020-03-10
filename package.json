@@ -1,8 +1,8 @@
 {
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
-	"description": "right-click generate vue typescript files",
-	"version": "1.1.1",
+	"description": "在右击菜单中添加创建vue模版按钮",
+	"version": "1.1.2",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -44,42 +44,42 @@
 				"vue-typescript-files.menu.component": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate component file button."
+					"description": "显示/隐藏添加组件按钮"
 				},
 				"vue-typescript-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate vuex sub module file button."
+					"description": "显示/隐藏添加vuex子模块按钮"
 				},
 				"vue-typescript-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate common declare file button."
+					"description": "显示/隐藏添加通用全局声明按钮"
 				},
 				"vue-typescript-files.menu.class": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate class file button."
+					"description": "显示/隐藏添加基础类按钮"
 				},
 				"vue-typescript-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate interface file button."
+					"description": "显示/隐藏添加接口按钮"
 				},
 				"vue-typescript-files.menu.enum": {
 					"type": "boolean",
 					"default": true,
-					"description": "show/hide generate enum file button."
+					"description": "显示/隐藏添加枚举类按钮"
 				},
 				"vue-typescript-files.component.prefix": {
 					"type": "string",
 					"default": null,
-					"description": "set prefix in component file"
+					"description": "设置组件前缀名（不会改变文件名，只会在组件类名中添加）"
 				},
 				"vue-typescript-files.component.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "set suffix in component file"
+					"description": "设置组件后缀名（不会改变文件名，只会在组件类名中添加）"
 				},
 				"vue-typescript-files.component.templates": {
 					"type": "array",
@@ -94,17 +94,17 @@
 				"vue-typescript-files.component.templateLang": {
 					"type": "string",
 					"default": null,
-					"description": "设置组件的模板引擎"
+					"description": "设置组件的使用的模板引擎类型"
 				},
 				"vue-typescript-files.vuex.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "set suffix in vuex module file"
+					"description": "设置vuex子模块后缀名（不会改变文件名，只会在类名中添加）"
 				},
 				"vue-typescript-files.file.spotStyleName": {
 					"type": "boolean",
 					"default": true,
-					"description": "create test.service.ts => class name of TestService"
+					"description": "是否使用.（点）分隔创建的类，开启，则a.b创建的类名为AB（只支持分隔一次）"
 				}
 			}
 		},

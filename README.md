@@ -1,10 +1,10 @@
 # vue-typescript-file 说明
 
-## Detailed instructions  
+## 详细功能介绍 
 
-[csdn](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
+较为详细的功能介绍和动图演示，请点击[csdn](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
   
-More efficient file creation  
+使用vuex子模块创建按钮时，请先安装vuex-module-decorators库。
 `npm install vuex-module-decorators`  
 
 ## 预览  
@@ -15,21 +15,21 @@ More efficient file creation
 
 ### 基本功能
 
-1.vue typescript files  
-2.vuexmodule  
-3.class  
-4.enum  
-5.interface  
-6.declare  
+1.添加vue typescript组件
+2.添加vuex module子模块（请手动添加stroe目录，并在以下创建index.ts文件和modules目录）
+3.添加空的class文件
+4.添加空的enum文件 
+5.添加空的interface文件 
+6.添加全局的组件声明文件
 7.snippets  
 
 ### snippets说明
 
 ```snippets
-v-init    Vue component init snippet
-v-[lifecycle] vue lifecycle method tips  
-vx-init   Vuex store init snippet  
-vx-module Vuex module snippet  
+v-init    在空的vue文件中生成vue typescript模版
+v-[lifecycle] vue生命周期方法代码提示
+vx-init   生成vuex index文件模版  
+vx-module 生成vuex 子模块模版  
 ```
 
 ### 创建组件命令行参数说明
@@ -54,11 +54,13 @@ vx-module Vuex module snippet
 文件 => 首选项 => 设置 => 扩展 => vue-typescript-files
 ```
 
-添加组件自定义标签模板，请在settings.json编辑类似如下代码
+添加组件自定义标签模板，请在settings.json编辑类似如下代码，需要制表符\t\n请直接插入
 
 ```templates
-"vue-ts-files.component.templates": [
+"vue-typescript-files.component.templates": [
         "<v-ons-page>",
+        "\t<test>",
+        "\t</test>",
         "</v-ons-page>"
     ]
 ```
