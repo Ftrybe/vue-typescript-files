@@ -122,7 +122,7 @@ export class FileContents {
         })
         break;
     }
-    if(this.parseConfig("file").spotStyleName){
+    if(this.parseConfig("file")?.spotStyleName){
       inputName = Formatting.toCamelCaseWithSpot(inputName);
     }
     // 获取配置信息
@@ -140,7 +140,9 @@ export class FileContents {
   private parseConfig(configName: string, switchExtend?: any) {
 
     const plusConfig = this.config.get(configName);
-    
+    if(!plusConfig){
+      return null;
+    }
     const jsonConfig = JSON.parse(JSON.stringify(plusConfig));
     if (switchExtend) {
     for (let key in jsonConfig) {
