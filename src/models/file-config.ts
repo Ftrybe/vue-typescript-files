@@ -4,4 +4,5 @@ export class FileConfig {
     templates: string = "";
     styleLang: string = "";
     templateLang: string = "";
+    exportModule: Boolean = false;
 }

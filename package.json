@@ -101,6 +101,11 @@
 					"default": null,
 					"description": "设置vuex子模块后缀名（不会改变文件名，只会在类名中添加）"
 				},
+				"vue-typescript-files.vuex.exportModule": {
+					"type": "boolean",
+					"default": false,
+					"description": "设置以模块或者类方式导出（默认为类方式，调用时需要使用getModule(ModuleName)）"
+				},
 				"vue-typescript-files.file.spotStyleName": {
 					"type": "boolean",
 					"default": true,

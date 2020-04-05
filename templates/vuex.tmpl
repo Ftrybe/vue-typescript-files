@@ -1,10 +1,11 @@
-import { VuexModule, Module } from 'vuex-module-decorators';
+import { VuexModule, Module, {{#if exportModule}}getModule{{/if}} } from 'vuex-module-decorators';
 import store from '../index';
 @Module({
     dynamic: true,
     name: '{{dynamicName}}',
     store
 })
-export default class {{dynamicName}} extends VuexModule {
+{{#if exportModule}}{{else}}export default {{/if~}}class {{#if exportModule}}{{fileName}}{{else}}{{dynamicName}}{{/if}} extends VuexModule {
    
 }
+{{#if exportModule~}}export const {{dynamicName}} = getModule({{fileName}})

@@ -49,7 +49,7 @@ export class FileContents {
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
-
+    let className = inputName;
     let fileConfig: FileConfig = new FileConfig();
 
     switch (resourcesName) {
@@ -101,7 +101,7 @@ export class FileContents {
                 case "-p" || "-prefix":
                   if (Validator.hasArgs(nextValue)) {
                     fileConfig.prefix = Formatting.toUpperCase(nextValue);
-                    inputName = Formatting.toUpperCase(inputName);
+                    className = Formatting.toUpperCase(className);
                   } else {
                     fileConfig.prefix = "";
                   }
@@ -112,28 +112,32 @@ export class FileContents {
         }
         break;
       case Menu.vuexModule:
-
         this.parseConfig("vuex", (key: string, jsonKey: any) => {
           switch (key) {
             case "suffix":
               fileConfig.suffix = jsonKey;
+              break;
+            case "exportModule":
+              fileConfig.exportModule = jsonKey;
               break;
           }
         })
         break;
     }
     if(this.parseConfig("file")?.spotStyleName){
-      inputName = Formatting.toCamelCaseWithSpot(inputName);
+      className = Formatting.toCamelCaseWithSpot(className);
     }
     // 获取配置信息
-    inputName = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + inputName + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
+    className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
     return {
-      upperName: Formatting.toUpperCase(inputName),
-      hyphensName: Formatting.toHyphensCase(inputName),
-      dynamicName: Formatting.toUpperCase(inputName),
+      upperName: Formatting.toUpperCase(className),
+      hyphensName: Formatting.toHyphensCase(className),
+      dynamicName: Formatting.toUpperCase(className),
+      fileName: Formatting.toUpperCase(inputName),
       template: fileConfig.templates,
       templateLang: fileConfig.templateLang,
-      styleLang: fileConfig.styleLang
+      styleLang: fileConfig.styleLang,
+      exportModule: fileConfig.exportModule
     }
   }
   // 焦点打新建的文
