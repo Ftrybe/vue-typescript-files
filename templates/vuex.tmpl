@@ -8,4 +8,4 @@ import store from '../index';
 {{#if exportModule}}{{else}}export default {{/if~}}class {{#if exportModule}}{{fileName}}{{else}}{{dynamicName}}{{/if}} extends VuexModule {
    
 }
-{{#if exportModule~}}export const {{dynamicName}} = getModule({{fileName}})
+{{#if exportModule~}}export const {{dynamicName}} = getModule({{fileName}});{{/if}}
