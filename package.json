@@ -1,15 +1,15 @@
 {
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
-	"description": "在右击菜单中添加创建vue模版按钮",
-	"version": "1.1.6",
+	"description": "更方便的创建vue typescript组件，只需要右击文件夹，减少snippets的使用",
+	"version": "1.1.8",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
 		"name": "cb Fan"
 	},
 	"engines": {
-		"vscode": "^1.37.0"
+		"vscode": "^1.43.0"
 	},
 	"categories": [
 		"Other",
@@ -55,6 +55,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "显示/隐藏添加通用全局声明按钮"
+				},
+				"vue-typescript-files.menu.directive": {
+					"type": "boolean",
+					"default": true,
+					"description": "显示/隐藏添加指令按钮"
 				},
 				"vue-typescript-files.menu.class": {
 					"type": "boolean",
@@ -127,6 +132,10 @@
 				"title": "generate declare file"
 			},
 			{
+				"command": "extension.addDirective",
+				"title": "generate directive file"
+			},
+			{
 				"command": "extension.addClass",
 				"title": "generate class"
 			},
@@ -154,6 +163,11 @@
 				{
 					"when": "config.vue-typescript-files.menu.declare",
 					"command": "extension.addDeclare",
+					"group": "typescript support"
+				},
+				{
+					"when": "config.vue-typescript-files.menu.declare",
+					"command": "extension.addDirective",
 					"group": "typescript support"
 				},
 				{

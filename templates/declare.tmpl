@@ -1,5 +1,6 @@
 declare module '{{hyphensName}}' {
     import { PluginFunction } from 'vue';
     export const install: PluginFunction<{}>;
-    export function {{upperName}} (): any;
+    interface {{upperName}}{}
+    export const {{upperName}}: {{upperName}};
 }

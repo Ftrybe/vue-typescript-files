@@ -4,5 +4,6 @@ export enum Menu {
     interface = "interface",
     enum = "enum",
     vuexModule = "vuex",
-    declare = "declare"
+    declare = "declare",
+    directive = "directive"
 }

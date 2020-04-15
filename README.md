@@ -1,6 +1,6 @@
 # vue-typescript-file 说明
 
-## 详细功能介绍 
+## 详细功能介绍  
 
 较为详细的功能介绍和动图演示，请点击[csdn](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
   
@@ -9,18 +9,19 @@
 
 ## 预览  
 
-![image](/images/create-component.gif)
+![image](/images/create-component.gif)  
 
 右击文件夹添加组件(right-click folder)  
 
 ### 基本功能
 
-1.添加vue typescript组件
+1.添加vue typescript组件  
 2.添加vuex module子模块（请手动添加stroe目录，并在以下创建index.ts文件和modules目录）
-3.添加空的class文件
-4.添加空的enum文件 
-5.添加空的interface文件 
-6.添加全局的组件声明文件
+3.添加指令文件
+3.添加空的class文件  
+4.添加空的enum文件  
+5.添加空的interface文件  
+6.添加全局的组件声明文件  
 7.snippets  
 
 ### snippets说明
@@ -64,3 +65,5 @@ vx-module 生成vuex 子模块模版
         "</v-ons-page>"
     ]
 ```
+
+#### 有任何不足或需求请在github/csdn上留言（评论），谢谢
