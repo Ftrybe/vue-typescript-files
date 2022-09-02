@@ -67,3 +67,11 @@ vx-module 生成vuex 子模块模版
 ```
 
 #### 有任何不足或需求请在github/csdn上留言（评论），谢谢
+
+
+Thanks you all for your support!
+
+## Additional Support
+* [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for supporting springdoc-openapi project.
+
+![JenBrains logo](https://springdoc.org/img/jetbrains.svg)
