@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "更方便的创建vue typescript组件，只需要右击文件夹，减少snippets的使用",
-	"version": "1.1.8",
+	"version": "1.1.10",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -100,6 +100,11 @@
 					"type": "string",
 					"default": null,
 					"description": "设置组件的使用的模板引擎类型"
+				},
+				"vue-typescript-files.component.styleScope": {
+					"type": "string",
+					"default": null,
+					"description": "设置组件Style的作用域"
 				},
 				"vue-typescript-files.vuex.suffix": {
 					"type": "string",
@@ -212,7 +217,7 @@
 	},
 	"devDependencies": {
 		"@types/fs-extra": "^8.0.1",
-		"@types/glob": "^7.1.1",
+		"@types/glob": "^7.2.0",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
 		"@types/vscode": "^1.43.0",
@@ -220,8 +225,8 @@
 		"glob": "^7.1.6",
 		"mocha": "^7.1.1",
 		"tslint": "^6.1.1",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
+		"typescript": "^4.8.2",
+		"vscode-test": "^1.6.1"
 	},
 	"dependencies": {
 		"handlebars": "^4.7.6",

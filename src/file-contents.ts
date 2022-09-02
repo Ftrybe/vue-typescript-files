@@ -62,15 +62,17 @@ export class FileContents {
             case "suffix":
               fileConfig.suffix = jsonKey;
               break;
-            case "templates":
-              const array = jsonKey as Array<string>
-              fileConfig.templates = "\t";
-              array.map((value: string, index: number, array: string[]) => {
-                fileConfig.templates += value;
-                if (index < array.length - 1) {
-                  fileConfig.templates += "\n\t";
-                }
-              });
+              case "templates":
+                if (jsonKey instanceof Array) {
+                    const array = jsonKey;
+                    fileConfig.templates = "\t";
+                    array.map((value, index, array) => {
+                        fileConfig.templates += value;
+                        if (index < array.length - 1) {
+                            fileConfig.templates += "\n\t";
+                        }
+                    });
+                } 
               break;
             case "styleLang":
               fileConfig.styleLang = " lang='" + jsonKey + "'";
@@ -78,6 +80,8 @@ export class FileContents {
             case "templateLang":
               fileConfig.templateLang = " lang='" + jsonKey + "'";
               break;
+            case "styleScope":
+              fileConfig.styleScope = " " + jsonKey;
           }
         })
         if (args) {
@@ -137,10 +141,11 @@ export class FileContents {
       template: fileConfig.templates,
       templateLang: fileConfig.templateLang,
       styleLang: fileConfig.styleLang,
+      styleScope: fileConfig.styleScope,
       exportModule: fileConfig.exportModule
     }
   }
-  // 焦点打新建的文
+  // * 焦点打新建的文
   private parseConfig(configName: string, switchExtend?: any) {
 
     const plusConfig = this.config.get(configName);
@@ -149,13 +154,13 @@ export class FileContents {
     }
     const jsonConfig = JSON.parse(JSON.stringify(plusConfig));
     if (switchExtend) {
-    for (let key in jsonConfig) {
-      if (jsonConfig[key]) {
+      for (let key in jsonConfig) {
         const jsonKey = jsonConfig[key];
-          switchExtend(key, jsonKey);
+        if (jsonKey) {
+            switchExtend(key, jsonKey);
+          }
         }
       }
-    }
     return jsonConfig;
   }
 }
