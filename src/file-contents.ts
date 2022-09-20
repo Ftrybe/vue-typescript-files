@@ -7,7 +7,7 @@ import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
 import { Validator } from './validator';
 import { FileConfig } from './models/file-config';
-
+import { TemplateConfig } from "./models/template-config";
 export class FileContents {
   private templatesMap: Map<string, string>;
   private readonly TEMPLATES_FOLDER = 'templates';
@@ -18,7 +18,7 @@ export class FileContents {
   constructor() {
     this.templatesMap = new Map<string, string>();
     const workspaceConfig = vscode.workspace.getConfiguration(this.NEW_CONFIG_NAME);
-    this.config = vscode.workspace.getConfiguration().has(this.OLD_CONFIG_NAME)?vscode.workspace.getConfiguration(this.OLD_CONFIG_NAME):workspaceConfig;
+    this.config = vscode.workspace.getConfiguration().has(this.OLD_CONFIG_NAME) ? vscode.workspace.getConfiguration(this.OLD_CONFIG_NAME) : workspaceConfig;
     this.loadTemplates();
   }
 
@@ -27,9 +27,25 @@ export class FileContents {
   }
   // 获取模板信息
   private async getTemplates(): Promise<Map<string, string>> {
+
+    // * 解析模版配置
+    const templateConfig : TemplateConfig = this.parseConfig('template');
+
     const templatesPath = path.join(__dirname, this.TEMPLATES_FOLDER);
+
     const templatesFiles: string[] = await fs.readdir(templatesPath);
-    const templatesFilesPromises = templatesFiles.map(t => fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
+
+    const customPath = templateConfig.path; 
+
+    const templatesFilesPromises = templatesFiles.map( file => {
+      // * 有自定义文件
+      if ( customPath && fs.existsSync(path.join(customPath, file)) ) {
+        return fs.readFile(path.join(customPath, file), 'utf8').then((data: any) => [file, data]);
+      }
+      return  fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, file), 'utf8').then((data: any) => [file, data])
+    });
+
+    // const templatesFilesPromises = templatesFiles.map(t => fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
     const templates = await Promise.all(templatesFilesPromises);
     return new Map(templates.map(x => {
       return x as [string, string]
@@ -145,7 +161,7 @@ export class FileContents {
       exportModule: fileConfig.exportModule
     }
   }
-  // * 焦点打新建的文
+  // * 解析配置文件 
   private parseConfig(configName: string, switchExtend?: any) {
 
     const plusConfig = this.config.get(configName);

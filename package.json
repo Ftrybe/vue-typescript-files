@@ -41,6 +41,11 @@
 			"type": "object",
 			"title": "Vue-typescript-files",
 			"properties": {
+				"vue-typescript-files.template.path": {
+					"type": "string",
+					"default": null,
+					"description": "自定义模版路径"
+				},
 				"vue-typescript-files.menu.component": {
 					"type": "boolean",
 					"default": true,
@@ -216,7 +221,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "^8.0.1",
+		"@types/fs-extra": "^9.0.13",
 		"@types/glob": "^7.2.0",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
@@ -229,7 +234,7 @@
 		"vscode-test": "^1.6.1"
 	},
 	"dependencies": {
-		"handlebars": "^4.7.6",
-		"fs-extra": "^8.1.0"
+		"handlebars": "^4.7.7",
+		"fs-extra": "^10.1.0"
 	}
 }

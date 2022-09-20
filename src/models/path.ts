@@ -1,4 +1,3 @@
-
 export interface IPath {
   fileName: string;
   dirName: string;

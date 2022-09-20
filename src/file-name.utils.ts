@@ -3,7 +3,7 @@ import { Menu } from "./enums/menu";
 
 export class FileNameUtils {
     public static removeSuffix(str: string) {
-        return str.substr(0, str.indexOf("."));
+        return str.substring(0, str.indexOf("."));
     }
 
     public static getSuffix(menuName: Menu | string): string {
