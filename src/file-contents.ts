@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Formatting from './formatting';
-import { Template } from './template';
+import { HandleBarsHelper } from './HandleBars-helper';
 import * as vscode from 'vscode';
 import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
@@ -57,7 +57,9 @@ export class FileContents {
     if (this.templatesMap.has(templateName)) {
       const template = this.templatesMap.get(templateName) || '';
       const text = this.textCase(templateName, inputName, args);
-      result = Template.noEscape(template, text);
+      const intance =  HandleBarsHelper.getInstance();
+      const templateDelegate = intance.compile(template, { noEscape: true});
+      result = templateDelegate(text);
     }
     return result;
   }
@@ -67,7 +69,7 @@ export class FileContents {
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
     let className = inputName;
     let fileConfig: FileConfig = new FileConfig();
-
+    var inputArgs: string[] = [];
     switch (resourcesName) {
       case Menu.component:
         this.parseConfig("component", async (key: string, jsonKey: any) => {
@@ -101,9 +103,11 @@ export class FileContents {
           }
         })
         if (args) {
+          inputArgs = args;
           args.forEach((value: string, index: number, array: string[]) => {
             const nextValue = array[index + 1];
-            if (value.indexOf("-") == 0) {
+            if (value.startsWith("-")) {
+
               switch (value) {
                 case "-c" || "-component":
                   if (!Validator.hasArgs(nextValue)) {
@@ -149,10 +153,14 @@ export class FileContents {
     }
     // 获取配置信息
     className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
-    return {
+    
+    const result = {
+      resourcesName: resourcesName,
       upperName: Formatting.toUpperCase(className),
       hyphensName: Formatting.toHyphensCase(className),
       dynamicName: Formatting.toUpperCase(className),
+      inputName: inputName,
+      args: inputArgs,
       fileName: Formatting.toUpperCase(inputName),
       template: fileConfig.templates,
       templateLang: fileConfig.templateLang,
@@ -160,6 +168,7 @@ export class FileContents {
       styleScope: fileConfig.styleScope,
       exportModule: fileConfig.exportModule
     }
+    return result;
   }
   // * 解析配置文件 
   private parseConfig(configName: string, switchExtend?: any) {

@@ -22,7 +22,7 @@
 5.添加空的interface文件 
 6.添加全局的组件声明文件
 7.snippets  
-
+8.自定义模版文件
 ### snippets说明
 
 ```snippets
@@ -64,3 +64,26 @@ vx-module 生成vuex 子模块模版
         "</v-ons-page>"
     ]
 ```
+
+添加自定义模版文件配置
+配置vue-typescript-files.template.path为指定目录，添加自定义配置文件，文件命名规则如下  
+class: class.tmpl    
+component: component.tmpl  
+declare: declare.tmpl  
+directive: directive.tmpl  
+enum: enum.tmpl  
+interface: interface.tmpl  
+vuex: vuex.tmpl  
+该插件使用 ```handlebars```进行模版渲染，相关语法自行进行了解。  
+本插件主要返回以下属性： 
+```
+    inputName : 输入的文件名称
+    upperName : 首字母大写的文件名称
+    resourcesName: 资源类型.包括component, class, declare, directive,enum,interface, vuex
+    dynamicName： 拼接前后缀的文件名称，首字母大写
+    args: 拼接的参数
+```
+冷知识，可以修改插件配置文件下package.json修改右击按钮名称，根据resourcesName后缀等参数拼接实现自定义模版.
+handlebars添加帮助程序:eq,ne,lt,gt,lte,gte,and,or,inc,seq_contains方法。
+
+

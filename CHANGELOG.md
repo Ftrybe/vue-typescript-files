@@ -1,3 +1,7 @@
+## 1.2.0
+添加自定义模版文件配置
+配置vue-typescript-files.template.path为制定目录，读取自定义配置文件
+
 ## 1.1.10
 添加styleScope
 

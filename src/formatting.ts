@@ -6,7 +6,7 @@ export default class Formatting {
     }
 
     public static toTileCase(input: string) {
-        return input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+        return input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
     }
 
     public static toUpperCase(input: string) {
@@ -14,7 +14,7 @@ export default class Formatting {
     }
 
     public static toHyphensCase(input: string) {
-        return input.charAt(0).toLowerCase() + input.substr(1).replace(/[A-Z]+/g, txt => "-" + txt).toLowerCase();
+        return input.charAt(0).toLowerCase() + input.substring(1).replace(/[A-Z]+/g, txt => "-" + txt).toLowerCase();
     }
 
     public static toCamelCaseWithSpot(input:string){

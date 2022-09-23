@@ -7,7 +7,8 @@ import { IPath } from "./models/path";
 import * as vscode from "vscode";
 import { FileNameUtils } from './file-name.utils';
 import Commands from './commands';
-
+// import { Template } from './template';
+import * as HandleBars from "handlebars";
 export class Generator {
   
   constructor(private readonly fc = new FileContents()) {}
@@ -22,6 +23,7 @@ export class Generator {
       };
     });
     await IOUtil.createFiles(loc, files);
+
     this.focusFiles(files[0].name);
   }
 
