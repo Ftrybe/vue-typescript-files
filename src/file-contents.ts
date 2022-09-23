@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import Formatting from './formatting';
-import { HandleBarsHelper } from './HandleBars-helper';
+import { HandleBarsHelper } from './handlebars-helper';
 import * as vscode from 'vscode';
 import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
