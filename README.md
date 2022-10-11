@@ -72,6 +72,6 @@ vx-module 生成vuex 子模块模版
 Thanks you all for your support!
 
 ## Additional Support
-* [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting springdoc-openapi project.
+* [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting vue-typescript-file project.
 
 ![JenBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
