@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Menu } from "./enums/Menu";
+import { Menu } from "./enums/menu";
 import { FileContents } from "./file-contents";
 import IOUtil from "./ioutil";
 import { IFiles } from "./models/file";

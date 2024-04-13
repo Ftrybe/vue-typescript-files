@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import { window } from 'vscode';
-import { Menu } from './enums/Menu';
+import { Menu } from './enums/menu';
 import { FileNameUtils } from './file-name.utils';
 import { IFiles } from './models/file';
 import { IPath } from './models/path';

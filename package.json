@@ -2,7 +2,7 @@
 	"name": "vue-typescript-file",
 	"displayName": "vue typescript files",
 	"description": "更方便的创建vue typescript组件，只需要右击文件夹，减少snippets的使用",
-	"version": "1.1.8",
+	"version": "1.2.0",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
@@ -41,6 +41,11 @@
 			"type": "object",
 			"title": "Vue-typescript-files",
 			"properties": {
+				"vue-typescript-files.template.path": {
+					"type": "string",
+					"default": null,
+					"description": "自定义模版路径"
+				},
 				"vue-typescript-files.menu.component": {
 					"type": "boolean",
 					"default": true,
@@ -100,6 +105,11 @@
 					"type": "string",
 					"default": null,
 					"description": "设置组件的使用的模板引擎类型"
+				},
+				"vue-typescript-files.component.styleScope": {
+					"type": "string",
+					"default": null,
+					"description": "设置组件Style的作用域"
 				},
 				"vue-typescript-files.vuex.suffix": {
 					"type": "string",
@@ -211,20 +221,20 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "^9.0.1",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.3",
-		"@types/node": "^13.11.0",
-		"@types/vscode": "^1.43.0",
-		"copyfiles": "^2.3.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.1",
+		"@types/fs-extra": "^11.0.0",
+		"@types/glob": "^8.1.0",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "^16.11.7",
+		"@types/vscode": "^1.88.0",
+		"copyfiles": "^2.4.1",
+		"glob": "^10.3.12",
+		"mocha": "^10.4.0",
 		"tslint": "^6.1.3",
-		"typescript": "^3.9.7",
-		"vscode-test": "^1.3.0"
+		"typescript": "^5.4.5",
+		"@vscode/test-electron": "^2.3.9"
 	},
 	"dependencies": {
-		"handlebars": "^4.7.6",
-		"fs-extra": "^9.0.1"
+		"handlebars": "^4.7.7",
+		"fs-extra": "^10.1.0"
 	}
 }

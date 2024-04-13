@@ -55,16 +55,31 @@ vx-module 生成vuex 子模块模版
 文件 => 首选项 => 设置 => 扩展 => vue-typescript-files
 ```
 
-添加组件自定义标签模板，请在settings.json编辑类似如下代码，需要制表符\t\n请直接插入
+添加组件自定义标签模板，请配置模版路径。前往git参考复制模版到指定路径下。 
 
-```templates
-"vue-typescript-files.component.templates": [
-        "<v-ons-page>",
-        "\t<test>",
-        "\t</test>",
-        "</v-ons-page>"
-    ]
+添加自定义模版文件配置
+配置vue-typescript-files.template.path为指定目录，添加自定义配置文件，文件命名规则如下  
+class: class.tmpl    
+component: component.tmpl  
+declare: declare.tmpl  
+directive: directive.tmpl  
+enum: enum.tmpl  
+interface: interface.tmpl  
+vuex: vuex.tmpl  
+该插件使用 ```handlebars```进行模版渲染，相关语法自行进行了解。  
+本插件主要返回以下属性： 
 ```
+    如输入componentName
+    upperName: 首字母大写的文件名称 ComponentName
+    hyphensName:  中线分隔的名称 component-name
+    inputName : 输入的文件名称 
+    resourcesName: 资源类型.包括component, class, declare, directive,enum,interface, vuex
+    dynamicName： 拼接前后缀的文件名称，首字母大写
+    args: 拼接的参数
+```
+冷知识，可以修改插件配置文件下package.json修改右击按钮名称，根据resourcesName后缀等参数拼接实现自定义模版.
+handlebars添加帮助程序:eq,ne,lt,gt,lte,gte,and,or,inc,seq_contains方法。
+
 
 #### 有任何不足或需求请在github/csdn上留言（评论），谢谢
 

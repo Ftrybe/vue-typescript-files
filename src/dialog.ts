@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { Menu } from './enums/Menu';
+import { Menu } from './enums/menu';
 import { Generator } from './generator';
 import IOUtil from './ioutil';
 import { IPath } from './models/path';
