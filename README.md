@@ -78,5 +78,4 @@ handlebars添加帮助程序:eq,ne,lt,gt,lte,gte,and,or,inc,seq_contains方法�
 
 ## Additional Support
 * [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting vue-typescript-file project.
-
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JenBrains logo" style="zoom:15%; float: left" />
+  ![image](/images/JetBrains.png)  
