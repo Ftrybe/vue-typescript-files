@@ -8,54 +8,50 @@ import { Menu } from './enums/menu';
 import { Validator } from './validator';
 import { FileConfig } from './models/file-config';
 import { TemplateConfig } from "./models/template-config";
+import Commands from './commands';
 export class FileContents {
-  private templatesMap: Map<string, string>;
   private readonly TEMPLATES_FOLDER = 'templates';
-  private readonly OLD_CONFIG_NAME = 'vue-ts-files';
   private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
   private config: vscode.WorkspaceConfiguration;
 
   constructor() {
-    this.templatesMap = new Map<string, string>();
-    const workspaceConfig = vscode.workspace.getConfiguration(this.NEW_CONFIG_NAME);
-    this.config = vscode.workspace.getConfiguration().has(this.OLD_CONFIG_NAME) ? vscode.workspace.getConfiguration(this.OLD_CONFIG_NAME) : workspaceConfig;
-    this.loadTemplates();
+    this.config = vscode.workspace.getConfiguration(this.NEW_CONFIG_NAME);
   }
 
-  private async loadTemplates() {
-    this.templatesMap = await this.getTemplates();
-  }
-  // 获取模板信息
-  private async getTemplates(): Promise<Map<string, string>> {
+  private getTemplate(uri: vscode.Uri , templateName: string): string {
 
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+    const workspacePath = workspaceFolder?.uri.fsPath || '';
+
+    const workspaceConfigDir = workspacePath + '/.' + this.NEW_CONFIG_NAME;
+    // 获取当前工作区下是否有自定义模版
+    const hasworkspaceConfigDir = fs.existsSync(workspaceConfigDir);
+    
+    if (hasworkspaceConfigDir) {
+      if  (fs.existsSync(workspaceConfigDir + "/" + templateName)) {
+        return fs.readFileSync(workspaceConfigDir + "/" + templateName, 'utf8');
+      }
+    }
     // * 解析模版配置
     const templateConfig : TemplateConfig = this.parseConfig('template');
 
-    const templatesPath = path.join(__dirname, this.TEMPLATES_FOLDER);
+    // * 自定义模版路径
+    
+    const customPath = templateConfig.path;
+    
+    if ( customPath && fs.existsSync(path.join(customPath, templateName)) ) {
+      return fs.readFileSync(path.join(customPath, templateName), 'utf8');
+    }
+    
+    return fs.readFileSync(path.join(__dirname, this.TEMPLATES_FOLDER, templateName), 'utf8');
 
-    const templatesFiles: string[] = await fs.readdir(templatesPath);
-
-    const customPath = templateConfig.path; 
-
-    const templatesFilesPromises = templatesFiles.map( file => {
-      // * 有自定义文件
-      if ( customPath && fs.existsSync(path.join(customPath, file)) ) {
-        return fs.readFile(path.join(customPath, file), 'utf8').then((data: any) => [file, data]);
-      }
-      return  fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, file), 'utf8').then((data: any) => [file, data])
-    });
-
-    // const templatesFilesPromises = templatesFiles.map(t => fs.readFile(path.join(__dirname, this.TEMPLATES_FOLDER, t), 'utf8').then((data: any) => [t, data]));
-    const templates = await Promise.all(templatesFilesPromises);
-    return new Map(templates.map(x => {
-      return x as [string, string]
-    }));
   }
+
   // 获得修改后的模板内容
-  public getTemplateContent(templateName: Menu, inputName: string, args: string[]) {
+  public getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
     let result = '';
-    if (this.templatesMap.has(templateName)) {
-      const template = this.templatesMap.get(templateName) || '';
+    const template = this.getTemplate(uri,templateName);
+    if (template && template != '') {
       const text = this.textCase(templateName, inputName, args);
       const intance =  HandleBarsHelper.getInstance();
       const templateDelegate = intance.compile(template, { noEscape: true});
@@ -70,84 +66,7 @@ export class FileContents {
     let className = inputName;
     let fileConfig: FileConfig = new FileConfig();
     var inputArgs: string[] = [];
-    switch (resourcesName) {
-      case Menu.component:
-        this.parseConfig("component", async (key: string, jsonKey: any) => {
-          switch (key) {
-            case "prefix":
-              fileConfig.prefix = jsonKey;
-              break;
-            case "suffix":
-              fileConfig.suffix = jsonKey;
-              break;
-              case "templates":
-                if (jsonKey instanceof Array) {
-                    const array = jsonKey;
-                    fileConfig.templates = "\t";
-                    array.map((value, index, array) => {
-                        fileConfig.templates += value;
-                        if (index < array.length - 1) {
-                            fileConfig.templates += "\n\t";
-                        }
-                    });
-                } 
-              break;
-            case "styleLang":
-              fileConfig.styleLang = " lang='" + jsonKey + "'";
-              break;
-            case "templateLang":
-              fileConfig.templateLang = " lang='" + jsonKey + "'";
-              break;
-            case "styleScope":
-              fileConfig.styleScope = " " + jsonKey;
-          }
-        })
-        if (args) {
-          inputArgs = args;
-          args.forEach((value: string, index: number, array: string[]) => {
-            const nextValue = array[index + 1];
-            if (value.startsWith("-")) {
-
-              switch (value) {
-                case "-c" || "-component":
-                  if (!Validator.hasArgs(nextValue)) {
-                    fileConfig.prefix = "";
-                    fileConfig.suffix = "";
-                  }
-                  break;
-                case "-s" || "-suffix":
-                  if (Validator.hasArgs(nextValue)) {
-                    fileConfig.suffix = Formatting.toUpperCase(nextValue);
-                  } else {
-                    fileConfig.suffix = "";
-                  }
-                  break;
-                case "-p" || "-prefix":
-                  if (Validator.hasArgs(nextValue)) {
-                    fileConfig.prefix = Formatting.toUpperCase(nextValue);
-                    className = Formatting.toUpperCase(className);
-                  } else {
-                    fileConfig.prefix = "";
-                  }
-                  break;
-              }
-            }
-          })
-        }
-        break;
-      case Menu.vuexModule:
-        this.parseConfig("vuex", (key: string, jsonKey: any) => {
-          switch (key) {
-            case "suffix":
-              fileConfig.suffix = jsonKey;
-              break;
-            case "exportModule":
-              fileConfig.exportModule = jsonKey;
-              break;
-          }
-        })
-        break;
-    }
+   
     if(this.parseConfig("file")?.spotStyleName){
       className = Formatting.toCamelCaseWithSpot(className);
     }

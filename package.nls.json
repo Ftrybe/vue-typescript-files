@@ -1,0 +1,23 @@
+{
+	
+    "displayName": "Vue TypeScript Files",
+    "description": "Easily create Vue TypeScript components by right-clicking on a folder.",
+	"generateComponent": "Generate Component",
+	"generateVuexModule": "Generate Vuex Module",
+	"generateDeclare": "Generate Declare",
+	"generateDirective": "Generate Directive",
+	"generateClass": "Generate Class",
+	"generateInterface": "Generate Interface",
+	"generateEnum": "Generate Enum",
+    "customTemplatePath": "Path to custom template",
+    "toggleComponentButton": "Toggle visibility of the 'Add Component' button",
+    "toggleVuexModuleButton": "Toggle visibility of the 'Add Vuex Submodule' button",
+    "toggleGlobalDeclareButton": "Toggle visibility of the 'Add Global Declaration' button",
+    "toggleDirectiveButton": "Toggle visibility of the 'Add Directive' button",
+    "toggleBasicClassButton": "Toggle visibility of the 'Add Base Class' button",
+    "toggleInterfaceButton": "Toggle visibility of the 'Add Interface' button",
+    "toggleEnumButton": "Toggle visibility of the 'Add Enum Class' button",
+    "componentPrefix": "Define a prefix for component names (does not change filenames, only class names in the code)",
+    "componentSuffix": "Define a suffix for component names (does not change filenames, only class names in the code)",
+    "spotStyleNameClassCreation": "Use a dot (.) to separate class names during creation; e.g., 'a.b' will create the class name 'AB' (only supports single separation)"
+}

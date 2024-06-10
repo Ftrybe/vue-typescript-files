@@ -13,13 +13,13 @@ export class Generator {
   
   constructor(private readonly fc = new FileContents()) {}
 
-  public async generateResources(name: Menu, loc: IPath) {
+  public async generateResources(uri: vscode.Uri, name: Menu, loc: IPath) {
     const resource = this.getTmplResources(name);
-    const files: IFiles[] = resource.files.map((file: any) => {
+    const files: IFiles[] =  resource.files.map((file: any) => {
       const fileName: string = file.name();
       return {
         name: path.join(loc.dirPath, fileName.startsWith('-') ? `${loc.fileName}${fileName}` : `${loc.fileName}.${fileName}`),
-        content: this.fc.getTemplateContent(file.type, loc.fileName, loc.args),
+        content: this.fc.getTemplateContent(uri ,file.type, loc.fileName, loc.args),
       };
     });
     await IOUtil.createFiles(loc, files);
@@ -33,8 +33,7 @@ export class Generator {
 
   private getTmplResources(name: Menu){
     let map: Map<string, any> = new Map<string, any>();
-    const commandMap = new Commands().list();
-    for (const value of commandMap) {
+    for (const value of Commands.list()) {
       let suffix = FileNameUtils.getSuffix(value);
       map.set(
         value,

@@ -3,9 +3,6 @@
 ## 详细功能介绍  
 
 较为详细的功能介绍和动图演示，请点击[csdn](https://blog.csdn.net/zz56138/article/details/102828867 "csdn详细说明")  
-  
-使用vuex子模块创建按钮时，请先安装vuex-module-decorators库。
-`npm install vuex-module-decorators`  
 
 ## 预览  
 
@@ -15,23 +12,19 @@
 
 ### 基本功能
 
-1.添加vue typescript组件  
-2.添加vuex module子模块（请手动添加stroe目录，并在以下创建index.ts文件和modules目录）
-3.添加指令文件
-3.添加空的class文件  
-4.添加空的enum文件  
-5.添加空的interface文件  
-6.添加全局的组件声明文件  
-7.snippets  
+组件提供资源管理器右击菜单扩展。对应的模版文件需要自己编写。  
 
-### snippets说明
+目前提供7个扩展按钮，如下：
 
-```snippets
-v-init    在空的vue文件中生成vue typescript模版
-v-[lifecycle] vue生命周期方法代码提示
-vx-init   生成vuex index文件模版  
-vx-module 生成vuex 子模块模版  
-```
+1. 生成组件模版
+2. 生成vuex模版
+3. 生成指令模版
+4. 生成组件声明模版
+5. 生成类文件模版
+6. 生成枚举模版
+7. 生成接口模版
+
+如果需要的扩展按钮不为以上7种，可以直接进入插件包管理目录，修改package.json中对应的按钮显示名称以实现自定义扩展。
 
 ### 创建组件命令行参数说明
 
@@ -81,12 +74,9 @@ vuex: vuex.tmpl
 handlebars添加帮助程序:eq,ne,lt,gt,lte,gte,and,or,inc,seq_contains方法。
 
 
-#### 有任何不足或需求请在github/csdn上留言（评论），谢谢
 
-
-Thanks you all for your support!
 
 ## Additional Support
 * [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting vue-typescript-file project.
 
-![JenBrains logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JenBrains logo" style="zoom:15%; float: left" />

@@ -13,10 +13,10 @@ export default class Dialog {
         this.generator = new Generator();
     }
 
-    public async showDynamicDialog(uri: vscode.Uri, fileName: string, ResourceType: Menu) {
-        const loc = await this.showFileNameDialog(uri, fileName, ResourceType);
+    public async showDynamicDialog(uri: vscode.Uri, fileName: string, resourceType: Menu) {
+        const loc = await this.showFileNameDialog(uri, fileName, resourceType);
         if (loc) {
-            await this.generator.generateResources(ResourceType, loc);
+            await this.generator.generateResources(uri,resourceType, loc);
             vscode.window.setStatusBarMessage(`${loc.fileName}创建成功`, 2000);
         } else {
             vscode.window.setStatusBarMessage(`文件已存在`, 2000);

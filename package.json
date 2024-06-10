@@ -1,12 +1,12 @@
 {
 	"name": "vue-typescript-file",
-	"displayName": "vue typescript files",
-	"description": "更方便的创建vue typescript组件，只需要右击文件夹，减少snippets的使用",
+	"displayName": "%displayName%",
+	"description": "%description%",
 	"version": "1.2.0",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
-		"name": "cb Fan"
+		"name": "ftrybe"
 	},
 	"engines": {
 		"vscode": "^1.43.0"
@@ -44,118 +44,88 @@
 				"vue-typescript-files.template.path": {
 					"type": "string",
 					"default": null,
-					"description": "自定义模版路径"
+					"description": "%customTemplatePath%"
 				},
 				"vue-typescript-files.menu.component": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加组件按钮"
+					"description": "%toggleComponentButton%"
 				},
 				"vue-typescript-files.menu.vuex": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加vuex子模块按钮"
+					"description": "%toggleVuexModuleButton%"
 				},
 				"vue-typescript-files.menu.declare": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加通用全局声明按钮"
+					"description": "%toggleGlobalDeclareButton%"
 				},
 				"vue-typescript-files.menu.directive": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加指令按钮"
+					"description": "%toggleDirectiveButton%"
 				},
 				"vue-typescript-files.menu.class": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加基础类按钮"
+					"description": "%toggleBasicClassButton%"
 				},
 				"vue-typescript-files.menu.interface": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加接口按钮"
+					"description": "%toggleInterfaceButton%"
 				},
 				"vue-typescript-files.menu.enum": {
 					"type": "boolean",
 					"default": true,
-					"description": "显示/隐藏添加枚举类按钮"
+					"description": "%toggleEnumButton%"
 				},
 				"vue-typescript-files.component.prefix": {
 					"type": "string",
 					"default": null,
-					"description": "设置组件前缀名（不会改变文件名，只会在组件类名中添加）"
+					"description": "%componentPrefix%"
 				},
 				"vue-typescript-files.component.suffix": {
 					"type": "string",
 					"default": null,
-					"description": "设置组件后缀名（不会改变文件名，只会在组件类名中添加）"
-				},
-				"vue-typescript-files.component.templates": {
-					"type": "array",
-					"default": null,
-					"description": "向组件模板中添加自定义标签"
-				},
-				"vue-typescript-files.component.styleLang": {
-					"type": "string",
-					"default": null,
-					"description": "设置组件中默认使用的css预处理器"
-				},
-				"vue-typescript-files.component.templateLang": {
-					"type": "string",
-					"default": null,
-					"description": "设置组件的使用的模板引擎类型"
-				},
-				"vue-typescript-files.component.styleScope": {
-					"type": "string",
-					"default": null,
-					"description": "设置组件Style的作用域"
-				},
-				"vue-typescript-files.vuex.suffix": {
-					"type": "string",
-					"default": null,
-					"description": "设置vuex子模块后缀名（不会改变文件名，只会在类名中添加）"
-				},
-				"vue-typescript-files.vuex.exportModule": {
-					"type": "boolean",
-					"default": false,
-					"description": "设置以模块或者类方式导出（默认为类方式，调用时需要使用getModule(ModuleName)）"
+					"description": "%componentSuffix%"
 				},
 				"vue-typescript-files.file.spotStyleName": {
 					"type": "boolean",
 					"default": true,
-					"description": "是否使用.（点）分隔创建的类，开启，则a.b创建的类名为AB（只支持分隔一次）"
+					"description": "%spotStyleNameClassCreation%"
 				}
 			}
 		},
 		"commands": [
 			{
 				"command": "extension.addComponent",
-				"title": "generate component"
+				"title": "%generateComponent%"
 			},
 			{
 				"command": "extension.addVuex",
-				"title": "generate vuex module"
+				"title": "%generateVuexModule%"
 			},
 			{
 				"command": "extension.addDeclare",
-				"title": "generate declare file"
+				"title": "%generateDeclare%"
 			},
 			{
 				"command": "extension.addDirective",
-				"title": "generate directive file"
+				"title": "%generateDirective%"
 			},
 			{
 				"command": "extension.addClass",
-				"title": "generate class"
+				"title": "%generateClass%"
 			},
 			{
 				"command": "extension.addInterface",
-				"title": "generate interface"
+				"title": "%generateInterface%"
 			},
 			{
 				"command": "extension.addEnum",
-				"title": "generate enum"
+				"title": "%generateEnum%"
 			}
 		],
 		"menus": {
@@ -196,21 +166,7 @@
 					"group": "typescript support basics"
 				}
 			]
-		},
-		"snippets": [
-			{
-				"language": "vue",
-				"path": "./snippets/vue.json"
-			},
-			{
-				"language": "typescript",
-				"path": "./snippets/vuex.json"
-			},
-			{
-				"language": "typescript",
-				"path": "./snippets/lifecycle.json"
-			}
-		]
+		}
 	},
 	"scripts": {
 		"templates": "copyfiles templates/**/*.tmpl ./out/",
@@ -234,7 +190,7 @@
 		"@vscode/test-electron": "^2.3.9"
 	},
 	"dependencies": {
-		"handlebars": "^4.7.7",
-		"fs-extra": "^10.1.0"
+		"handlebars": "^4.7.8",
+		"fs-extra": "^11.2.0"
 	}
 }
