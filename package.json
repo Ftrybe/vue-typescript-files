@@ -32,6 +32,10 @@
 		"type": "git",
 		"url": "https://github.com/Ftrybe/vue-typescript-files"
 	},
+	"galleryBanner": {
+		"color": "#0F6378",
+		"theme": "dark"
+	},
 	"bugs": {
 		"url": "https://github.com/Ftrybe/vue-typescript-files/issues"
 	},
@@ -166,7 +170,35 @@
 					"group": "typescript support basics"
 				}
 			]
-		}
+		},
+		"languages": [
+			{
+				"id": "handlebars",
+				"aliases": ["handlebars","handlebars","hbs"],
+				"extensions": [
+					".tmpl"
+				],
+				"configuration": "./handlebars.configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "handlebars",
+				"scopeName": "handlebars.tmpl",
+				"path": "./syntaxes/handlebars.tmLanguage.json"
+			},
+			{
+				"language": "handlebars",
+				"scopeName": "handlebars.tmpl",
+				"path": "./syntaxes/typescript.tmLanguage.json"
+			}
+		],
+		"snippets": [
+			{
+				"language": "handlebars",
+				"path": "./snippets/handlebars.snippets.json"
+			}
+		]
 	},
 	"scripts": {
 		"templates": "copyfiles templates/**/*.tmpl ./out/",

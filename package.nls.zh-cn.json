@@ -18,5 +18,5 @@
     "toggleEnumButton": "显示/隐藏添加枚举类按钮",
     "componentPrefix": "设置组件前缀名（不会改变文件名，只会在组件类名中添加）",
     "componentSuffix": "设置组件后缀名（不会改变文件名，只会在组件类名中添加）",
-    "spotStyleNameClassCreation": "Use a dot (.) to separate class names during creation; e.g., 'a.b' will create the class name 'AB' (only supports single separation)"
+    "spotStyleNameClassCreation": "是否使用.（点）分隔创建的类，开启，则a.b创建的类名为AB（只支持分隔一次"
 }
