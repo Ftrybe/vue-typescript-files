@@ -50,10 +50,17 @@ export class FileContents {
   // 获得修改后的模板内容
   public getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
     let result = '';
+    let tmplName = templateName.toString();
     const workspacePath = this.getWorkspacePath(uri);
-    const template = this.getTemplate(workspacePath,templateName);
+    const { filteredArray, flag } = this.filterAndExtractFlag(args);
+    
+    if (flag && flag != null && flag != undefined && flag != '') {
+      let [prefix, suffix] = tmplName.split(".");
+      tmplName = prefix + flag + "." + suffix;
+    }
+    const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
-      const text = this.textCase(templateName, inputName, args);
+      const text = this.textCase(templateName, inputName, filteredArray);
       const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
       result = templateDelegate(text);
@@ -61,22 +68,41 @@ export class FileContents {
     return result;
   }
 
+  private filterAndExtractFlag(args: string[]): any {
+    let filteredArray = [];
+    let flag = null;
+    let foundDollar = false;
+
+    for (let i = 0; i < args.length; i++) {
+      if (!foundDollar && args[i].startsWith("$")) {
+        flag = args[i].substring(1);
+        foundDollar = true;
+      } else {
+        filteredArray.push(args[i]);
+      }
+    }
+    return {
+      filteredArray: filteredArray,
+      flag: flag
+    };
+  }
+
   private textCase(templateName: Menu, inputName: string, args: string[]): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
     let className = inputName;
     let fileConfig: FileConfig = new FileConfig();
-    var inputArgs: string[] = [];
    
     if(this.parseConfig("file")?.spotStyleName){
       className = StringFormatting.replaceDotWithHyphen(className);
     }
+
     // 获取配置信息
     className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
     
     const result = {
       inputName: inputName,
-      args: inputArgs,
+      args: args,
       resourcesName: resourcesName,
       hyphensName: StringFormatting.toHyphenCase(className),
       dynamicName: StringFormatting.toPascalCase(className),

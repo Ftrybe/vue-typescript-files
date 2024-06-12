@@ -71,5 +71,16 @@ export class HandleBarsHelper {
                 return json[v1] ?? json['default'];
             }
         });
+
+        // instance.registerHelper('helperMissing', function( /* dynamic arguments */) {
+        //     var options = arguments[arguments.length-1];
+        //     var args = Array.prototype.slice.call(arguments, 0,arguments.length-1)
+        //     return new Handlebars.SafeString("Missing: "+options.name+"("+args+")")
+        // })
+
+        // instance.registerHelper('blockHelperMissing', function(context, options) {
+        //     return "Helper '"+options.name+"' not found. " 
+        //       + "Printing block: " + options.fn(context); 
+        // });
     }
 }
