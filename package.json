@@ -209,15 +209,14 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "^11.0.0",
+		"@types/fs-extra": "^11.0.4",
 		"@types/glob": "^8.1.0",
 		"@types/mocha": "^10.0.6",
 		"@types/node": "^16.11.7",
-		"@types/vscode": "^1.88.0",
+		"@types/vscode": "^1.90.0",
 		"copyfiles": "^2.4.1",
-		"glob": "^10.3.12",
+		"glob": "^10.4.1",
 		"mocha": "^10.4.0",
-		"tslint": "^6.1.3",
 		"typescript": "^5.4.5",
 		"@vscode/test-electron": "^2.3.9"
 	},
