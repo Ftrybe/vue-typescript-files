@@ -4,7 +4,7 @@ import { Menu } from './enums/menu';
 import { FileNameUtils } from './file-name.utils';
 import { IFiles } from './models/file';
 import { IPath } from './models/path';
-
+import { isAbsolute, join } from 'path';
 export default class IOUtil {
   private constructor() { }
   public static async createFiles(loc: IPath, files: IFiles[]): Promise<string> {
@@ -37,4 +37,22 @@ export default class IOUtil {
     });
     return flag;
   }
+
+  
+  public static readText(rootPath: string, url: string): string {
+  
+			let filePath: string;
+      if (isAbsolute(url)) {
+        filePath = url;
+      } else {
+        filePath = join(rootPath, url);
+      }
+			const hasFile = fs.existsSync(filePath);
+			if (hasFile) {
+				const data = fs.readFileSync(filePath, "utf8");
+        return data;
+			}
+      return "";
+  }
+
 }

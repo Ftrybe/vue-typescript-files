@@ -15,7 +15,7 @@ export default class Commands{
     public static map(): Map<string,any>{
         let map:Map<string,any> = new Map<string,any>();
         for(const value of this.list()){
-            map.set("extension.add"+ Formatting.toUpperCase(value) ,
+            map.set("extension.add"+ Formatting.toPascalCase(value) ,
             {
                 filename: value.toLocaleLowerCase(),
                 resource: value

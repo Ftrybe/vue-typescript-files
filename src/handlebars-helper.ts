@@ -1,10 +1,15 @@
 import * as HandleBars from "handlebars";
+import StringFormatter from "./formatting";
+import IOUtil from "./ioutil";
+
 export class HandleBarsHelper {
 
     private static instance: typeof HandleBars = HandleBars.create();
+    private static workspacePath: string;
 
-    public static getInstance(): typeof HandleBars {
+    public static getInstance(workspacePath: string): typeof HandleBars {
         this.handlebarHelper(this.instance);
+        this.workspacePath = workspacePath;
         return this.instance;
     }
 
@@ -44,6 +49,26 @@ export class HandleBarsHelper {
                     }
                 }
                 return false;
+            },
+            to_camel_case: function (v1) {
+                return StringFormatter.toCamelCase(v1);
+            },
+            to_title_case: function(v1) {
+                return StringFormatter.toTitleCase(v1);
+            },
+            to_pascal_case: function(v1) {
+                return StringFormatter.toPascalCase(v1);
+            },
+            to_hyphen_case: function(v1) {
+                return StringFormatter.toHyphenCase(v1);
+            },
+            to_locale_lower_case_first: function(v1) {
+                return StringFormatter.toLocaleLowerCaseFirst(v1);
+            },
+            case_from_json: function(v1, filename) {
+                const text = IOUtil.readText(HandleBarsHelper.workspacePath,filename);
+                const json = JSON.parse(text);
+                return json[v1] ?? json['default'];
             }
         });
     }

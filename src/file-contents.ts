@@ -1,14 +1,12 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import Formatting from './formatting';
+import StringFormatting from './formatting';
 import { HandleBarsHelper } from './handlebars-helper';
 import * as vscode from 'vscode';
 import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
-import { Validator } from './validator';
 import { FileConfig } from './models/file-config';
 import { TemplateConfig } from "./models/template-config";
-import Commands from './commands';
 export class FileContents {
   private readonly TEMPLATES_FOLDER = 'templates';
   private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
@@ -18,11 +16,7 @@ export class FileContents {
     this.config = vscode.workspace.getConfiguration(this.NEW_CONFIG_NAME);
   }
 
-  private getTemplate(uri: vscode.Uri , templateName: string): string {
-
-    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
-    const workspacePath = workspaceFolder?.uri.fsPath || '';
-
+  private getTemplate(workspacePath: string , templateName: string): string {
     const workspaceConfigDir = workspacePath + '/.' + this.NEW_CONFIG_NAME;
     // 获取当前工作区下是否有自定义模版
     const hasworkspaceConfigDir = fs.existsSync(workspaceConfigDir);
@@ -39,7 +33,7 @@ export class FileContents {
     
     const customPath = templateConfig.path;
     
-    if ( customPath && fs.existsSync(path.join(customPath, templateName)) ) {
+    if (customPath && fs.existsSync(path.join(customPath, templateName)) ) {
       return fs.readFileSync(path.join(customPath, templateName), 'utf8');
     }
     
@@ -47,13 +41,20 @@ export class FileContents {
 
   }
 
+  private getWorkspacePath(uri: vscode.Uri): string {
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+    const workspacePath = workspaceFolder?.uri.fsPath || '';
+    return workspacePath;
+  }
+
   // 获得修改后的模板内容
   public getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
     let result = '';
-    const template = this.getTemplate(uri,templateName);
+    const workspacePath = this.getWorkspacePath(uri);
+    const template = this.getTemplate(workspacePath,templateName);
     if (template && template != '') {
       const text = this.textCase(templateName, inputName, args);
-      const intance =  HandleBarsHelper.getInstance();
+      const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
       result = templateDelegate(text);
     }
@@ -68,27 +69,22 @@ export class FileContents {
     var inputArgs: string[] = [];
    
     if(this.parseConfig("file")?.spotStyleName){
-      className = Formatting.toCamelCaseWithSpot(className);
+      className = StringFormatting.replaceDotWithHyphen(className);
     }
     // 获取配置信息
     className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
     
     const result = {
-      resourcesName: resourcesName,
-      upperName: Formatting.toUpperCase(className),
-      hyphensName: Formatting.toHyphensCase(className),
-      dynamicName: Formatting.toUpperCase(className),
       inputName: inputName,
       args: inputArgs,
-      fileName: Formatting.toUpperCase(inputName),
-      template: fileConfig.templates,
-      templateLang: fileConfig.templateLang,
-      styleLang: fileConfig.styleLang,
-      styleScope: fileConfig.styleScope,
-      exportModule: fileConfig.exportModule
+      resourcesName: resourcesName,
+      hyphensName: StringFormatting.toHyphenCase(className),
+      dynamicName: StringFormatting.toPascalCase(className),
+      fileName: StringFormatting.toPascalCase(inputName),
     }
     return result;
   }
+
   // * 解析配置文件 
   private parseConfig(configName: string, switchExtend?: any) {
 
