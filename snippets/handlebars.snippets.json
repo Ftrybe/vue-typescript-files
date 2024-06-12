@@ -14,5 +14,45 @@
 		"prefix": "each",
 		"body": "{{#each ${1:list} as |${2:alias}|}}\n\t${0}\n{{/each}}",
 		"description": "EACH"
+	},
+	"inc" : {
+		"prefix": "inc",
+		"body": "inc ${1:number}}",
+		"description": "INC"
+	},
+	"seq_contains": {
+		"prefix": "seq_contains",
+		"body": "seq_contains ${1:array} ${2:item}",
+		"description": "SEQ_CONTAINS"
+	},
+	"to_camel_case": {
+		"prefix": "to_camel_case",
+		"body": "{{to_camel_case ${1:string}}}",
+		"description": "TO_CAMEL_CASE"
+	},
+	"to_title_case": {
+		"prefix": "to_title_case",
+		"body": "{{to_title_case ${1:string}}}",
+		"description": "TO_TITLE_CASE"
+	},
+	"to_pascal_case": {
+		"prefix": "to_pascal_case",
+		"body": "{{to_pascal_case ${1:string}}}",
+		"description": "TO_PASCAL_CASE"
+	},
+	"to_hyphen_case": {
+		"prefix": "to_hyphen_case",
+		"body": "{{to_hyphen_case ${1:string}}}",
+		"description": "TO_HYPHEN_CASE"
+	},
+	"to_locale_lower_case_first": {
+		"prefix": "to_locale_lower_case_first",
+		"body": "{{to_locale_lower_case_first ${1:string}}}",
+		"description": "TO_LOCALE_LOWER_CASE_FIRST"
+	},
+	"case_from_json": {
+		"prefix": "case_from_json",
+		"body": "{{case_from_json ${1:string}}}",
+		"description": "CASE_FROM_JSON"
 	}
 }
