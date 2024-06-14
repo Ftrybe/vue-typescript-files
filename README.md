@@ -28,6 +28,7 @@
 
 当使用带有`$`符号的参数时，将对模版名称进行拼接查找。如： 如果选择创建`Class`，文件名输入 `User $-dialog` 那么将会寻找在定义模版路径下的 `class-dialog`文件进行渲染。
 
+
 ### 配置说明
 
 需要添加全局组件前后缀请选择  
@@ -57,17 +58,10 @@
 7. vuex => vuex: vuex.tmpl
 
 该插件使用 ```handlebars```进行模版渲染，相关语法自行进行了解。  
-本插件主要返回以下属性： 
 
-```
-    如输入componentName
-    hyphensName:  中线分隔的名称 component-name
-    inputName : 输入的文件名称 
-    resourcesName: 资源类型.包括component, class, declare, directive,enum,interface, vuex
-    dynamicName： 大写开头的动态名称
-    args: 拼接的参数
-```
+**自定义模版参数**
 
+设置`enableExtendParams`参数为`true`后，将在每次执行渲染前获取当前工作区`.vue-typescript-files`目录下的`mapping.json`文件。
 
 
 ## Additional Support

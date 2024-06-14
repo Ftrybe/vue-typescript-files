@@ -54,7 +54,7 @@
 4. directive =>  directive.tmpl 
 5. enum => enum.tmpl 
 6. interface => interface.tmpl
-7. vuex => vuex: vuex.tmpl
+7. vuex => vuex.tmpl
 
 该插件使用 ```handlebars```进行模版渲染，相关语法自行进行了解。  
 本插件主要返回以下属性： 

@@ -2,14 +2,14 @@
 	"name": "vue-typescript-file",
 	"displayName": "%displayName%",
 	"description": "%description%",
-	"version": "1.2.0",
+	"version": "2.0.0",
 	"icon": "images/icon.png",
 	"publisher": "ftrybe",
 	"author": {
 		"name": "ftrybe"
 	},
 	"engines": {
-		"vscode": "^1.43.0"
+		"vscode": "^1.90.0"
 	},
 	"categories": [
 		"Other",
@@ -22,11 +22,12 @@
 		"vue files",
 		"vue typescript",
 		"vue-typescript",
+		"templates",
 		"right click",
 		"generate files"
 	],
 	"activationEvents": [
-		"*"
+		"onStartupFinished"
 	],
 	"repository": {
 		"type": "git",
@@ -49,6 +50,11 @@
 					"type": "string",
 					"default": null,
 					"description": "%customTemplatePath%"
+				},
+				"vue-typescript-files.template.enableExtendParams" : {
+					"type": "boolean",
+					"default": false,
+					"description": "%enableTemplateExtendParams%"
 				},
 				"vue-typescript-files.menu.component": {
 					"type": "boolean",

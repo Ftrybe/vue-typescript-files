@@ -60,7 +60,7 @@ export class FileContents {
     }
     const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
-      const text = this.textCase(templateName, inputName, filteredArray);
+      const text = this.textCase(templateName, inputName, filteredArray, {});
       const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
       result = templateDelegate(text);
@@ -87,7 +87,7 @@ export class FileContents {
     };
   }
 
-  private textCase(templateName: Menu, inputName: string, args: string[]): {} {
+  private textCase(templateName: Menu, inputName: string, args: string[], extendParams: {}): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
     let className = inputName;
@@ -98,16 +98,17 @@ export class FileContents {
     }
 
     // 获取配置信息
-    className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;
-    
-    const result = {
+    className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;  
+    let result = {
       inputName: inputName,
       args: args,
       resourcesName: resourcesName,
       hyphensName: StringFormatting.toHyphenCase(className),
       dynamicName: StringFormatting.toPascalCase(className),
       fileName: StringFormatting.toPascalCase(inputName),
+      ...extendParams
     }
+
     return result;
   }
 

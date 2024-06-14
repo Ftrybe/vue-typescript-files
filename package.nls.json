@@ -1,7 +1,7 @@
 {
 	
     "displayName": "Vue TypeScript Files",
-    "description": "Easily create Vue TypeScript components by right-clicking on a folder.",
+    "description": "Easily create components by right-clicking on a folder. Using handlebars templates.",
 	"generateComponent": "Generate Component",
 	"generateVuexModule": "Generate Vuex Module",
 	"generateDeclare": "Generate Declare",
@@ -10,6 +10,7 @@
 	"generateInterface": "Generate Interface",
 	"generateEnum": "Generate Enum",
     "customTemplatePath": "Path to custom template",
+    "enableTemplateExtendParams": "Enable extended parameters to search for the mapping.json file within the .vue-typescript-files directory of the current workspace.",
     "toggleComponentButton": "Toggle visibility of the 'Add Component' button",
     "toggleVuexModuleButton": "Toggle visibility of the 'Add Vuex Submodule' button",
     "toggleGlobalDeclareButton": "Toggle visibility of the 'Add Global Declaration' button",
