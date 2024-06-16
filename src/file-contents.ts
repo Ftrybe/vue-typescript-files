@@ -1,5 +1,5 @@
 import * as fs from 'fs-extra';
-import * as path from 'path';
+import { join }  from 'path';
 import StringFormatting from './formatting';
 import { HandleBarsHelper } from './handlebars-helper';
 import * as vscode from 'vscode';
@@ -7,6 +7,7 @@ import { FileNameUtils } from './file-name.utils';
 import { Menu } from './enums/menu';
 import { FileConfig } from './models/file-config';
 import { TemplateConfig } from "./models/template-config";
+import ExtendParams from './extend-params';
 export class FileContents {
   private readonly TEMPLATES_FOLDER = 'templates';
   private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
@@ -17,13 +18,14 @@ export class FileContents {
   }
 
   private getTemplate(workspacePath: string , templateName: string): string {
-    const workspaceConfigDir = workspacePath + '/.' + this.NEW_CONFIG_NAME;
+    const workspaceConfigDir = join(workspacePath, '.' + this.NEW_CONFIG_NAME);
     // 获取当前工作区下是否有自定义模版
     const hasworkspaceConfigDir = fs.existsSync(workspaceConfigDir);
     
     if (hasworkspaceConfigDir) {
-      if  (fs.existsSync(workspaceConfigDir + "/" + templateName)) {
-        return fs.readFileSync(workspaceConfigDir + "/" + templateName, 'utf8');
+      const templatePath = join(workspaceConfigDir, templateName);
+      if  (fs.existsSync(templatePath)) {
+        return fs.readFileSync(templatePath, 'utf8');
       }
     }
     // * 解析模版配置
@@ -33,11 +35,11 @@ export class FileContents {
     
     const customPath = templateConfig.path;
     
-    if (customPath && fs.existsSync(path.join(customPath, templateName)) ) {
-      return fs.readFileSync(path.join(customPath, templateName), 'utf8');
+    if (customPath && fs.existsSync(join(customPath, templateName)) ) {
+      return fs.readFileSync(join(customPath, templateName), 'utf8');
     }
     
-    return fs.readFileSync(path.join(__dirname, this.TEMPLATES_FOLDER, templateName), 'utf8');
+    return fs.readFileSync(join(__dirname, this.TEMPLATES_FOLDER, templateName), 'utf8');
 
   }
 
@@ -48,7 +50,7 @@ export class FileContents {
   }
 
   // 获得修改后的模板内容
-  public getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
+  public async getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
     let result = '';
     let tmplName = templateName.toString();
     const workspacePath = this.getWorkspacePath(uri);
@@ -60,7 +62,8 @@ export class FileContents {
     }
     const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
-      const text = this.textCase(templateName, inputName, filteredArray, {});
+      const params = await ExtendParams.getExtendParams(workspacePath, templateName,inputName);
+      const text = this.textCase(templateName, inputName, filteredArray, params);
       const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
       result = templateDelegate(text);
@@ -96,7 +99,6 @@ export class FileContents {
     if(this.parseConfig("file")?.spotStyleName){
       className = StringFormatting.replaceDotWithHyphen(className);
     }
-
     // 获取配置信息
     className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;  
     let result = {

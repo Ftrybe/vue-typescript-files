@@ -6,7 +6,7 @@ export class FileNameUtils {
         return str.substring(0, str.indexOf("."));
     }
 
-    public static getSuffix(menuName: Menu | string): string {
+    public static getFileSuffix(menuName: Menu | string): string {
         let suffix = "";
         switch (menuName) {
             case Menu.component:

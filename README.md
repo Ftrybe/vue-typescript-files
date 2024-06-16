@@ -63,6 +63,43 @@
 
 设置`enableExtendParams`参数为`true`后，将在每次执行渲染前获取当前工作区`.vue-typescript-files`目录下的`mapping.json`文件。
 
+``` json
+
+{
+  "table": {
+    "type": "api",
+    "value": "http://localhost:8086/api/tables",
+    "scope": ["class"],
+    "headers": {
+      "Authorization": "bearer xxxx"
+    }
+  },
+  "version": "1.0.0",
+  "js": {
+      "type": "js",
+      "value": ".vue-typescript-files/hello-word.js",
+      "scope": ["class"]
+  },
+  "json": {
+    "type": "json",
+    "value": ".vue-typescript-files/test.json"
+  }
+}
+
+```
+
+在`tmpl`文件时渲染前将根据`type`调用不同类型的操作，返回的结果集将会以`key-value`形式存储在 `extend`变量中.如以上`mapping.json文件`,在成功获取数据后，通过以下方式调用值。
+
+```class.tmpl
+export class {{dynamicName}} {
+  const version = {{extend.version}};
+
+  {{#each extend.tables  as | tables |}}
+    {{tables.name}}
+  {{/each}}
+}
+
+```
 
 ## Additional Support
 * [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting vue-typescript-file project.
