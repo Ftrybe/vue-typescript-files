@@ -8,6 +8,7 @@ import { Menu } from './enums/menu';
 import { FileConfig } from './models/file-config';
 import { TemplateConfig } from "./models/template-config";
 import ExtendParams from './extend-params';
+import { CommandOptions } from "./models/command-options";
 export class FileContents {
   private readonly TEMPLATES_FOLDER = 'templates';
   private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
@@ -54,15 +55,15 @@ export class FileContents {
     let result = '';
     let tmplName = templateName.toString();
     const workspacePath = this.getWorkspacePath(uri);
-    const { extendArgs, tail } = this.buildArgs(args);
+    const options = this.buildArgs(args);
     
-    if (tail && tail != null && tail != undefined && tail != '') {
+    if (options.hasTemplateModifier()) {
       let [prefix, suffix] = tmplName.split(".");
-      tmplName = prefix + tail + "." + suffix;
+      tmplName = prefix + options.templateModifier + "." + suffix;
     }
     const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
-      const params = await ExtendParams.getExtendParams(workspacePath, templateName, inputName , extendArgs);
+      const params = await ExtendParams.getExtendParams(workspacePath, templateName, inputName,options);
       const text = this.textCase(templateName, inputName, params);
       const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
@@ -71,12 +72,13 @@ export class FileContents {
     return result;
   }
 
-  private buildArgs(args: string[]): { extendArgs: string[], tail: string } {
-    let tail = '';
+  private buildArgs(args: string[]): CommandOptions {
+    let templateModifier = '';
     let foundDollar = false;
-    let extendArgs = [];
-    let skips: number[] = []; // 初始化跳过的索引数组
-
+    let scriptParameters: string[] = [];
+    let skips: number[] = [];
+    let dynamicPathParts: string[] = [];
+    let overridePath = '';
     for (let i = 0; i < args.length; i++) {
         if (skips.includes(i)) {
             continue; // 跳过已处理的参数
@@ -84,26 +86,32 @@ export class FileContents {
         const arg = args[i];
         
         if (!foundDollar && arg.startsWith("$")) {
-            tail = arg.substring(1);
+            templateModifier = arg.substring(1);
             foundDollar = true;
         } else if (arg.startsWith("-e")) {
             if (i + 1 < args.length) { // 确保有下一个元素
                 const next = args[i + 1];
                 if (next && next.includes('=')) { // 检查是否为 key=value 形式
-                    const [key, value] = next.split('=');
-                    if (key && value !== undefined) { // 确保 key 和 value 有效
-                      extendArgs.push(next);
-                        skips.push(i + 1); // 添加到跳过的索引中
-                    } 
-                } 
-            } 
-        } 
+                    scriptParameters.push(next);
+                    skips.push(i + 1); // 添加到跳过的索引中
+                }
+            }
+        } else if (arg.startsWith("-url")) {
+            if (i + 1 < args.length) { // 确保有下一个元素
+                overridePath = args[i + 1];
+                skips.push(i + 1); // 添加到跳过的索引中
+            }
+        } else if (arg.startsWith(":")) {
+            dynamicPathParts.push(arg.substring(1));
+        }
     }
 
-    return {
-        extendArgs: extendArgs, // 返回解析的参数
-        tail: tail
-    };
+    return  new CommandOptions(
+        scriptParameters,
+        templateModifier,
+        dynamicPathParts,
+        overridePath
+    )
 }
 
   private textCase(templateName: Menu, inputName: string, extendParams: {}): {} {

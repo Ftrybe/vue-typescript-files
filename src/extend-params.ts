@@ -1,12 +1,13 @@
-import { readJSONSync , readFileSync, exists } from "fs-extra";
+import { readJSONSync , readFileSync, exists, existsSync } from "fs-extra";
 import { get as httpGet } from "http"
 import { get as httpsGet } from "https"
 import { isAbsolute, join, basename, extname } from "path";
-import { Script, createContext,  } from "vm";
+import { Script, createContext  } from "vm";
 import { CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME } from "./config";
 import { window } from "vscode";
+import { CommandOptions } from "./models/command-options";
 export default class ExtendParams {
-	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string, args: string[]) {
+	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string, options: CommandOptions) {
 		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME);
 	
 		const result: any = {};
@@ -39,7 +40,7 @@ export default class ExtendParams {
 				const paramsType = obj["type"];
 				if (paramsType === 'api') {
 					try {
-						const response: any = await ExtendParams.getParamsFromApi(obj, filename, args);
+						const response: any = await ExtendParams.getParamsFromApi(obj, filename, options);
 						try {
 							// 尝试将响应解析为 JSON
 							const jsonData = JSON.parse(response);
@@ -54,7 +55,7 @@ export default class ExtendParams {
 						window.showErrorMessage(error.message);
 					}
 				} else if (paramsType === 'js') {
-					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj, args);
+					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj, options);
 				} else if (paramsType === 'json') {
 					result[key] = ExtendParams.getParamsFromJSON(workspaceFolder, filename);
 				}
@@ -69,15 +70,24 @@ export default class ExtendParams {
 		};
 	}
 	  // 从接口获取参数  // 从接口获取参数
-	  private static getParamsFromApi(obj: any, filename: string, args: string[]) {
+	  private static getParamsFromApi(obj: any, filename: string, options: CommandOptions) {
 		const headers = obj['headers'] ?? {};
 
 		return new Promise((resolve, reject) => {
 			// 根据 URL 协议选择 http 或 https 模块
-			const url = new URL(obj['value']);
+			const url = new URL(options.overidePathOrDefualt(obj['url']));
 			
-			const get = url.protocol === 'https' ? httpsGet : httpGet;
+			if (options.dynamicPathParts.length > 0) {
+				// 检查url路径里是否存在:xx 这种格式的变量，用来动态替换
+				options.dynamicPathParts.forEach(part => {
+					// part 的格式为 key=value
+					const [key, value] = part.split('=');
+					url.pathname = url.pathname.replace(`:${key}`, value);
+				})
+			}
 
+			const get = url.protocol === 'https' ? httpsGet : httpGet;
+			const args = options.scriptParameters;
 			if (args.length > 0) {
 				if (url.search != '') {
 					url.search += '&' + args.join('&');
@@ -119,17 +129,22 @@ export default class ExtendParams {
 
 
 	  // 调用本地js
-	  private static getParamsFromJs(workspaceFolder: string, filename: string, obj: any, args: string[]) {
-		let path = obj['value'];
+	  private static getParamsFromJs(workspaceFolder: string, filename: string, obj: any, options: CommandOptions) {
+		let path = options.overidePathOrDefualt(obj['value']);
 		if (!isAbsolute(path)) {
 			path = join(workspaceFolder, path);
 		}
+		if (!existsSync(path)) {
+			window.showErrorMessage('The script file does not exist: ' + path);
+			return {};
+		}
+
 		const code = readFileSync(path, 'utf-8');
 		const sandbox = {
 			module: {}, 
 			console: console, // 传递 console 对象以允许脚本中使用 console.log,
 			filename: filename,
-			args: args
+			args: options.scriptParameters
 		};
 		createContext(sandbox);
 
