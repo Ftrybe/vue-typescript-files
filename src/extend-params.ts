@@ -6,7 +6,7 @@ import { Script, createContext,  } from "vm";
 import { CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME } from "./config";
 import { window } from "vscode";
 export default class ExtendParams {
-	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string) {
+	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string, args: string[]) {
 		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME);
 	
 		const result: any = {};
@@ -28,23 +28,18 @@ export default class ExtendParams {
 				result[key] = obj["value"];
 
 				if (scope) {
-					if ( typeof scope === 'string') {
-						if (!scope.split(',').includes(templateBaseName)) {
-							continue
-						}
-	
+					if ( typeof scope === 'string' && !scope.split(',').includes(templateBaseName)) {
+						continue
 					}
-					if (Array.isArray(scope)) {
-						if (!scope.includes(templateBaseName)) {
-							continue
-						}
+					if (Array.isArray(scope) && !scope.includes(templateBaseName)) {
+						continue
 					}
 				}
 
 				const paramsType = obj["type"];
 				if (paramsType === 'api') {
 					try {
-						const response: any = await ExtendParams.getParamsFromApi(workspaceFolder, filename, obj);
+						const response: any = await ExtendParams.getParamsFromApi(obj, filename, args);
 						try {
 							// 尝试将响应解析为 JSON
 							const jsonData = JSON.parse(response);
@@ -59,7 +54,7 @@ export default class ExtendParams {
 						window.showErrorMessage(error.message);
 					}
 				} else if (paramsType === 'js') {
-					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj);
+					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj, args);
 				} else if (paramsType === 'json') {
 					result[key] = ExtendParams.getParamsFromJSON(workspaceFolder, filename);
 				}
@@ -74,7 +69,7 @@ export default class ExtendParams {
 		};
 	}
 	  // 从接口获取参数  // 从接口获取参数
-	  private static getParamsFromApi(workspaceFolder: string, filename: string, obj: any) {
+	  private static getParamsFromApi(obj: any, filename: string, args: string[]) {
 		const headers = obj['headers'] ?? {};
 
 		return new Promise((resolve, reject) => {
@@ -83,6 +78,13 @@ export default class ExtendParams {
 			
 			const get = url.protocol === 'https' ? httpsGet : httpGet;
 
+			if (args.length > 0) {
+				if (url.search != '') {
+					url.search += '&' + args.join('&');
+				} else {
+					url.search = args.join('&');
+				}
+			}
 			const request = get({
 				host: url.hostname,
 				port: url.port || (url.protocol === 'https:' ? 443 : 80),
@@ -117,7 +119,7 @@ export default class ExtendParams {
 
 
 	  // 调用本地js
-	  private static getParamsFromJs(workspaceFolder: string, filename: string, obj: any) {
+	  private static getParamsFromJs(workspaceFolder: string, filename: string, obj: any, args: string[]) {
 		let path = obj['value'];
 		if (!isAbsolute(path)) {
 			path = join(workspaceFolder, path);
@@ -125,7 +127,9 @@ export default class ExtendParams {
 		const code = readFileSync(path, 'utf-8');
 		const sandbox = {
 			module: {}, 
-			console: console // 传递 console 对象以允许脚本中使用 console.log
+			console: console, // 传递 console 对象以允许脚本中使用 console.log,
+			filename: filename,
+			args: args
 		};
 		createContext(sandbox);
 

@@ -54,16 +54,16 @@ export class FileContents {
     let result = '';
     let tmplName = templateName.toString();
     const workspacePath = this.getWorkspacePath(uri);
-    const { filteredArray, flag } = this.filterAndExtractFlag(args);
+    const { extendArgs, tail } = this.buildArgs(args);
     
-    if (flag && flag != null && flag != undefined && flag != '') {
+    if (tail && tail != null && tail != undefined && tail != '') {
       let [prefix, suffix] = tmplName.split(".");
-      tmplName = prefix + flag + "." + suffix;
+      tmplName = prefix + tail + "." + suffix;
     }
     const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
-      const params = await ExtendParams.getExtendParams(workspacePath, templateName,inputName);
-      const text = this.textCase(templateName, inputName, filteredArray, params);
+      const params = await ExtendParams.getExtendParams(workspacePath, templateName, inputName , extendArgs);
+      const text = this.textCase(templateName, inputName, params);
       const intance = HandleBarsHelper.getInstance(workspacePath);
       const templateDelegate = intance.compile(template, { noEscape: true});
       result = templateDelegate(text);
@@ -71,26 +71,42 @@ export class FileContents {
     return result;
   }
 
-  private filterAndExtractFlag(args: string[]): any {
-    let filteredArray = [];
-    let flag = null;
+  private buildArgs(args: string[]): { extendArgs: string[], tail: string } {
+    let tail = '';
     let foundDollar = false;
+    let extendArgs = [];
+    let skips: number[] = []; // 初始化跳过的索引数组
 
     for (let i = 0; i < args.length; i++) {
-      if (!foundDollar && args[i].startsWith("$")) {
-        flag = args[i].substring(1);
-        foundDollar = true;
-      } else {
-        filteredArray.push(args[i]);
-      }
+        if (skips.includes(i)) {
+            continue; // 跳过已处理的参数
+        }
+        const arg = args[i];
+        
+        if (!foundDollar && arg.startsWith("$")) {
+            tail = arg.substring(1);
+            foundDollar = true;
+        } else if (arg.startsWith("-e")) {
+            if (i + 1 < args.length) { // 确保有下一个元素
+                const next = args[i + 1];
+                if (next && next.includes('=')) { // 检查是否为 key=value 形式
+                    const [key, value] = next.split('=');
+                    if (key && value !== undefined) { // 确保 key 和 value 有效
+                      extendArgs.push(next);
+                        skips.push(i + 1); // 添加到跳过的索引中
+                    } 
+                } 
+            } 
+        } 
     }
-    return {
-      filteredArray: filteredArray,
-      flag: flag
-    };
-  }
 
-  private textCase(templateName: Menu, inputName: string, args: string[], extendParams: {}): {} {
+    return {
+        extendArgs: extendArgs, // 返回解析的参数
+        tail: tail
+    };
+}
+
+  private textCase(templateName: Menu, inputName: string, extendParams: {}): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
     let className = inputName;
@@ -103,7 +119,6 @@ export class FileContents {
     className = fileConfig.prefix + (fileConfig.prefix ? "-" : "") + className + (fileConfig.suffix ? "-" : "") + fileConfig.suffix;  
     let result = {
       inputName: inputName,
-      args: args,
       resourcesName: resourcesName,
       hyphensName: StringFormatting.toHyphenCase(className),
       dynamicName: StringFormatting.toPascalCase(className),
