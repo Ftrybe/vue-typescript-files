@@ -1,4 +1,4 @@
-import { readJSONSync , readFileSync, exists, existsSync } from "fs-extra";
+import { readJSONSync , readFileSync, existsSync } from "fs-extra";
 import { get as httpGet } from "http"
 import { get as httpsGet } from "https"
 import { isAbsolute, join, basename, extname } from "path";
@@ -11,7 +11,7 @@ export default class ExtendParams {
 		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME);
 	
 		const result: any = {};
-		if (!exists(extendParamsPath)) {
+		if (!existsSync(extendParamsPath)) {
 			return result;
 		}
 		const templateBaseName = basename(templateName, extname(templateName))
