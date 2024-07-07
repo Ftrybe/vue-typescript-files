@@ -12,14 +12,14 @@
       <div class="sidebar">
 
         <div class="form-group">
-          <label for="fileName"></label>
-          <input type="text"  id="fileName"  placeholder="Enter File name" />
+          <label for="fileName">File Name</label>
+          <input type="text" id="fileName"  placeholder="Enter File name" />
         </div>
 
         <div class="form-group">
-          <label for="templateDir">Template Path</label>
+          <label for="templateDir">Template Directory</label>
           <div class="flex">
-            <input type="text" class="mr-1" id="templateDir" oninput="changeTemplateDir()" placeholder="Choose Template Dir" />
+            <input type="text" class="mr-1" id="templateDir" oninput="changeTemplateDir()" placeholder="Choose Template Directory" />
             <button id="loadTemplate" onclick="loadTemplateFiles()">Load</button>
           </div>
         </div>

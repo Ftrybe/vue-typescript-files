@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import  { readFileSync, pathExistsSync,readdirSync } from "fs-extra";
 import { join } from 'path';
-import { HANDLEBARS_FILE_SUFFIX } from "./config";
+import { HANDLEBARS_FILE_SUFFIX ,CONFIG_PATH } from "./config";
 export default class HandlebarsWebviewProvider implements vscode.WebviewViewProvider {
     private context:  vscode.ExtensionContext;
 	private _view?: vscode.WebviewView;
@@ -26,6 +26,9 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 		this._onDidReceiveMessage();
 
 		webviewView.show?.();
+		
+		this.postDefaultValue();
+
 		vscode.commands.executeCommand('extension.createWebviewPanel');
 
 		webviewView.onDidChangeVisibility((state) => {
@@ -38,6 +41,24 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 
     }
 
+
+	private postDefaultValue() {
+		const workspaces = vscode.workspace.workspaceFolders;
+		if (!workspaces) {
+			return
+		}
+		for (let workspace of workspaces) {
+			const configDir = join(workspace.uri.fsPath, CONFIG_PATH);
+			if (pathExistsSync(configDir)) {
+				const tempList = this.getTempList(configDir);
+				this._view?.webview.postMessage({command: 'defaultValue', data: {
+					tempList: tempList,
+					dirPath: configDir
+				}})
+				return;
+			}
+		}
+	}
 
 	// 接受页面中传来的消息
 	private _onDidReceiveMessage() {
@@ -74,11 +95,7 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 	private handleLoadFolder(message: any) {
 		const path = message.data;
 		if (pathExistsSync(path)) {
-			const files = readdirSync(path);
-			const tempList = files.filter( name => name.endsWith(HANDLEBARS_FILE_SUFFIX)).map(name => ({
-					name: name,
-					path: join(path, name)
-			}));
+			const tempList = this.getTempList(path);
 			if (tempList.length == 0) {
 				vscode.window.showInformationMessage("Template File Not Found or Access Denied");
 				return
@@ -87,6 +104,18 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 		} else {
 			vscode.window.showErrorMessage("Folder Not Found");
 		}
+	}
+
+	private getTempList(path: string) {
+		const files = readdirSync(path);
+		if (files.length == 0) {
+			return []
+		}
+		const tempList = files.filter( name => name.endsWith(HANDLEBARS_FILE_SUFFIX)).map(name => ({
+				name: name,
+				path: join(path, name)
+		}));
+		return tempList;
 	}
 
     private _getHtmlForWebview(webview: vscode.Webview): string {

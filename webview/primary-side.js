@@ -20,7 +20,24 @@ function loadTemplateFiles() {
   
 }
 
+function setTemplateOptions(list) {
+  const node = document.getElementById("template");
+  node.innerHTML = '';
+  list.forEach(file => {
+   const option = document.createElement('option');
+   option.value = file.path;
+   option.textContent = file.name;
+   node.appendChild(option);
+ });
+}
 
+
+function loadDefaultValue(value) {
+    const { tempList, dirPath } = value;
+    const dirNode = document.getElementById("templateDir")
+    dirNode.value = dirPath;
+    this.setTemplateOptions(tempList);
+}
 
 function listenPostMessage() {
   window.addEventListener('message', event => {
@@ -28,19 +45,14 @@ function listenPostMessage() {
 
     switch (message.command) {
       case 'restoreInput':
-        console.log(1)
         break;
       case "loadTemplateFiles":
          const tempList = message.data;
-         const node = document.getElementById("template");
-         node.innerHTML = '';
-         tempList.forEach(file => {
-          const option = document.createElement('option');
-          option.value = file.path;
-          option.textContent = file.name;
-          node.appendChild(option);
-        });
-      break; 
+         this.setTemplateOptions(tempList);
+         break;
+      case "defaultValue": 
+        const value = message.data;
+        this.loadDefaultValue(value);
     }
   });
 }
@@ -269,10 +281,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       customParams.push({ key, type, value });
     }
-
-    console.log('Template:', template);
-    console.log('templateDir:', templateDir);
-    console.log('Custom Parameters:', customParams);
 
     pushMessage('preview', {
       data: {
