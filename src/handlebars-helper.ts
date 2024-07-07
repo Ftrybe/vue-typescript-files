@@ -66,7 +66,7 @@ export class HandleBarsHelper {
                 return StringFormatter.toLocaleLowerCaseFirst(v1);
             },
             case_from_json: function(v1, filename) {
-                const text = IOUtil.readText(HandleBarsHelper.workspacePath,filename);
+                const text = IOUtil.readText(filename, HandleBarsHelper.workspacePath);
                 const json = JSON.parse(text);
                 return json[v1] ?? json['default'];
             }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="{{scriptUri}}"></script>
+    <link rel="stylesheet" href="{{styleUri}}" />
+      <title>Handlebar Preview</title>
+    </head>
+
+    <body>
+      <div class="sidebar">
+
+        <div class="form-group">
+          <label for="fileName"></label>
+          <input type="text"  id="fileName"  placeholder="Enter File name" />
+        </div>
+
+        <div class="form-group">
+          <label for="templateDir">Template Path</label>
+          <div class="flex">
+            <input type="text" class="mr-1" id="templateDir" oninput="changeTemplateDir()" placeholder="Choose Template Dir" />
+            <button id="loadTemplate" onclick="loadTemplateFiles()">Load</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="template">Choose Template</label>
+          <select id="template">
+            <option value="">Choose templates...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="customParams">Custom Parameters</label>
+          <div id="customParamsContainer"></div>
+          <button class="add-button" id="addParamButton">Add Parameter</button>
+        </div>
+        <button id="previewButton">Preview</button>
+      </div>
+  </body>
+</html>

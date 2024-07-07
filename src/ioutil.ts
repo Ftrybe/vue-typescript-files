@@ -52,7 +52,7 @@ export default class IOUtil {
     return flag;
   }
 
-  public static readText(rootPath: string, url: string): string {
+  public static readText(url: string, rootPath: string): string {
     let filePath: string;
     if (isAbsolute(url)) {
       filePath = url;

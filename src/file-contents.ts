@@ -9,6 +9,7 @@ import { FileConfig } from './models/file-config';
 import { TemplateConfig } from "./models/template-config";
 import ExtendParams from './extend-params';
 import { CommandOptions } from "./models/command-options";
+import { HANDLEBARS_FILE_SPLIT_SYMBOL } from './config';
 export class FileContents {
   private readonly TEMPLATES_FOLDER = 'templates';
   private readonly NEW_CONFIG_NAME = 'vue-typescript-files';
@@ -39,8 +40,14 @@ export class FileContents {
     if (customPath && fs.existsSync(join(customPath, templateName)) ) {
       return fs.readFileSync(join(customPath, templateName), 'utf8');
     }
+
+    const rootPath = join(__dirname, this.TEMPLATES_FOLDER, templateName);
+
+    if (fs.existsSync(rootPath)) {
+      return fs.readFileSync(rootPath, 'utf8');
+    }
     
-    return fs.readFileSync(join(__dirname, this.TEMPLATES_FOLDER, templateName), 'utf8');
+    return '';
 
   }
 
@@ -59,7 +66,7 @@ export class FileContents {
     
     if (options.hasTemplateModifier()) {
       let [prefix, suffix] = tmplName.split(".");
-      tmplName = prefix + options.templateModifier + "." + suffix;
+      tmplName = prefix + HANDLEBARS_FILE_SPLIT_SYMBOL + options.templateModifier + "." + suffix;
     }
     const template = this.getTemplate(workspacePath,tmplName);
     if (template && template != '') {
@@ -106,7 +113,7 @@ export class FileContents {
         }
     }
 
-    return  new CommandOptions(
+    return new CommandOptions(
         scriptParameters,
         templateModifier,
         dynamicPathParts,

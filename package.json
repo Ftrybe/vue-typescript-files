@@ -136,6 +136,14 @@
 			{
 				"command": "extension.addEnum",
 				"title": "%generateEnum%"
+			},
+			{
+				"command": "extension.createWebviewPanel",
+				"title": "Show Panel"
+			},
+			{
+				"command": "extension.updateWebviewPanel",
+				"title": "Show Panel"
 			}
 		],
 		"menus": {
@@ -208,13 +216,31 @@
 				"language": "handlebars",
 				"path": "./snippets/handlebars.snippets.json"
 			}
-		]
+		],
+		 "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "handlebarPreviewViewContainer",
+                    "title": "Handlebars Preview",
+                    "icon": "images/icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "handlebarPreviewViewContainer": [
+                {
+                    "id": "handlebarPreviewView",
+                    "name": "Handlebars Preview",
+					"type": "webview"
+                }
+            ]
+        }
 	},
 	"scripts": {
-		"templates": "copyfiles templates/**/*.tmpl ./out/",
-		"vscode:prepublish": "npm run templates && tsc -p ./",
-		"compile": "npm run templates watch",
-		"watch": "tsc -watch -p ./",
+		"copy-assets": "copyfiles webview/**/* ./out/ && copyfiles templates/**/*.tmpl ./out/",
+		"vscode:prepublish": "npm run copy-assets && tsc -p ./",
+		"compile": "npm run copy-assets && npm run watch",
+		"watch": "npm run copy-assets && tsc -watch -p ./",
 		"pretest": "npm run compile",
 		"test": "node ./out/test/runTest.js"
 	},

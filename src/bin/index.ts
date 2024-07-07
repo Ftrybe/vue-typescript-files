@@ -6,8 +6,9 @@ import Extension from '../extension';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-   const ex:Extension = new Extension();
-   ex.registerCommands(context);
+   const ex: Extension = new Extension();
+   ex.loadExtend(context);
+
 	// Extension.registerCommands(context);
 }
 // this method is called when your extension is deactivated

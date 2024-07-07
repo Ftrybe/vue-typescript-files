@@ -1,0 +1,182 @@
+.sidebar {
+  /* width: 100%; */
+  padding: 16px;
+  border: 1px solid #e6e1e117;
+  box-shadow: 1px 1px 12px #aaaaaa33;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+.form-group select,
+.form-group textarea,
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.flex {
+  display: flex;
+}
+
+.mr-1 {
+  margin-right: 4px;
+}
+
+.key-value-pair {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+.key-value-pair input,
+.key-value-pair select {
+  flex: 1;
+  margin-bottom: 5px;
+}
+
+.key-value-pair input:first-child {
+  margin-right: 5px;
+}
+
+.key-value-pair .remove-button {
+  padding: 0 5px;
+  background-color: #f44336; /* 删除按钮颜色 */
+  transition: background-color 0.3s ease;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.key-value-pair:hover .remove-button {
+  display: block;
+}
+
+.remove-button:hover {
+  background-color: #da190b; /* 删除按钮悬停颜色 */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049; /* 主要按钮悬停颜色 */
+}
+.add-button {
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #2196f3; /* 添加按钮颜色 */
+}
+.add-button:hover {
+  background-color: #0b7dda; /* 添加按钮悬停颜色 */
+}
+
+.add-header-button {
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: #2590cfdb;
+  transition: background-color 0.3s ease;
+}
+.add-header-button:hover {
+  background-color: #0b7dda; /* 添加按钮悬停颜色 */
+}
+
+.value-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.headers-container {
+  margin-top: 5px;
+}
+.header-pair {
+  display: flex;
+  margin-bottom: 5px;
+  position: relative;
+}
+.header-pair input {
+  flex: 1;
+  margin-right: 5px;
+}
+.header-pair select {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.header-pair .remove-header-button {
+  background-color: #f44336; /* header删除按钮颜色 */
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 5px;
+  padding: 0 8px 0 7px;
+  margin-top: 2px;
+  transition: background-color 0.3s ease;
+}
+.header-pair .remove-header-button:hover {
+  background-color: #da190b; /* header删除按钮悬停颜色 */
+}
+
+.file-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.file-input-button {
+  width: 100%;
+  padding: 8px;
+  background-color: #f0f0f0; /* 文件选择按钮颜色 */
+  color: #333;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.file-input-button:hover {
+  background-color: #e0e0e0; /* 文件选择按钮悬停颜色 */
+}
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.autocomplete-list {
+  border-top: none;
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  top: 36px;
+}
+.autocomplete-item {
+  padding: 12px 8px;
+  cursor: pointer;
+  color: #111111;
+}
+.autocomplete-item:hover {
+  background-color: #ddd;
+}

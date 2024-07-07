@@ -57,7 +57,9 @@ export default class ExtendParams {
 				} else if (paramsType === 'js') {
 					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj, options);
 				} else if (paramsType === 'json') {
-					result[key] = ExtendParams.getParamsFromJSON(workspaceFolder, filename);
+					const path = join(workspaceFolder, filename);
+
+					result[key] = ExtendParams.getParamsFromJSON(path);
 				}
 			} else {
 				// 字符串类型
@@ -159,8 +161,7 @@ export default class ExtendParams {
 		return {};
 	  }
 
-	  private static getParamsFromJSON(workspaceFolder: string, filename: string) {
-		const path = join(workspaceFolder, filename);
+	  private static getParamsFromJSON(path: string) {
 		return readJSONSync(path, 'utf-8');
 	  }
 }

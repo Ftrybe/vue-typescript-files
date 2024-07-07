@@ -21,7 +21,10 @@
 		"src/**/*.tsx",
 		"src/**/*.vue",
 		"tests/**/*.ts",
-		"src/**/*/tmpl"
+		"src/**/*/tmpl",
+		"webview/*.js",
+		"webview/*.html",
+		"webview/primary-side.js"
 	],
 	"exclude": [
 		"node_modules",
