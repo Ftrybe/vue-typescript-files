@@ -1,22 +1,22 @@
-import { readJSONSync , readFileSync, existsSync } from "fs-extra";
+import { readJSONSync, readFileSync, existsSync } from "fs-extra";
 import { get as httpGet } from "http"
 import { get as httpsGet } from "https"
 import { isAbsolute, join, basename, extname } from "path";
-import { Script, createContext  } from "vm";
+import { Script, createContext } from "vm";
 import { CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME } from "./config";
 import { window } from "vscode";
 import { CommandOptions } from "./models/command-options";
 export default class ExtendParams {
 	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string, options: CommandOptions) {
 		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME);
-	
+
 		const result: any = {};
 		if (!existsSync(extendParamsPath)) {
 			return result;
 		}
 		const templateBaseName = basename(templateName, extname(templateName))
 		const extendParams = readJSONSync(extendParamsPath);
-	
+
 		const keys = Object.keys(extendParams);
 		for (let key of keys) {
 
@@ -29,7 +29,7 @@ export default class ExtendParams {
 				result[key] = obj["value"];
 
 				if (scope) {
-					if ( typeof scope === 'string' && !scope.split(',').includes(templateBaseName)) {
+					if (typeof scope === 'string' && !scope.split(',').includes(templateBaseName)) {
 						continue
 					}
 					if (Array.isArray(scope) && !scope.includes(templateBaseName)) {
@@ -40,7 +40,8 @@ export default class ExtendParams {
 				const paramsType = obj["type"];
 				if (paramsType === 'api') {
 					try {
-						const response: any = await ExtendParams.getParamsFromApi(obj, filename, options);
+						
+						const response: any = await ExtendParams.getParamsFromApi(obj['url'], obj['headers'] ?? {}, filename, options);
 						try {
 							// 尝试将响应解析为 JSON
 							const jsonData = JSON.parse(response);
@@ -51,11 +52,15 @@ export default class ExtendParams {
 							result[key] = response;
 							console.log("Response is not JSON, using as string:", response);
 						}
-					} catch(error: any) {
+					} catch (error: any) {
 						window.showErrorMessage(error.message);
 					}
 				} else if (paramsType === 'js') {
-					result[key] = ExtendParams.getParamsFromJs(workspaceFolder, filename, obj, options);
+					let path = options.overidePathOrDefualt(obj['value']);
+					if (!isAbsolute(path)) {
+						path = join(workspaceFolder, path);
+					}
+					result[key] = ExtendParams.getParamsFromJs(path, filename, options);
 				} else if (paramsType === 'json') {
 					const path = join(workspaceFolder, filename);
 
@@ -66,19 +71,59 @@ export default class ExtendParams {
 				result[key] = obj;
 			}
 		}
+
+		return {
+			extend: result
+		};
+	}
+
+
+	public static async buildCustomParams(customParams: any, filename: string) {
+		
+		const result: any = {};
+		for (let obj of customParams) {
+			const key = obj.key;
+			result[key] = obj.value;
+			if ( obj.type == 'api') {
+				try {
+
+					const { apiUrl, headers } = obj.value;
+
+					const response: any = await ExtendParams.getParamsFromApi(apiUrl, headers, filename, CommandOptions.empty);
+					try {
+						// 尝试将响应解析为 JSON
+						const jsonData = JSON.parse(response);
+						result[key] = jsonData;
+						console.log("Data parsed as JSON:", jsonData);
+					} catch (error) {
+						// 如果解析失败，假定响应是普通文本
+						result[key] = response;
+						console.log("Response is not JSON, using as string:", response);
+					}
+				} catch(error: any) {
+					window.showErrorMessage(error.message);
+				}
+			} else if (obj.type === 'js') {
+				result[key] = ExtendParams.getParamsFromJs(obj.value, filename, CommandOptions.empty);
+
+			} else if (obj.type === 'json') { 
+				result[key] = ExtendParams.getParamsFromJSON(obj.value);
+
+			}
+		}
 		
 		return {
 			extend: result
 		};
 	}
-	  // 从接口获取参数  // 从接口获取参数
-	  private static getParamsFromApi(obj: any, filename: string, options: CommandOptions) {
-		const headers = obj['headers'] ?? {};
+	// 从接口获取参数  // 从接口获取参数
+	private static getParamsFromApi(apiUrl: string, headers: any,  filename: string, options: CommandOptions) {
+		// const headers = obj['headers'] ?? {};
 
 		return new Promise((resolve, reject) => {
 			// 根据 URL 协议选择 http 或 https 模块
-			const url = new URL(options.overidePathOrDefualt(obj['url']));
-			
+			const url = new URL(options.overidePathOrDefualt(apiUrl));
+
 			if (options.dynamicPathParts.length > 0) {
 				// 检查url路径里是否存在:xx 这种格式的变量，用来动态替换
 				options.dynamicPathParts.forEach(part => {
@@ -111,7 +156,7 @@ export default class ExtendParams {
 					reject(new Error('404 Not Found'));
 				}
 
-				if ( code < 200 || code > 299) {
+				if (code < 200 || code > 299) {
 					reject(new Error('Failed to load page, status code: ' + response.statusCode));
 				}
 
@@ -126,16 +171,13 @@ export default class ExtendParams {
 			// 监听请求错误
 			request.on('error', (err) => reject(err))
 		});
+
+	}
+
+
+	// 调用本地js
+	private static getParamsFromJs(path: string, filename: string, options: CommandOptions) {
 		
-	  }
-
-
-	  // 调用本地js
-	  private static getParamsFromJs(workspaceFolder: string, filename: string, obj: any, options: CommandOptions) {
-		let path = options.overidePathOrDefualt(obj['value']);
-		if (!isAbsolute(path)) {
-			path = join(workspaceFolder, path);
-		}
 		if (!existsSync(path)) {
 			window.showErrorMessage('The script file does not exist: ' + path);
 			return {};
@@ -143,14 +185,14 @@ export default class ExtendParams {
 
 		const code = readFileSync(path, 'utf-8');
 		const sandbox = {
-			module: {}, 
+			module: {},
 			console: console, // 传递 console 对象以允许脚本中使用 console.log,
 			filename: filename,
 			args: options.scriptParameters
 		};
 		createContext(sandbox);
 
-	// 执行代码
+		// 执行代码
 		try {
 			const script = new Script(code);
 			return script.runInContext(sandbox);
@@ -159,9 +201,9 @@ export default class ExtendParams {
 		}
 
 		return {};
-	  }
+	}
 
-	  private static getParamsFromJSON(path: string) {
+	private static getParamsFromJSON(path: string) {
 		return readJSONSync(path, 'utf-8');
-	  }
+	}
 }

@@ -121,7 +121,7 @@ export class FileContents {
     )
 }
 
-  private textCase(templateName: Menu, inputName: string, extendParams: {}): {} {
+  public textCase(templateName: string | Menu, inputName: string, extendParams: {}): {} {
     // const isHumpcase = (config.get("global") as any)["isHumpcase"];
     const resourcesName = FileNameUtils.removeSuffix(templateName).toLocaleLowerCase();
     let className = inputName;

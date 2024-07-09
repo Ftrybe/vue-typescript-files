@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
         case 'json':
           const fileInputElement = pair.children[2].children[0].children[1];
           if (fileInputElement.files && fileInputElement.files.length > 0) {
-            value = files[0].path;
+            value = fileInputElement.files[0].path;
           } else {
             console.error("No file selected or file list is empty.");
             value = null;

@@ -5,13 +5,15 @@ import HandlebarsWebviewProvider from "./primary-side-provider";
 import { readFileSync } from "fs-extra";
 import ExtendParams from "./extend-params";
 import { HandleBarsHelper } from "./handlebars-helper";
+import { basename } from "path";
+import { FileContents } from "./file-contents";
 export default class Extension{
 	private dialog: Dialog;
 
 
 	private panel: vscode.WebviewPanel | undefined;
 
-	constructor(){
+	constructor(private readonly fc = new FileContents()){
 		this.dialog = new Dialog();
 	}
 
@@ -47,18 +49,23 @@ export default class Extension{
 				this.createWebviewPanel('');
 			}
 		});
-		const updateWebviewPanelCommand = vscode.commands.registerCommand('extension.updateWebviewPanel', (value) => {
+		const updateWebviewPanelCommand = vscode.commands.registerCommand('extension.updateWebviewPanel',async (value : {
+			fileName: string
+			template: string
+			templateDir: string
+			customParams: any
+		}) => {
 			const content = readFileSync(value.template, { encoding: 'utf-8'})
 
-			// const params = await ExtendParams.getExtendParams(workspacePath, templateName, inputName, options);
-			// const text = this.textCase(templateName, inputName, params);
-			// const intance = HandleBarsHelper.getInstance(workspacePath);
-			// const templateDelegate = intance.compile(template, { noEscape: true});
-			// const result = templateDelegate(text);
-
+			const templateName = basename(value.template);
+			const params = await ExtendParams.buildCustomParams(value.customParams, value.fileName);
+			const text = this.fc.textCase(templateName, value.fileName, params);
+			const intance = HandleBarsHelper.getInstance(value.templateDir);
+			const templateDelegate = intance.compile(content, { noEscape: true});
+			const result = templateDelegate(text);
 
 			if (this.panel) {
-				this.panel.webview.html = this.getWebviewContent(content);
+				this.panel.webview.html = this.getWebviewContent(result);
 			} else {
 				this.createWebviewPanel(content);
 			}

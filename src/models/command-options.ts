@@ -18,4 +18,6 @@ export class CommandOptions {
 	public overidePathOrDefualt(defaultValue: string) {
 		return this.overridePath != null && this.overridePath.length > 0 ? this.overridePath : defaultValue;
 	}
+
+    public static empty =  new CommandOptions([], "", [], "");
 }
