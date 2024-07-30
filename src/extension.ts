@@ -55,6 +55,7 @@ export default class Extension{
 			templateDir: string
 			customParams: any
 		}) => {
+
 			const content = readFileSync(value.template, { encoding: 'utf-8'})
 
 			const templateName = basename(value.template);
