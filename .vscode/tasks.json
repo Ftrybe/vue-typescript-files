@@ -4,6 +4,11 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+            "type": "npm",
+            "script": "copy-assets",
+            "problemMatcher": []
+        },
+		{
 			"type": "npm",
 			"script": "watch",
 			"problemMatcher": "$tsc-watch",
@@ -13,8 +18,12 @@
 			},
 			"group": {
 				"kind": "build",
-				"isDefault": true
 			}
-		}
+		},
+		{
+            "label": "prepare and watch",
+            "dependsOn": ["npm: copy-assets", "npm: watch"],
+            "dependsOrder": "sequence"
+        }
 	]
 }

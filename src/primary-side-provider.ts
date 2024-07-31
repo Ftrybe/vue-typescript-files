@@ -21,29 +21,18 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 
 		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-		// const savedData = this.context.globalState.get('customParams', []);
-		// webviewView.webview.postMessage({ command: 'restoreData', data: savedData });
-
 		this._onDidReceiveMessage();
 
+		vscode.commands.executeCommand('extension.createPreviewWebview');
 
-		vscode.commands.executeCommand('extension.createWebviewPanel');
-
+		this.context.globalState.update('webviewState', {});
 		webviewView.onDidChangeVisibility((state) => {
 			if (webviewView.visible) {
+				vscode.commands.executeCommand('extension.createPreviewWebview');
 				webviewView.webview.postMessage({ command: 'restoreState', state: this._state });
-				vscode.commands.executeCommand('extension.createWebviewPanel');
-			} else {
-				webviewView.webview.postMessage({ command: 'saveState' });
 			}
 		})
-
 		// 恢复之前保存的状态
-		const savedState = this.context.globalState.get('webviewState');
-		if (savedState) {
-			this._state = savedState;
-			webviewView.webview.postMessage({ command: 'restoreState', state: this._state });
-		}
 
 		webviewView.show?.();
 		this.postDefaultValue();
@@ -79,14 +68,14 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 				case 'alert':
 					this.handleAlert(message);
 					break;
-				case 'saveInput':
-					this.context?.globalState.update('customParams', message.data);
-					break
 				case "loadTemplateFiles":
 					this.handleLoadFolder(message);
 					break
 				case "preview":
-					vscode.commands.executeCommand('extension.updateWebviewPanel', message.data);
+					vscode.commands.executeCommand('extension.updatePreviewWebview', message.data);
+					break;
+				case "previewParams":
+					this.loadCustomParams(message.data);
 					break;
 				case 'saveState':
 					// 保存状态到扩展上下文
@@ -132,6 +121,11 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 			path: join(path, name)
 		}));
 		return tempList;
+	}
+
+	private loadCustomParams(data: any) {
+
+		this._view?.webview.postMessage({ command: 'previewParams', data: {} });
 	}
 
 	private _getHtmlForWebview(webview: vscode.Webview): string {

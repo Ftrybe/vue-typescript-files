@@ -28,6 +28,18 @@
   margin-right: 4px;
 }
 
+.mt-3 {
+  margin-top: 12px;
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+.w-full {
+  width: 100%;
+}
+
 .key-value-pair {
   margin-bottom: 12px;
   display: flex;
@@ -79,21 +91,23 @@ button:hover {
 }
 .add-button {
   margin-bottom: 10px;
+  margin-right: 4px;
   cursor: pointer;
-  background-color: #2196f3; /* 添加按钮颜色 */
+  background-color: #14b4eecf; /* 添加按钮颜色 */
 }
+
 .add-button:hover {
   background-color: #0b7dda; /* 添加按钮悬停颜色 */
 }
 
-.add-header-button {
+.preview-params-button {
   margin-bottom: 10px;
+  margin-left: 4px;
   cursor: pointer;
-  background-color: #2590cfdb;
-  transition: background-color 0.3s ease;
+  background-color: #a2a7af;
 }
-.add-header-button:hover {
-  background-color: #0b7dda; /* 添加按钮悬停颜色 */
+.preview-params-button:hover {
+  background-color: #676c73;
 }
 
 .value-container {
@@ -111,6 +125,7 @@ button:hover {
 }
 .header-pair input {
   flex: 1;
+  height: 24px;
   margin-right: 5px;
 }
 .header-pair select {
@@ -179,4 +194,9 @@ button:hover {
 }
 .autocomplete-item:hover {
   background-color: #ddd;
+}
+
+.response-box {
+  box-shadow: 0 0 3px 0px #aeaeae;
+  width: 100%;
 }

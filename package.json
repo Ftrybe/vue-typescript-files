@@ -138,11 +138,11 @@
 				"title": "%generateEnum%"
 			},
 			{
-				"command": "extension.createWebviewPanel",
+				"command": "extension.createPreviewWebview",
 				"title": "Show Panel"
 			},
 			{
-				"command": "extension.updateWebviewPanel",
+				"command": "extension.updatePreviewWebview",
 				"title": "Show Panel"
 			}
 		],

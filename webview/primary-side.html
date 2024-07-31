@@ -13,13 +13,13 @@
 
         <div class="form-group">
           <label for="fileName">File Name</label>
-          <input type="text" id="fileName" oninput="changeFileName()" placeholder="Enter File name" />
+          <input type="text" id="fileName" oninput="onChangeFileName()" placeholder="Enter File name" />
         </div>
 
         <div class="form-group">
           <label for="templateDir">Template Directory</label>
           <div class="flex">
-            <input type="text" class="mr-1" id="templateDir" oninput="changeTemplateDir()" placeholder="Choose Template Directory" />
+            <input type="text" class="mr-1" id="templateDir" oninput="onChangeTemplateDir()" placeholder="Choose Template Directory" />
             <button id="loadTemplate" onclick="loadTemplateFiles()">Load</button>
           </div>
         </div>
@@ -33,9 +33,18 @@
         <div class="form-group">
           <label for="customParams">Custom Parameters</label>
           <div id="customParamsContainer"></div>
-          <button class="add-button" id="addParamButton">Add Parameter</button>
+          <div class="flex">
+            <button class="add-button w-full" id="addParamButton">Add Parameter</button>
+            <button class="preview-params-button w-full" id="previewParamButton">Preview Parameter</button>
+          </div>
+      
         </div>
         <button id="previewButton">Preview</button>
+
+        <div class="form-group mt-4">
+          <label for="response">Parameters</div>
+          <div class="response-box"><pre id="response"></pre></div>
+        </div>
       </div>
   </body>
 </html>

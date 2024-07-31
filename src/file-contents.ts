@@ -65,7 +65,7 @@ export class FileContents {
     const options = this.buildArgs(args);
     
     if (options.hasTemplateModifier()) {
-      let [prefix, suffix] = tmplName.split(".");
+      let [prefix, suffix] = tmplName.split("."); 
       tmplName = prefix + HANDLEBARS_FILE_SPLIT_SYMBOL + options.templateModifier + "." + suffix;
     }
     const template = this.getTemplate(workspacePath,tmplName);
@@ -127,7 +127,7 @@ export class FileContents {
     let className = inputName;
     let fileConfig: FileConfig = new FileConfig();
    
-    if(this.parseConfig("file")?.spotStyleName){
+    if(this.parseConfig("file")?.spotStyleName) {
       className = StringFormatting.replaceDotWithHyphen(className);
     }
     // 获取配置信息
