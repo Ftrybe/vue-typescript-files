@@ -56,6 +56,10 @@ function listenPostMessage () {
       case "defaultValue":
         const value = message.data;
         loadDefaultValue(value);
+        break;
+      case "previewParams":
+         loadPreviewParams(message.data);
+         break;
     }
   });
 }
@@ -68,6 +72,10 @@ function loadTemplateFiles () {
   pushMessage("loadTemplateFiles", { data: path });
 }
 
+
+function loadPreviewParams(data) {
+  document.getElementById("response").innerHTML = JSON.stringify(data, null, 2);
+}
 
 function loadDefaultValue (value) {
   const { tempList, dirPath } = value;

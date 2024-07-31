@@ -78,7 +78,7 @@ export default class ExtendParams {
 	}
 
 
-	public static async buildCustomParams(customParams: any, filename: string) {
+	public static async buildCustomParams(customParams: any, filename: string, options: CommandOptions = CommandOptions.empty) {
 		
 		const result: any = {};
 		for (let obj of customParams) {
@@ -89,7 +89,7 @@ export default class ExtendParams {
 
 					const { apiUrl, headers } = obj.value;
 
-					const response: any = await ExtendParams.getParamsFromApi(apiUrl, headers, filename, CommandOptions.empty);
+					const response: any = await ExtendParams.getParamsFromApi(apiUrl, headers, filename, options);
 					try {
 						// 尝试将响应解析为 JSON
 						const jsonData = JSON.parse(response);
@@ -104,7 +104,7 @@ export default class ExtendParams {
 					window.showErrorMessage(error.message);
 				}
 			} else if (obj.type === 'js') {
-				result[key] = ExtendParams.getParamsFromJs(obj.value, filename, CommandOptions.empty);
+				result[key] = ExtendParams.getParamsFromJs(obj.value, filename, options);
 
 			} else if (obj.type === 'json') { 
 				result[key] = ExtendParams.getParamsFromJSON(obj.value);

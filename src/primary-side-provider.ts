@@ -2,12 +2,15 @@ import * as vscode from "vscode";
 import { readFileSync, pathExistsSync, readdirSync } from "fs-extra";
 import { join } from 'path';
 import { HANDLEBARS_FILE_SUFFIX, CONFIG_PATH } from "./config";
+import { PreviewState } from "./models/preview-state";
+import { FileContents } from "./file-contents";
+import ExtendParams from "./extend-params";
 export default class HandlebarsWebviewProvider implements vscode.WebviewViewProvider {
 	private context: vscode.ExtensionContext;
 	private _view?: vscode.WebviewView;
 	private _state: any = {};
 
-	constructor(private readonly _context: vscode.ExtensionContext) {
+	constructor( private readonly _context: vscode.ExtensionContext, private readonly fc = new FileContents()) {
 		this.context = _context;
 	}
 
@@ -75,7 +78,7 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 					vscode.commands.executeCommand('extension.updatePreviewWebview', message.data);
 					break;
 				case "previewParams":
-					this.loadCustomParams(message.data);
+					this.loadCustomParams(message.data).then();
 					break;
 				case 'saveState':
 					// 保存状态到扩展上下文
@@ -122,10 +125,23 @@ export default class HandlebarsWebviewProvider implements vscode.WebviewViewProv
 		}));
 		return tempList;
 	}
+	private async loadCustomParams(data: PreviewState ) {
+		const { fileName, args } = this.parseInputName(data.fileName);
+		const templateName = data.template;
+		const options = this.fc.parseInputArgs(args);
+		const extendParams = await ExtendParams.buildCustomParams(data.customParams, fileName, options);
+        const params = this.fc.buildHandbarsParams(templateName, fileName, extendParams);
+		this._view?.webview.postMessage({ command: 'previewParams', data: params });
+	}
 
-	private loadCustomParams(data: any) {
-
-		this._view?.webview.postMessage({ command: 'previewParams', data: {} });
+	private parseInputName(inputName: string) {
+		const fileNameTokens = inputName.split(' ');
+		// 判断文件是否存在
+		const [fileName, ...args] = fileNameTokens;
+		return {
+			fileName,
+			args
+		}
 	}
 
 	private _getHtmlForWebview(webview: vscode.Webview): string {

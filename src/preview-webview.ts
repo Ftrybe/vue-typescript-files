@@ -32,9 +32,11 @@ export class PreviewWebview {
 			const content = readFileSync(value.template, { encoding: 'utf-8' })
 
 			const templateName = basename(value.template);
-			const params = await ExtendParams.buildCustomParams(value.customParams, value.fileName);
-			const text = this.fc.textCase(templateName, value.fileName, params);
-			const intance = HandleBarsHelper.getInstance(value.templateDir);
+			const { fileName, args } = this.parseInputName(value.fileName);
+			const options = this.fc.parseInputArgs(args);
+			const params = await ExtendParams.buildCustomParams(value.customParams, fileName, options);
+			const text = this.fc.buildHandbarsParams(templateName, value.fileName, params);
+			const intance = HandleBarsHelper.getInstance();
 			const templateDelegate = intance.compile(content, { noEscape: true });
 			const result = templateDelegate(text);
 
@@ -48,10 +50,21 @@ export class PreviewWebview {
 		context.subscriptions.push(updatePreviewWebviewCommand);
 	}
 
+	private parseInputName(inputName: string) {
+		const fileNameTokens = inputName.split(' ');
+		// 判断文件是否存在
+		const [fileName, ...args] = fileNameTokens;
+		return {
+			fileName,
+			args
+		}
+	}
+
+
 	private createPreviewWebview(content: string) {
 		this.panel = vscode.window.createWebviewPanel(
 			'vue-typescript-files',
-			'vue-typescript-files',
+			'Preview',
 			vscode.ViewColumn.One,
 			{
 				retainContextWhenHidden: true,

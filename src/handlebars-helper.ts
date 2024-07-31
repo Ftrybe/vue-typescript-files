@@ -5,11 +5,9 @@ import IOUtil from "./ioutil";
 export class HandleBarsHelper {
 
     private static instance: typeof HandleBars = HandleBars.create();
-    private static workspacePath: string;
 
-    public static getInstance(workspacePath: string): typeof HandleBars {
+    public static getInstance(): typeof HandleBars {
         this.handlebarHelper(this.instance);
-        this.workspacePath = workspacePath;
         return this.instance;
     }
 
@@ -64,11 +62,6 @@ export class HandleBarsHelper {
             },
             to_locale_lower_case_first: function(v1) {
                 return StringFormatter.toLocaleLowerCaseFirst(v1);
-            },
-            case_from_json: function(v1, filename) {
-                const text = IOUtil.readText(filename, HandleBarsHelper.workspacePath);
-                const json = JSON.parse(text);
-                return json[v1] ?? json['default'];
             }
         });
     }

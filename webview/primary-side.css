@@ -200,3 +200,8 @@ button:hover {
   box-shadow: 0 0 3px 0px #aeaeae;
   width: 100%;
 }
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
