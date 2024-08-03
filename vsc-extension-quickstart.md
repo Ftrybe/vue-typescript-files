@@ -1,4 +1,4 @@
-# vue-typescript-file 说明
+# vue-typescript-files 说明
 
 ## 预览  
 

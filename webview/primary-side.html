@@ -24,6 +24,11 @@
           </div>
         </div>
 
+        <div class="sync">
+          <span> Sync and update config files</span>
+          <input type="checkbox" id="syncConfig" onchange="onSyncConfig()">
+        </div>
+
         <div class="form-group">
           <label for="template">Choose Template</label>
           <select id="template">
@@ -37,8 +42,9 @@
             <button class="add-button w-full" id="addParamButton">Add Parameter</button>
             <button class="preview-params-button w-full" id="previewParamButton">Preview Parameter</button>
           </div>
-      
         </div>
+
+   
         <button id="previewButton">Preview</button>
 
         <div class="form-group mt-4">

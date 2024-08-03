@@ -155,7 +155,8 @@ button:hover {
 .file-input-button {
   width: 100%;
   padding: 8px;
-  background-color: #f0f0f0; /* 文件选择按钮颜色 */
+  background-color: #b7b7b7f5;
+  border-radius: 2px;
   color: #333;
   border: none;
   cursor: pointer;
@@ -204,4 +205,13 @@ button:hover {
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+.sync {
+  margin-top: -8px;
+  margin-bottom: 16px;
+  display: flex;
+  span {
+    padding-top: 2px;
+  }
 }

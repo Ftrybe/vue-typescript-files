@@ -1,4 +1,4 @@
-# vue-typescript-file 说明
+# vue-typescript-files 说明
 
 ## 预览  
 
@@ -61,7 +61,7 @@
 
 **自定义模版参数**
 
-设置`enableExtendParams`参数为`true`后，将在每次执行渲染前获取当前工作区`.vue-typescript-files`目录下的`mapping.json`文件。
+设置`enableExtendParams`参数为`true`后，将在每次执行渲染前获取当前工作区`.vue-typescript-files`目录下的`params.json`文件。
 
 ``` json
 
@@ -88,7 +88,7 @@
 
 ```
 
-在`tmpl`文件时渲染前将根据`type`调用不同类型的操作，返回的结果集将会以`key-value`形式存储在 `extend`变量中.如以上`mapping.json文件`,在成功获取数据后，通过以下方式调用值。
+在`tmpl`文件时渲染前将根据`type`调用不同类型的操作，返回的结果集将会以`key-value`形式存储在 `extend`变量中.如以上`params.json文件`,在成功获取数据后，通过以下方式调用值。
 
 ```class.tmpl
 export class {{dynamicName}} {
@@ -102,5 +102,5 @@ export class {{dynamicName}} {
 ```
 
 ## Additional Support
-* [JetBrains](https://www.jetbrains.com/?from=vue-typescript-file) - Thanks a lot for supporting vue-typescript-file project.
+* [JetBrains](https://www.jetbrains.com/?from=vue-typescript-files) - Thanks a lot for supporting vue-typescript-files project.
   ![image](/images/JetBrains.png)  

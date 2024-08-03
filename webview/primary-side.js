@@ -18,7 +18,8 @@ let currentState = {
   templateDir: '',
   template: '',
   customParams: [],
-  templateList: []
+  templateList: [],
+  syncConfig: false
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -105,10 +106,11 @@ function updateState (field, value, index = -1) {
     } else {
       currentState.customParams.push(value);
     }
+
   } else {
     currentState[field] = value;
   }
-  vscode.postMessage({ command: 'saveState', state: currentState });
+  vscode.postMessage({ command: 'saveState', syncConfig: field === 'customParams',  state: currentState });
 }
 
 function saveState () {
@@ -158,26 +160,26 @@ function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpda
   const valueContainer = document.createElement('div');
   valueContainer.className = 'value-container';
 
-  function updateValueInput (_index) {
+  function updateValueInput (_index, _value) {
     valueContainer.innerHTML = '';
     switch (typeSelect.value) {
       case 'api':
-        addApiNode(valueContainer, _index, value);
+        addApiNode(valueContainer, _index, _value);
         break;
       case 'js':
       case 'json':
-        addFileChooseNode(valueContainer, _index, typeSelect, value);
+        addFileChooseNode(valueContainer, _index, typeSelect, _value);
         break;
       default:
-        addInputNode(valueContainer, _index, value);
+        addInputNode(valueContainer, _index, _value);
     }
   }
 
   // 首次插入时添加节点
-  updateValueInput(_index);
+  updateValueInput(_index, value);
 
   typeSelect.addEventListener('change', () => {
-    updateValueInput(_index);
+    updateValueInput(_index, '');
     updateCustomParam(_index, 'type', typeSelect.value);
   });
 
@@ -317,19 +319,19 @@ function addFileChooseNode (container, index, typeSelect, initialValue = '') {
   const fileInputWrapper = document.createElement('div');
   fileInputWrapper.className = 'file-input-wrapper';
 
-  const fileInputButton = document.createElement('button');
+  const fileInputButton = document.createElement('input');
   fileInputButton.className = 'file-input-button';
-  fileInputButton.textContent = 'Choose File';
+  fileInputButton.placeholder = 'Choose File';
 
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
   fileInput.accept = typeSelect.value === 'js' ? '.js' : '.json';
   fileInput.className = 'file-input';
   if (initialValue) {
-    fileInputButton.textContent = initialValue; // 显示文件名
+    fileInputButton.value = initialValue; // 显示文件名
   }
   fileInput.addEventListener('change', () => {
-    fileInputButton.textContent = fileInput.files[0].name;
+    fileInputButton.value = fileInput.files[0].path;
     updateCustomParam(index, 'value', fileInput.files[0].path);
   });
 
@@ -414,7 +416,7 @@ function restoreUIFromState (state) {
     document.getElementById('template').value = state.template || '';
 
     document.getElementById('customParamsContainer').innerHTML = '';
-
+    document.getElementById('syncConfig').checked = state.syncConfig || false;
     if (state.customParams) {
       state.customParams.forEach((param, index) => {
         addKeyValuePair({ key: param.key, type: param.type, value: param.value, needUpdateState: false , index: index});
@@ -435,4 +437,18 @@ function onChangeFileName () {
 // 模版路径改变
 function onChangeTemplateDir () {
   updateState('templateDir', document.getElementById('templateDir').value);
+}
+
+function onSyncConfig () {
+  const dir = document.getElementById('templateDir').value;
+  if (!dir || dir.trim() == '' || dir.trim() == 'undefined') {
+    pushMessage('alert', { status: 'error', data: "Config Directory Cannot Be Empty" })
+    return;
+  }
+
+  const checked = document.getElementById('syncConfig').checked;
+  updateState('syncConfig', checked);
+
+  // 如果勾选了，那么就要更新配置文件
+  pushMessage('toggleSyncConfig', {data: checked});
 }

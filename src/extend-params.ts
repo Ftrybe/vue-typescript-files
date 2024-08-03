@@ -3,12 +3,12 @@ import { get as httpGet } from "http"
 import { get as httpsGet } from "https"
 import { isAbsolute, join, basename, extname } from "path";
 import { Script, createContext } from "vm";
-import { CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME } from "./config";
+import { CONFIG_PATH, PARAMS_FILE_NAME } from "./config";
 import { window } from "vscode";
 import { CommandOptions } from "./models/command-options";
 export default class ExtendParams {
 	public static async getExtendParams(workspaceFolder: string, templateName: string, filename: string, options: CommandOptions) {
-		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, EXTEND_PARAM_MAPPING_FILE_NAME);
+		const extendParamsPath = join(workspaceFolder, CONFIG_PATH, PARAMS_FILE_NAME);
 
 		const result: any = {};
 		if (!existsSync(extendParamsPath)) {
@@ -89,7 +89,8 @@ export default class ExtendParams {
 
 					const { apiUrl, headers } = obj.value;
 
-					const response: any = await ExtendParams.getParamsFromApi(apiUrl, headers, filename, options);
+					const _headers = this.convertHeaders(headers);
+					const response: any = await ExtendParams.getParamsFromApi(apiUrl, _headers, filename, options);
 					try {
 						// 尝试将响应解析为 JSON
 						const jsonData = JSON.parse(response);
@@ -205,5 +206,15 @@ export default class ExtendParams {
 
 	private static getParamsFromJSON(path: string) {
 		return readJSONSync(path, 'utf-8');
+	}
+
+	private static convertHeaders(headers: Array<{key: string, value: string}>): {[key: string]: string} {
+		const convertedHeaders: {[key: string]: string} = {};
+		
+		headers.forEach(header => {
+			convertedHeaders[header.key] = header.value;
+		});
+		
+		return convertedHeaders;
 	}
 }
