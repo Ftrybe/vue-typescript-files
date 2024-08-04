@@ -155,9 +155,9 @@ button:hover {
 .file-input-button {
   width: 100%;
   padding: 8px;
-  background-color: #b7b7b7f5;
+  background-color: #a6a6a6f5;
   border-radius: 2px;
-  color: #333;
+  color: #fff;
   border: none;
   cursor: pointer;
   text-align: center;

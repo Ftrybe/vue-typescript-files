@@ -99,14 +99,9 @@ function setTemplateOptions () {
 }
 
 
-function updateState (field, value, index = -1) {
+function updateState (field, value) {
   if (field === 'customParams') {
-    if (index >= 0) {
-      currentState.customParams[index] = value;
-    } else {
-      currentState.customParams.push(value);
-    }
-
+     currentState.customParams = getCustomParams();
   } else {
     currentState[field] = value;
   }
@@ -125,18 +120,13 @@ function pushMessage (command, data) {
   });
 }
 
-function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpdateState: true, index: undefined }) {
-  const { key, type, value, needUpdateState, index } = param;
+function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpdateState: true }) {
+  const { key, type, value, needUpdateState } = param;
   const customParamsContainer = document.getElementById('customParamsContainer');
-  const _index = index ?? currentState.customParams.length;
-
-  if (needUpdateState) {
-    updateState('customParams', { key, type, value });
-  }
-
 
   const div = document.createElement('div');
   div.className = 'key-value-pair';
+  // div.dataset.id = _id;
 
   const keyInput = document.createElement('input');
   keyInput.type = 'text';
@@ -154,33 +144,33 @@ function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpda
   typeSelect.value = type;
 
 
-  keyInput.addEventListener('input', () => updateCustomParam(_index, 'key', keyInput.value));
+  keyInput.addEventListener('input', () => updateState('customParams'));
 
 
   const valueContainer = document.createElement('div');
   valueContainer.className = 'value-container';
 
-  function updateValueInput (_index, _value) {
+  function updateValueInput (_value) {
     valueContainer.innerHTML = '';
     switch (typeSelect.value) {
       case 'api':
-        addApiNode(valueContainer, _index, _value);
+        addApiNode(valueContainer, _value);
         break;
       case 'js':
       case 'json':
-        addFileChooseNode(valueContainer, _index, typeSelect, _value);
+        addFileChooseNode(valueContainer, typeSelect, _value);
         break;
       default:
-        addInputNode(valueContainer, _index, _value);
+        addInputNode(valueContainer, _value);
     }
   }
 
   // 首次插入时添加节点
-  updateValueInput(_index, value);
+  updateValueInput(value);
 
   typeSelect.addEventListener('change', () => {
-    updateValueInput(_index, '');
-    updateCustomParam(_index, 'type', typeSelect.value);
+    updateValueInput('');
+    updateState('customParams');
   });
 
   const removeButton = document.createElement('button');
@@ -188,8 +178,7 @@ function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpda
   removeButton.textContent = 'X';
   removeButton.addEventListener('click', () => {
     customParamsContainer.removeChild(div);
-    currentState.customParams.splice(_index, 1);
-    updateState('customParams', null, _index);
+    updateState('customParams');
   });
 
   div.appendChild(keyInput);
@@ -200,29 +189,24 @@ function addKeyValuePair (param = { key: '', type: 'string', value: '', needUpda
 }
 
 
-function updateCustomParam (index, field, value) {
-  currentState.customParams[index][field] = value;
-  updateState('customParams', currentState.customParams[index], index);
-}
-
-function addInputNode (container, index, value = '') {
+function addInputNode (container, value = '') {
   const stringInput = document.createElement('input');
   stringInput.type = 'text';
   stringInput.placeholder = 'Enter value';
   stringInput.value = value;
   container.appendChild(stringInput);
 
-  stringInput.addEventListener('input', () => updateCustomParam(index, 'value', stringInput.value));
+  stringInput.addEventListener('input', () => updateState('customParams'));
   // container.appendChild(stringInput);
 }
 
 
-function addApiNode (container, index, value = { apiUrl: '', headers: [] }) {
+function addApiNode (container, value = { apiUrl: '', headers: [] }) {
   const apiUrlInput = document.createElement('input');
   apiUrlInput.type = 'text';
   apiUrlInput.placeholder = 'Enter API request URL';
   apiUrlInput.value = value.apiUrl || '';
-  apiUrlInput.addEventListener('input', () => updateApiUrl(index, apiUrlInput.value));
+  apiUrlInput.addEventListener('input', () => updateState('customParams'));
 
   container.appendChild(apiUrlInput);
 
@@ -270,11 +254,10 @@ function addApiNode (container, index, value = { apiUrl: '', headers: [] }) {
         });
       }
 
-      // updateCustomParam(index, 'value', { apiUrl: apiUrlInput.value });
     });
 
 
-    headerValueInput.addEventListener('input', () => updateApiHeaders(index));
+    headerValueInput.addEventListener('input', () => updateState('customParams'));
     headerDiv.appendChild(headerKeyInput);
     headerDiv.appendChild(headerValueInput);
     headerDiv.appendChild(removeHeaderButton);
@@ -299,23 +282,7 @@ function addApiNode (container, index, value = { apiUrl: '', headers: [] }) {
   }
 }
 
-
-function updateApiHeaders (index) {
-  const headers = Array.from(document.querySelectorAll('.header-pair')).map(headerPair => ({
-    key: headerPair.children[0].value,
-    value: headerPair.children[1].value,
-  }));
-  updateCustomParam(index, 'value', { apiUrl: currentState.customParams[index].value.apiUrl, headers });
-}
-
-function updateApiUrl(index, apiUrl) {
-  const val = currentState.customParams[index]['value']
-  const headers = val?.headers ?? [];
-
-  updateCustomParam(index, 'value', { apiUrl: apiUrl, headers });
-}
-
-function addFileChooseNode (container, index, typeSelect, initialValue = '') {
+function addFileChooseNode (container, typeSelect, initialValue = '') {
   const fileInputWrapper = document.createElement('div');
   fileInputWrapper.className = 'file-input-wrapper';
 
@@ -332,14 +299,13 @@ function addFileChooseNode (container, index, typeSelect, initialValue = '') {
   }
   fileInput.addEventListener('change', () => {
     fileInputButton.value = fileInput.files[0].path;
-    updateCustomParam(index, 'value', fileInput.files[0].path);
+    updateState('customParams');
   });
 
   fileInputWrapper.appendChild(fileInputButton);
   fileInputWrapper.appendChild(fileInput);
   container.appendChild(fileInputWrapper);
 }
-
 
 function onPreview () {
   const data = getState();
@@ -355,57 +321,71 @@ function onPreviewParams() {
   })
 }
 
-function getState () {
-  const template = document.getElementById('template').value;
-  const templateDir = document.getElementById('templateDir').value;
-  const fileName = document.getElementById("fileName").value;
-  const customParams = [];
-  const pairs = customParamsContainer.getElementsByClassName('key-value-pair');
-  for (const pair of pairs) {
-    const key = pair.children[0].value;
-    const type = pair.children[1].value;
-    let value;
+const typeHandlers = {
+  api: (container) => ({
+    apiUrl: container.querySelector('input[type="text"]').value,
+    headers: Array.from(container.querySelectorAll('.header-pair')).map(headerPair => ({
+      key: headerPair.querySelector('input:nth-child(1)').value,
+      value: headerPair.querySelector('input:nth-child(2)').value,
+    })),
+  }),
+  js: (container) => getFilePath(container),
+  json: (container) => getFilePath(container),
+  default: (container) => container.querySelector('input').value,
+};
 
-    switch (type) {
-      case 'api':
-        value = {
-          apiUrl: pair.children[2].children[0].value,
-          headers: Array.from(pair.children[2].getElementsByClassName('header-pair')).map(headerPair => ({
-            key: headerPair.children[0].value,
-            value: headerPair.children[1].value,
-          })),
-        };
-        break;
-
-      case 'js':
-      case 'json':
-        const fileInputElement = pair.children[2].children[0].children[1];
-        if (fileInputElement.files && fileInputElement.files.length > 0) {
-          value = fileInputElement.files[0].path;
-        } else {
-          console.error("No file selected or file list is empty.");
-          value = null;
-        }
-        break;
-
-      default:
-        value = pair.children[2].children[0].value;
-    }
-
-    if (!key || key.trim() == '') {
-      pushMessage('alert', { status: 'error', data: "Key Cannot Be Empty" })
-      return;
-    }
-    customParams.push({ key, type, value });
-  }
-  return {
-    fileName,
-    template,
-    templateDir,
-    customParams
-  };
-  // Add your preview functionality here
+function getFilePath(container) {
+  const fileInput = container.querySelector('input[type="file"]');
+  return fileInput.files && fileInput.files.length > 0 ? fileInput.files[0].path : null;
 }
+
+function parseCustomParams() {
+  const customParamsContainer = document.getElementById('customParamsContainer');
+  const pairs = customParamsContainer.querySelectorAll('.key-value-pair');
+  
+  return Array.from(pairs).map(pair => {
+    const key = pair.querySelector('input:nth-child(1)').value.trim();
+    const type = pair.querySelector('select').value;
+    const valueContainer = pair.querySelector('.value-container');
+
+    if (!key) {
+      throw new Error("Key Cannot Be Empty");
+    }
+
+    const value = (typeHandlers[type] || typeHandlers.default)(valueContainer);
+
+    return { key, type, value };
+  });
+}
+
+function getState() {
+  try {
+    const [template, templateDir, fileName] = ['template', 'templateDir', 'fileName']
+      .map(id => document.getElementById(id).value);
+
+    const customParams = parseCustomParams();
+
+    return {
+      fileName,
+      template,
+      templateDir,
+      customParams
+    };
+  } catch (error) {
+    pushMessage('alert', { status: 'error', data: error.message });
+    return null;
+  }
+}
+
+function getCustomParams() {
+  try {
+    return parseCustomParams();
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+}
+
 
 // 从状态恢复 UI
 function restoreUIFromState (state) {
@@ -418,8 +398,8 @@ function restoreUIFromState (state) {
     document.getElementById('customParamsContainer').innerHTML = '';
     document.getElementById('syncConfig').checked = state.syncConfig || false;
     if (state.customParams) {
-      state.customParams.forEach((param, index) => {
-        addKeyValuePair({ key: param.key, type: param.type, value: param.value, needUpdateState: false , index: index});
+      state.customParams.forEach((param) => {
+        addKeyValuePair({ key: param.key, type: param.type, value: param.value, needUpdateState: false });
       });
     }
 
