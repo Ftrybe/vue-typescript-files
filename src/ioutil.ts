@@ -8,28 +8,18 @@ import {
 import { window } from "vscode";
 import { Menu } from "./enums/menu";
 import { FileNameUtils } from "./file-name.utils";
-import { IFiles } from "./models/file";
 import { IPath } from "./models/path";
 import { isAbsolute, join } from "path";
 export default class IOUtil {
   private constructor() {}
-  public static async createFiles(
-    loc: IPath,
-    files: IFiles[]
-  ): Promise<string> {
+
+
+  public static async createFile(loc: IPath, name: string, content: string) {
     try {
-      await this.writeFiles(files);
+      await outputFile(name, content);
     } catch (ex) {
       window.showErrorMessage(`文件不能创建. ${ex}`);
     }
-    return loc.dirPath;
-  }
-
-  public static async writeFiles(files: IFiles[]) {
-    const filesPromises: Promise<any>[] = files.map((file) =>
-      outputFile(file.name, file.content)
-    );
-    await Promise.all(filesPromises);
   }
 
   public static async searchFiles(

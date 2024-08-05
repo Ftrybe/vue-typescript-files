@@ -1,14 +1,14 @@
 import * as vscode from "vscode";
 import Commands from './commands';
-import Dialog from './dialog';
+import Factory from './factory';
 import HandlebarsWebviewProvider from "./primary-side-provider";
 import { PreviewWebview } from "./preview-webview";
 
 export default class Extension {
-	private dialog: Dialog;
+	private factory: Factory;
 
 	constructor() {
-		this.dialog = new Dialog();
+		this.factory = new Factory();
 	}
 
 	public loadExtend(context: vscode.ExtensionContext): void {
@@ -19,7 +19,7 @@ export default class Extension {
 
 	private registerContentMenu(context: vscode.ExtensionContext): void {
 		for (const [key, value] of Commands.map()) {
-			const command = vscode.commands.registerCommand(key, url => this.dialog.showDynamicDialog(url, value.filename, value.resource));
+			const command = vscode.commands.registerCommand(key, url =>  this.factory.build(url, value.filename, value.resource));
 			context.subscriptions.push(command);
 		}
 	}

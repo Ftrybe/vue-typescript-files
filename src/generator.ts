@@ -13,39 +13,46 @@ export class Generator {
   
   constructor(private readonly fc = new FileContents()) {}
 
-  public async generateResources(uri: vscode.Uri, name: Menu, loc: IPath) {
-    const resource = this.getTmplResources(name);
-    const files: IFiles[] = [];
-    for (const file of resource.files) {
-        const fileName: string = file.name();
-        const name = path.join(loc.dirPath, fileName.startsWith('-') ? `${loc.fileName}${fileName}` : `${loc.fileName}.${fileName}`);
-        const content = await this.fc.getTemplateContent(uri ,file.type, loc.fileName, loc.args);
-        files.push({ name, content });
-    }
-    await IOUtil.createFiles(loc, files);
-    this.focusFiles(files[0].name);
+  public async generateResources(uri: vscode.Uri, menu: Menu, loc: IPath) {
+    const resource = this.getTmplResources(menu);
+    const suffix: string = resource.suffix;
+    const filePath = path.join(loc.dirPath, suffix.startsWith('-') ? `${loc.fileName}${suffix}` : `${loc.fileName}.${suffix}`);
+    const workspacePath = this.getWorkspacePath(uri);
+    const content = await this.fc.getTemplateContent(workspacePath ,resource.type, loc.fileName, loc.args);
+    await IOUtil.createFile(loc, filePath, content);
+    this.focusFile(filePath);
   }
 
-  private focusFiles(fileName: string) {
+  public async getTemplateContent(uri: vscode.Uri,fileName: string , menu: Menu, args: string[]) {
+    const resource = this.getTmplResources(menu);
+    const workspacePath = this.getWorkspacePath(uri);
+    const content = await this.fc.getTemplateContent(workspacePath ,resource.type, fileName, args);
+    return content;
+  }
+
+
+
+  private getWorkspacePath(uri: vscode.Uri): string {
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+    const workspacePath = workspaceFolder?.uri.fsPath || '';
+    return workspacePath;
+  }
+
+
+  private focusFile(fileName: string) {
     vscode.window.showTextDocument(vscode.Uri.file(fileName));
   }
 
-  private getTmplResources(name: Menu){
+  private getTmplResources(menu: Menu): {type: string, suffix: string} {
     let map: Map<string, any> = new Map<string, any>();
     for (const value of Commands.list()) {
       let suffix = FileNameUtils.getFileSuffix(value);
-      map.set(
-        value,
-        {
-          files: [
-            {
-              name: () => suffix,
-              type: value.toLocaleLowerCase() + HANDLEBARS_FILE_SUFFIX
-            }
-          ]
-        }
-      );
+      
+      map.set(value, {
+        type:  value.toLocaleLowerCase() + HANDLEBARS_FILE_SUFFIX,
+        suffix: suffix
+      });
     }
-    return map.get(name);
+    return map.get(menu.toString());
   }
 }

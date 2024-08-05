@@ -50,18 +50,11 @@ export class FileContents {
     return '';
 
   }
-
-  private getWorkspacePath(uri: vscode.Uri): string {
-    const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
-    const workspacePath = workspaceFolder?.uri.fsPath || '';
-    return workspacePath;
-  }
-
+  
   // 获得修改后的模板内容
-  public async getTemplateContent(uri: vscode.Uri, templateName: Menu, inputName: string, args: string[]) {
+  public async getTemplateContent(workspacePath: string, templateName: string, inputName: string, args: string[]) {
     let result = '';
     let tmplName = templateName.toString();
-    const workspacePath = this.getWorkspacePath(uri);
     const options = this.parseInputArgs(args);
 
     tmplName = this.buildTemplateName(tmplName, options);

@@ -26,8 +26,8 @@
 
 空格分隔符后除了带`$`符号的的参数都可以在模版中使用 `{{args}}`获取.
 
-当使用带有`$`符号的参数时，将对模版名称进行拼接查找。如： 如果选择创建`Class`，文件名输入 `User $-dialog` 那么将会寻找在定义模版路径下的 `class-dialog`文件进行渲染。
-
+当使用带有`$`符号的参数时，将对模版名称进行拼接查找。如： 如果选择创建`Class`，文件名输入 `User $dialog` 那么将会寻找在定义模版路径下的 `class_dialog`文件进行渲染。
+> 输入 `test $dialog -e username=name&password=admin123 -url http://localhost:3000/api/username`
 
 ### 配置说明
 

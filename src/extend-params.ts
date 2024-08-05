@@ -205,7 +205,11 @@ export default class ExtendParams {
 	}
 
 	private static getParamsFromJSON(path: string) {
-		return readJSONSync(path, 'utf-8');
+		try {
+			return JSON.parse(readFileSync(path, 'utf-8'));
+		} catch (err) {
+			window.showErrorMessage('Failed to parse the JSON file: ' + err);
+		}
 	}
 
 	private static convertHeaders(headers: Array<{key: string, value: string}>): {[key: string]: string} {
